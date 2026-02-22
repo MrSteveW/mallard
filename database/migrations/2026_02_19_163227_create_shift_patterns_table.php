@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->integer('day_number');
             $table->string('status');
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
             $table->softDeletes();
         });
     }

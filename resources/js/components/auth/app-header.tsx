@@ -4,9 +4,10 @@ import {
     Menu,
     UserPen,
     UserStar,
-    Clipboard,
+    ClipboardCheck,
     CalendarDays,
     CalendarPlus2,
+    CalendarSync,
 } from 'lucide-react';
 import { UserMenuContent } from '@/components/auth/user-menu-content';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -66,7 +67,7 @@ const adminNavItems: NavItem[] = [
     {
         title: 'Tasks',
         href: '/tasks',
-        icon: Clipboard,
+        icon: ClipboardCheck,
     },
     {
         title: 'Grades',
@@ -76,7 +77,7 @@ const adminNavItems: NavItem[] = [
     {
         title: 'Shift Patterns',
         href: '/shiftpatterns',
-        icon: UserStar,
+        icon: CalendarSync,
     },
 ];
 

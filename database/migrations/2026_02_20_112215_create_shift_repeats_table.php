@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('shift_repeats', function (Blueprint $table) {
             $table->id();
             $table->integer('total_days');
+            $table->date('start_on');
         });
     }
 

@@ -1,12 +1,18 @@
 import { Head } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
+import React from 'react';
 import AppLayout from '@/layouts/app-layout';
 
 interface ShiftPattern {
-    id: number;
-    user: string;
+    day: number;
     status: string;
     start_time: string;
     end_time: string;
+}
+interface UserShiftPattern {
+    user_id: number;
+    user_name: string;
+    shift_pattern: ShiftPattern[];
 }
 
 interface Day {
@@ -15,48 +21,86 @@ interface Day {
 }
 
 interface Props {
-    shiftpatterns: ShiftPattern[];
+    shiftpatterns: UserShiftPattern[];
     days: Day[];
 }
 
 export default function Index({ shiftpatterns, days }: Props) {
+    const gridTemplateColumns = `80px 120px repeat(${shiftpatterns.length}, 150px)`;
     return (
         <AppLayout>
-            <Head title="Tasks" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div>See all shift patterns</div>
-                <div>{JSON.stringify(shiftpatterns)}</div>
-                <div className="relative h-[calc(100vh-160px)] w-1/2 overflow-y-auto">
-                    <div className="sticky top-0 z-10 grid grid-cols-[1fr_1fr_1fr] border-b bg-amber-200 pb-2 font-bold">
-                        <div>Day number</div>
-                        <div>Day name</div>
-                        <div>Adam</div>
+            <Head title="Shift patterns" />
+            <div className="my-3 flex flex-row">
+                <div>
+                    <Link
+                        href="/shiftpatterns/create"
+                        className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                    >
+                        + Shift pattern
+                    </Link>
+                </div>
+            </div>
+            {/* <div>{JSON.stringify(shiftpatterns)}</div> */}
+            <div className="relative h-[calc(100vh-160px)] w-full overflow-auto rounded-lg border bg-slate-50">
+                <div className="grid" style={{ gridTemplateColumns }}>
+                    {/* --- STICKY HEADER --- */}
+                    <div className="sticky top-0 z-20 flex items-center justify-center border-r border-b bg-amber-200 p-2 font-bold">
+                        Day
                     </div>
-                    {days.map((day) => (
+                    <div className="sticky top-0 z-20 flex items-center justify-center border-r border-b bg-amber-200 p-2 font-bold">
+                        Day Name
+                    </div>
+
+                    {shiftpatterns.map((user) => (
                         <div
-                            key={day.number}
-                            className="grid grid-cols-[1fr_1fr_1fr] bg-green-300"
+                            key={user.user_id}
+                            className="sticky top-0 z-20 border-r border-b bg-amber-100 p-2 text-center font-bold"
                         >
-                            <div>{day.number}</div>
-                            <div>{day.name}</div>
+                            {user.user_name}
                         </div>
                     ))}
 
-                    {shiftpatterns.map((shiftpattern) => (
-                        <div
-                            key={shiftpattern.id}
-                            className="items-center py-1.5 transition-colors hover:bg-slate-100"
-                        >
-                            <div className="text-lg">
-                                {shiftpattern.user_name}
+                    {/* --- DATA ROWS --- */}
+                    {days.map((day) => (
+                        <React.Fragment key={day.number}>
+                            {/* Day Number Column */}
+                            <div className="sticky left-0 z-10 flex items-center justify-center border-r border-b bg-green-100 p-2">
+                                {day.number}
                             </div>
-                            <div className="text-lg">
-                                {shiftpattern.day_number}
+
+                            {/* Day Name Column */}
+                            <div className="sticky left-20 z-10 flex items-center border-r border-b bg-green-50 p-2">
+                                {day.name}
                             </div>
-                            <div className="text-lg">
-                                {shiftpattern.day_name}
-                            </div>
-                        </div>
+
+                            {/* User Shift Cells */}
+                            {shiftpatterns.map((user) => {
+                                // Find the specific shift for this day and user
+                                const shift = user.shift_pattern.find(
+                                    (s) => s.day === day.number,
+                                );
+                                const isOnDuty = shift?.status === 'On Duty';
+
+                                return (
+                                    <div
+                                        key={`${user.user_id}-${day.number}`}
+                                        className="flex h-16 flex-col items-center justify-center border-r border-b p-2 text-xs"
+                                    >
+                                        <span>{shift?.status}</span>
+                                        {isOnDuty && shift.start_time && (
+                                            <span className="text-xs">
+                                                {new Date(
+                                                    shift.start_time,
+                                                ).toLocaleTimeString([], {
+                                                    hour: '2-digit',
+                                                    minute: '2-digit',
+                                                })}
+                                            </span>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </React.Fragment>
                     ))}
                 </div>
             </div>

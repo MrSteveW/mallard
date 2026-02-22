@@ -14,4 +14,8 @@ class ShiftRepeat extends Model
         'total_days',
     ];
 
+    protected $casts = [
+        'start_on' => 'date',
+    ];
+
 }

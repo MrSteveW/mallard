@@ -45,6 +45,10 @@ class HandleInertiaRequests extends Middleware
                 : null,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'timeOptions' => [
+                'hours' => \App\Enums\HourEnum::options(),
+                'minutes' => \App\Enums\MinutesEnum::options(),
+            ]
         ];
     }
 }

@@ -14,10 +14,10 @@ import { Label } from '@/components/ui/label';
 import type { User, Employee, Grade } from '@/types';
 
 type UserFormProps = {
-    action: string;
-    grades: Grade[];
-    method: 'post' | 'patch';
     roles: string[];
+    grades: Grade[];
+    action: string;
+    method: 'post' | 'patch';
     initialData?: User;
 };
 

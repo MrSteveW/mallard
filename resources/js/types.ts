@@ -46,3 +46,8 @@ export interface AssignableUser {
     name: string;
     grade: string;
 }
+
+export interface TimeOptions {
+    hours: { value: string; label: string }[];
+    minutes: { value: string; label: string }[];
+}

@@ -9,6 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ShiftPattern extends Model
 {
+      protected $fillable = [
+        'user_id',
+        'day_number',
+        'status',
+        'start_time',
+        'end_time',
+    ];
+
     public $timestamps = false;
 
     use SoftDeletes;
