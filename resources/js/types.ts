@@ -52,9 +52,22 @@ export interface TimeOptions {
     minutes: { value: string; label: string }[];
 }
 
+export interface ShiftPatternUser {
+    id: number;
+    name: string;
+}
+
 export interface ShiftTypeOption {
     value: string;
     label: string;
     start_time: string | null;
     end_time: string | null;
+}
+
+export interface ShiftPatternDay {
+    user_id: number | '';
+    day: number;
+    shift_type: string;
+    start_time: string;
+    end_time: string;
 }

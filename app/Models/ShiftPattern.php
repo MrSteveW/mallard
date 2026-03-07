@@ -23,10 +23,11 @@ class ShiftPattern extends Model
 
     protected function casts(): array {
     return [
-        'start_time' => 'datetime:H:i',
-        'end_time' => 'datetime:H:i',
+
     ];
 }
+
+// $CarbonTime = Carbon::createFromFormat('H:i', $shiftPattern->start_time);
 
  public function user(): BelongsTo
     {

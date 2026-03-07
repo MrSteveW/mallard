@@ -34,7 +34,7 @@ export default function TimeSelect({
     };
 
     return (
-        <div className="flex items-center gap-1 rounded-md border border-input bg-background px-3 py-2 ring-offset-background">
+        <div className="flex items-center rounded-md border border-input bg-background ring-offset-background">
             <select
                 className="border-none bg-transparent p-0 text-sm focus:ring-0"
                 value={hour}

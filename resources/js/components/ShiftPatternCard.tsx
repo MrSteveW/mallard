@@ -15,7 +15,8 @@ interface ShiftDay {
 interface Props {
     day: ShiftDay;
     index: number;
-    onChange: (index: number, field: string, value: string) => void;
+    label: string;
+    onChange: (index: number, fields: Partial<ShiftDay>) => void;
     errors: {
         shift_type?: string;
         start_time?: string;
@@ -26,6 +27,7 @@ interface Props {
 export default function ShiftPatternCard({
     day,
     index,
+    label,
     onChange,
     errors,
 }: Props) {
@@ -41,25 +43,39 @@ export default function ShiftPatternCard({
     const handleShiftTypeChange = (value: string) => {
         const selected = shiftTypeOptions.find((opt) => opt.value === value);
 
-        onChange(index, 'shift_type', value);
-
         if (selected && value !== 'Off') {
-            onChange(index, 'start_time', selected.start_time ?? '');
-            onChange(index, 'end_time', selected.end_time ?? '');
+            onChange(index, {
+                shift_type: value,
+                start_time: selected.start_time ?? '',
+                end_time: selected.end_time ?? '',
+            });
         } else {
-            onChange(index, 'start_time', '');
-            onChange(index, 'end_time', '');
+            onChange(index, {
+                shift_type: value,
+                start_time: '',
+                end_time: '',
+            });
         }
     };
 
-    return (
-        <div className="w-50 border bg-amber-50 p-2">
-            <h3>Day {day.day}</h3>
+    // Conditionally colour background
+    const shiftTypeColors: Record<string, string> = {
+        Off: 'bg-white',
+        Early: 'bg-amber-200',
+        Late: 'bg-green-300',
+        Night: 'bg-blue-200',
+    };
 
+    const bgColor = shiftTypeColors[day.shift_type] ?? 'bg-white';
+
+    return (
+        <div className={`${bgColor} m-1 w-50 rounded-xl border p-1`}>
+            <div className="text-sm">{label}</div>
             {/* Select Shift Type */}
             <select
                 value={day.shift_type}
                 onChange={(e) => handleShiftTypeChange(e.target.value)}
+                className="text-sm"
             >
                 {shiftTypeOptions.map((opt) => (
                     <option key={opt.value} value={opt.value}>
@@ -70,30 +86,30 @@ export default function ShiftPatternCard({
 
             {errors.shift_type && <p>{errors.shift_type}</p>}
 
-            {/* Conditionally render Start Time & End Time */}
+            {/* Conditionally render Start & End DropDowns */}
             {day.shift_type !== 'Off' && (
-                <>
-                    <div className="w-30">
+                <div className="flex w-full flex-row justify-around">
+                    <div>
                         <Label>Start time</Label>
                         <TimeSelect
                             name="start_time"
                             value={day.start_time}
                             options={timeOptions}
-                            onChange={(v) => onChange(index, 'start_time', v)}
+                            onChange={(v) => onChange(index, { start_time: v })}
                         />
                         {errors.start_time && <p>{errors.start_time}</p>}
                     </div>
-                    <div className="w-30">
+                    <div>
                         <Label>End time</Label>
                         <TimeSelect
                             name="end_time"
                             value={day.end_time}
                             options={timeOptions}
-                            onChange={(v) => onChange(index, 'end_time', v)}
+                            onChange={(v) => onChange(index, { end_time: v })}
                         />
                         {errors.end_time && <p>{errors.end_time}</p>}
                     </div>
-                </>
+                </div>
             )}
         </div>
     );
