@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
             TaskSeeder::class,
             GradeSeeder::class,
             DutySeeder::class,
-            ShiftPatternSeeder::class,
+            ShiftPatternOneSeeder::class,
+            ShiftPatternTwoSeeder::class,
             ShiftRepeatSeeder::class,
         ]);
     }

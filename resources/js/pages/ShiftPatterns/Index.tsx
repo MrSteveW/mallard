@@ -1,11 +1,12 @@
 import { Head } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 import React from 'react';
+import ShiftPatternViewCard from '@/components/ShiftPatternViewCard';
 import AppLayout from '@/layouts/app-layout';
 
 interface ShiftPattern {
     day: number;
-    status: string;
+    shift_type: string;
     start_time: string;
     end_time: string;
 }
@@ -22,54 +23,42 @@ interface Day {
 
 interface Props {
     shiftpatterns: UserShiftPattern[];
-    days: Day[];
+    dayNames: Day[];
 }
 
-export default function Index({ shiftpatterns, days }: Props) {
-    const gridTemplateColumns = `80px 120px repeat(${shiftpatterns.length}, 150px)`;
+export default function Index({ shiftpatterns, dayNames }: Props) {
+    const gridTemplateColumns = `40px 80px repeat(${shiftpatterns.length}, 80px)`;
     return (
         <AppLayout>
             <Head title="Shift patterns" />
-            <div className="my-3 flex flex-row">
-                <div>
-                    <Link
-                        href="/shiftpatterns/create"
-                        className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                    >
-                        + Shift pattern
-                    </Link>
-                </div>
-            </div>
             {/* <div>{JSON.stringify(shiftpatterns)}</div> */}
-            <div className="relative h-[calc(100vh-160px)] w-full overflow-auto rounded-lg border bg-slate-50">
+            <div className="relative my-3 h-[calc(100vh-100px)] w-full overflow-auto rounded-lg border bg-slate-50">
                 <div className="grid" style={{ gridTemplateColumns }}>
                     {/* --- STICKY HEADER --- */}
-                    <div className="sticky top-0 z-20 flex items-center justify-center border-r border-b bg-amber-200 p-2 font-bold">
-                        Day
-                    </div>
-                    <div className="sticky top-0 z-20 flex items-center justify-center border-r border-b bg-amber-200 p-2 font-bold">
-                        Day Name
-                    </div>
+                    <div className="sticky top-0 z-20 flex items-center justify-center border-r border-b"></div>
+                    <div className="sticky top-0 z-20 flex items-center justify-center border-r border-b"></div>
 
                     {shiftpatterns.map((user) => (
                         <div
                             key={user.user_id}
-                            className="sticky top-0 z-20 border-r border-b bg-amber-100 p-2 text-center font-bold"
+                            className="sticky top-0 z-20 border-r border-b bg-amber-100 p-2 text-center font-bold hover:text-blue-600"
                         >
-                            {user.user_name}
+                            <Link href={`/shiftpatterns/${user.user_id}/edit`}>
+                                {user.user_name}
+                            </Link>
                         </div>
                     ))}
 
                     {/* --- DATA ROWS --- */}
-                    {days.map((day) => (
+                    {dayNames.map((day) => (
                         <React.Fragment key={day.number}>
                             {/* Day Number Column */}
-                            <div className="sticky left-0 z-10 flex items-center justify-center border-r border-b bg-green-100 p-2">
+                            <div className="sticky z-10 flex items-center justify-center border-r border-b bg-green-100 text-xs">
                                 {day.number}
                             </div>
 
                             {/* Day Name Column */}
-                            <div className="sticky left-20 z-10 flex items-center border-r border-b bg-green-50 p-2">
+                            <div className="sticky z-10 flex items-center border-r border-b bg-green-50 p-2 text-xs">
                                 {day.name}
                             </div>
 
@@ -79,25 +68,12 @@ export default function Index({ shiftpatterns, days }: Props) {
                                 const shift = user.shift_pattern.find(
                                     (s) => s.day === day.number,
                                 );
-                                const isOnDuty = shift?.status === 'On Duty';
 
                                 return (
-                                    <div
+                                    <ShiftPatternViewCard
                                         key={`${user.user_id}-${day.number}`}
-                                        className="flex h-16 flex-col items-center justify-center border-r border-b p-2 text-xs"
-                                    >
-                                        <span>{shift?.status}</span>
-                                        {isOnDuty && shift.start_time && (
-                                            <span className="text-xs">
-                                                {new Date(
-                                                    shift.start_time,
-                                                ).toLocaleTimeString([], {
-                                                    hour: '2-digit',
-                                                    minute: '2-digit',
-                                                })}
-                                            </span>
-                                        )}
-                                    </div>
+                                        shift={shift}
+                                    />
                                 );
                             })}
                         </React.Fragment>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->integer('day');
-            $table->string('shift_type');
+            $table->string('shift_type')->default('Off');
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
             $table->softDeletes();

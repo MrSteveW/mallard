@@ -1,8 +1,8 @@
 import { usePage } from '@inertiajs/react';
 import TimeSelect from '@/components/TimeSelect';
-import { Label } from '@/components/ui/label';
 import type { TimeOptions } from '@/types';
 import type { ShiftTypeOption } from '@/types';
+import { getShiftBgColor } from '@/constants/shiftBgColors';
 
 interface ShiftDay {
     user_id: number | '';
@@ -59,14 +59,7 @@ export default function ShiftPatternCard({
     };
 
     // Conditionally colour background
-    const shiftTypeColors: Record<string, string> = {
-        Off: 'bg-white',
-        Early: 'bg-amber-200',
-        Late: 'bg-green-300',
-        Night: 'bg-blue-200',
-    };
-
-    const bgColor = shiftTypeColors[day.shift_type] ?? 'bg-white';
+    const bgColor = getShiftBgColor(day?.shift_type);
 
     return (
         <div className={`${bgColor} m-1 w-50 rounded-xl border p-1`}>
@@ -90,7 +83,6 @@ export default function ShiftPatternCard({
             {day.shift_type !== 'Off' && (
                 <div className="flex w-full flex-row justify-around">
                     <div>
-                        <Label>Start time</Label>
                         <TimeSelect
                             name="start_time"
                             value={day.start_time}
@@ -100,7 +92,6 @@ export default function ShiftPatternCard({
                         {errors.start_time && <p>{errors.start_time}</p>}
                     </div>
                     <div>
-                        <Label>End time</Label>
                         <TimeSelect
                             name="end_time"
                             value={day.end_time}

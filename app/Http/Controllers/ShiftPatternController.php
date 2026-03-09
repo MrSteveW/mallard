@@ -15,27 +15,24 @@ use App\Rules\ValidShiftTime;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
 
 class ShiftPatternController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $shiftpatterns = ShiftPattern::with('user')->get();
-        $groupedPatterns = $shiftpatterns->groupBy('user_id')->map(function ($shifts) {
-        $firstShift = $shifts->first();
-         return [
-            'user_id' => $firstShift->user_id,
-            'user_name' => $firstShift->user->name,
-            'shift_pattern' => ShiftPatternResource::collection($shifts),
+        $users = User::with('shiftPatterns')->get();
+        $groupedPatterns = $users->map(function ($user) {
+        return [
+            'user_id'       => $user->id,
+            'user_name'     => $user->name,
+            'shift_pattern' => ShiftPatternResource::collection($user->shiftPatterns),
         ];
-        })->values(); 
+    })->values();
 
         $shiftRepeat = ShiftRepeat::first();
         $totalDays = $shiftRepeat?->total_days ?? 7; 
-        $days = collect(range(1, $totalDays))->map(function ($number) {
+        $dayNames = collect(range(1, $totalDays))->map(function ($number) {
         return [
             'number' => $number,
             'name' => Carbon::create()->startOfWeek()->addDays(($number - 1) % 7)->dayName
@@ -44,19 +41,7 @@ class ShiftPatternController extends Controller
 
         return Inertia::render('ShiftPatterns/Index', [
             'shiftpatterns' => $groupedPatterns,
-            'days' => $days,
-        ]);
-    }
-
-    public function create()
-    {
-        $users = User::select('id', 'name')->get();
-        $shiftRepeat = ShiftRepeat::first();
-        $totalDays = $shiftRepeat?->total_days ?? 7; 
-
-          return Inertia::render('ShiftPatterns/Create', [
-            'userOptions' => $users,
-            'totalDays' => $totalDays
+            'dayNames' => $dayNames,
         ]);
     }
 
@@ -97,16 +82,39 @@ class ShiftPatternController extends Controller
     }
 
 
-    public function edit(ShiftPattern $shiftPattern)
+    public function edit(User $user)
     {
-        
+    return Inertia::render('ShiftPatterns/Edit', [
+        'user' => $user->only('id', 'name'),
+        'initialPattern' => ShiftPatternResource::collection($user->shiftPatterns),
+    ]);
     }
 
 
-    public function update(Request $request, ShiftPattern $shiftPattern)
-    {
-        
-    }
+    public function update(Request $request, User $user)
+{
+       $validated = $request->validate([
+        'shiftArray'             => ['required', 'array'],
+        'shiftArray.*.day'       => ['required', 'integer'],
+        'shiftArray.*.shift_type'=> ['required', 'string'],
+        'shiftArray.*.start_time'=> ['nullable', 'string'],
+        'shiftArray.*.end_time'  => ['nullable', 'string'],
+    ]);
+
+    DB::transaction(function () use ($validated, $user) {
+        foreach ($validated['shiftArray'] as $day) {
+            ShiftPattern::where('user_id', $user->id)
+                ->where('day', $day['day'])
+                ->update([
+                    'shift_type' => $day['shift_type'],
+                    'start_time' => $day['start_time'] ?? null,
+                    'end_time'   => $day['end_time'] ?? null,
+                ]);
+        }
+    });
+
+    return redirect('/shiftpatterns')->with('message', 'Shift pattern saved successfully.');
+}
 
 
     public function destroy(ShiftPattern $shiftPattern)

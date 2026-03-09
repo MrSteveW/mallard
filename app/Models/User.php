@@ -8,7 +8,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Enums\UserRole;
+use App\Enums\ShiftType;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Collection;
+
 
 class User extends Authenticatable
 {
@@ -62,8 +66,8 @@ class User extends Authenticatable
         return $this->hasOne(Employee::class);
     }
 
-    public function shiftpattern(): HasOne
+    public function shiftPatterns(): HasMany
     {
-        return $this->hasOne(ShiftPattern::class);
+        return $this->hasMany(ShiftPattern::class);
     }
 }

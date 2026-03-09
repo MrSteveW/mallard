@@ -1,15 +1,6 @@
 import { useForm, Link } from '@inertiajs/react';
-import { useState } from 'react';
-import ShiftPatternCard from '@/components/ShiftPatternCard';
+import ShiftPatternEditCard from '@/components/ShiftPatternEditCard';
 import { Button } from '@/components/ui/button';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuRadioGroup,
-    DropdownMenuRadioItem,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Label } from '@/components/ui/label';
 import type { ShiftPatternUser, ShiftPatternDay } from '@/types';
 
 const DAY_NAMES = [
@@ -23,36 +14,20 @@ const DAY_NAMES = [
 ];
 
 interface ShiftPatternProps {
-    userOptions: ShiftPatternUser[];
-    totalDays: number;
-    initialData?: ShiftPatternDay[];
+    user: ShiftPatternUser;
+    initialPattern: ShiftPatternDay[];
     action: string;
     method?: 'post' | 'patch';
 }
 
 export default function ShiftPatternForm({
-    userOptions,
-    totalDays,
-    initialData,
+    user,
+    initialPattern,
     action,
     method = 'post',
 }: ShiftPatternProps) {
     const { data, setData, post, patch, processing, errors } = useForm({
-        shiftArray:
-            initialData ??
-            Array.from({ length: totalDays }, (_, i) => ({
-                user_id: '' as number | '',
-                day: i + 1,
-                shift_type: 'Off',
-                start_time: '',
-                end_time: '',
-            })),
-    });
-
-    // Seed the selected user from initialData if present
-    const [selectedUser, setSelectedUser] = useState<number | undefined>(() => {
-        const id = initialData?.[0]?.user_id;
-        return typeof id === 'number' ? id : undefined;
+        shiftArray: initialPattern,
     });
 
     const handleDayChange = (
@@ -68,19 +43,10 @@ export default function ShiftPatternForm({
     };
 
     const weeks = Array.from(
-        { length: Math.ceil(totalDays / 7) },
+        { length: Math.ceil(data.shiftArray.length / 7) },
         (_, weekIndex) =>
             data.shiftArray.slice(weekIndex * 7, weekIndex * 7 + 7),
     );
-
-    const handleUserChange = (v: string) => {
-        const id = parseInt(v, 10);
-        setSelectedUser(id);
-        setData(
-            'shiftArray',
-            data.shiftArray.map((shift) => ({ ...shift, user_id: id })),
-        );
-    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -99,37 +65,13 @@ export default function ShiftPatternForm({
                     ))}
                 </div>
                 {/* <div className="text-xs">{JSON.stringify(data.shiftArray)}</div> */}
-                <div className="flex w-full border bg-gray-50 px-8 py-4">
-                    <div className="flex w-30 flex-col gap-2">
-                        <Label>Select user</Label>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline">
-                                    {userOptions.find(
-                                        (user) => user.id === selectedUser,
-                                    )?.name || 'Select User'}
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <DropdownMenuRadioGroup
-                                    value={selectedUser?.toString()}
-                                    onValueChange={handleUserChange}
-                                >
-                                    {userOptions.map((user) => (
-                                        <DropdownMenuRadioItem
-                                            key={user.id}
-                                            value={user.id.toString()}
-                                        >
-                                            {user.name}
-                                        </DropdownMenuRadioItem>
-                                    ))}
-                                </DropdownMenuRadioGroup>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                <div className="flex w-full items-center border bg-gray-50 p-2">
+                    <div className="ml-100 text-lg">
+                        Edit Shift Pattern for {user.name}
                     </div>
-                    <div className="mx-10 mt-4 flex flex-row items-center">
+                    <div className="ml-20 flex flex-row items-center">
                         <Button type="submit" disabled={processing}>
-                            {method === 'post' ? 'Create' : 'Save'}
+                            Save
                         </Button>
                         <Button variant="outline" asChild>
                             <Link href="/shiftpatterns">Cancel</Link>
@@ -138,40 +80,39 @@ export default function ShiftPatternForm({
                 </div>
 
                 <div className="flex h-screen w-screen flex-row gap-2 overflow-auto border bg-gray-200">
-                    {selectedUser &&
-                        weeks.map((week, weekIndex) => (
-                            <div key={weekIndex}>
-                                <h3>Week {weekIndex + 1}</h3>
-                                <div>
-                                    {week.map((day, dayIndex) => {
-                                        const index = weekIndex * 7 + dayIndex;
-                                        return (
-                                            <ShiftPatternCard
-                                                key={day.day}
-                                                day={day}
-                                                index={index}
-                                                label={`${DAY_NAMES[dayIndex]}`}
-                                                onChange={handleDayChange}
-                                                errors={{
-                                                    shift_type:
-                                                        errors[
-                                                            `shiftArray.${index}.shift_type`
-                                                        ],
-                                                    start_time:
-                                                        errors[
-                                                            `shiftArray.${index}.start_time`
-                                                        ],
-                                                    end_time:
-                                                        errors[
-                                                            `shiftArray.${index}.end_time`
-                                                        ],
-                                                }}
-                                            />
-                                        );
-                                    })}
-                                </div>
+                    {weeks.map((week, weekIndex) => (
+                        <div key={weekIndex}>
+                            <h3>Week {weekIndex + 1}</h3>
+                            <div>
+                                {week.map((day, dayIndex) => {
+                                    const index = weekIndex * 7 + dayIndex;
+                                    return (
+                                        <ShiftPatternEditCard
+                                            key={day.day}
+                                            day={day}
+                                            index={index}
+                                            label={`${DAY_NAMES[dayIndex]}`}
+                                            onChange={handleDayChange}
+                                            errors={{
+                                                shift_type:
+                                                    errors[
+                                                        `shiftArray.${index}.shift_type`
+                                                    ],
+                                                start_time:
+                                                    errors[
+                                                        `shiftArray.${index}.start_time`
+                                                    ],
+                                                end_time:
+                                                    errors[
+                                                        `shiftArray.${index}.end_time`
+                                                    ],
+                                            }}
+                                        />
+                                    );
+                                })}
                             </div>
-                        ))}
+                        </div>
+                    ))}
                 </div>
             </div>
         </form>

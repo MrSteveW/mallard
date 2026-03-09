@@ -42,7 +42,8 @@ Route::middleware(['auth', 'can:viewAny,' . User::class])->group(function () {
 
     Route::resource('tasks', TaskController::class);
     Route::resource('grades', GradeController::class);
-    Route::resource('shiftpatterns', ShiftPatternController::class);
+    Route::resource('shiftpatterns', ShiftPatternController::class)
+    ->parameters(['shiftpatterns' => 'user']);
 
 });
 
