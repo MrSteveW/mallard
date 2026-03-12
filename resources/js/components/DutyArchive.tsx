@@ -13,17 +13,17 @@ import {
 } from '@/components/ui/dialog';
 import type { AbsenceOption } from '@/types';
 
-type ArchiveDutyProps = {
+type DutyArchiveProps = {
     url: string;
     absenceOptions: AbsenceOption[];
     onSuccess?: () => void;
 };
 
-export default function ArchiveDuty({
+export default function DutyArchive({
     url,
     absenceOptions,
     onSuccess,
-}: ArchiveDutyProps) {
+}: DutyArchiveProps) {
     const [absence, setAbsence] = useState<string>('');
 
     const handleDelete = () => {

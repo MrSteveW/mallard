@@ -51,7 +51,14 @@ class DutyController extends Controller
             return response()->json($duties);
         }
 
-        return Inertia::render('Duties/Index');
+        $users = User::with('employee.grade')->get();
+        return Inertia::render('Duties/Index', [
+            'users' => $users->map(fn($user) => [
+                'id'    => $user->id,
+                'name'  => $user->name,
+                'grade' => $user->employee->grade->name ?? '',
+            ]),
+        ]);
     }
 
 
@@ -68,28 +75,28 @@ class DutyController extends Controller
         ]);
     }
 
-    public function store()
+    public function store(Request $request)
     {
-    // Validate that we receive an array of duties
-    request()->validate([
-        'duties' => ['required', 'array'],
-        'duties.*.user_id' => ['required', 'integer'],
-        'duties.*.task_id' => ['required', 'integer'], 
-        'duties.*.dutydate' => ['required', 'date_format:Y-m-d'],
-    ]);
-
-    // Create multiple duties at once
-    $duties = request('duties');
-    foreach ($duties as $dutyData) {
-        Duty::create([
-            'user_id' => $dutyData['user_id'],
-            'task_id' => $dutyData['task_id'],
-            'dutydate' => $dutyData['dutydate'],
-            'shift_type' => $dutyData['shift_type'] ?? null,
-            'hours' => $dutyData['hours'] ?? null,
+        
+        $validated = $request->validate([
+            'user_id' => ['required', 'integer'],
+            'task_id' => ['nullable', 'integer'], 
+            'date' => ['required', 'date_format:Y-m-d'],
+            'shift_type' => ['required', 'string'],
+            'start_time' => ['required', 'date_format:H:i'],
+            'end_time' => ['required', 'date_format:H:i'],
+            'notes' => ['nullable', 'string'],
         ]);
-    }
-    
+
+        $start = Carbon::createFromFormat('H:i', $validated['start_time']);
+        $end   = Carbon::createFromFormat('H:i', $validated['end_time']);
+         if ($end->lessThanOrEqualTo($start)) {
+            $end->addDay();
+            }
+        $validated['duration'] = $end->diffInMinutes($start);
+
+        Duty::create($validated);
+        return redirect()->back();
     return redirect('/duties');
 }
 

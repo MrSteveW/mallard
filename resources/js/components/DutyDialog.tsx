@@ -1,7 +1,7 @@
 import { useForm, usePage } from '@inertiajs/react';
 import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
-import ArchiveDuty from '@/components/ArchiveDuty';
+import DutyArchive from '@/components/DutyArchive';
 import TimeSelect from '@/components/TimeSelect';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,11 +19,13 @@ import type {
     TimeOptions,
     ShiftTypeOption,
     AbsenceOption,
+    AssignableUser,
 } from '@/types.ts';
 
 interface DialogProps {
-    initialEvent: DutyEvent;
+    initialEvent: DutyEvent | null;
     isDialogOpen: boolean;
+    users: AssignableUser[];
     onClose: (open: boolean) => void;
     action: string;
     method?: 'post' | 'patch';
@@ -32,6 +34,7 @@ interface DialogProps {
 
 export default function DutyDialog({
     initialEvent,
+    users,
     isDialogOpen,
     onClose,
     method,
@@ -49,14 +52,16 @@ export default function DutyDialog({
     };
 
     const { data, setData, post, patch, processing, errors, reset } = useForm({
-        id: initialEvent.id,
-        user_id: initialEvent.user_id,
-        user_name: initialEvent.user_name,
-        date: initialEvent.start.substring(0, 10),
-        notes: initialEvent.notes,
-        shift_type: initialEvent.shift_type,
-        start_time: initialEvent.start_time,
-        end_time: initialEvent.end_time,
+        id: initialEvent?.id ?? '',
+        user_id: initialEvent?.user_id ?? '',
+        user_name: initialEvent?.user_name ?? '',
+        date:
+            initialEvent?.start?.substring(0, 10) ??
+            new Date().toISOString().substring(0, 10),
+        notes: initialEvent?.notes ?? '',
+        shift_type: initialEvent?.shift_type ?? '',
+        start_time: initialEvent?.start_time ?? '',
+        end_time: initialEvent?.end_time ?? '',
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -70,7 +75,10 @@ export default function DutyDialog({
             });
         }
         post(action, {
-            onSuccess: () => onClose(false),
+            onSuccess: () => {
+                onSuccess?.(); // refetch calendar events
+                onClose(false); // close dialog
+            },
         });
     };
 
@@ -85,11 +93,38 @@ export default function DutyDialog({
                 <form onSubmit={handleSubmit}>
                     <DialogHeader>
                         <DialogTitle className="text-center">
-                            Duty: {data.user_name} {''} {''}
+                            {initialEvent
+                                ? `Duty: ${data.user_name}`
+                                : 'New Duty'}
                         </DialogTitle>
                     </DialogHeader>
 
-                    {/* <div>{JSON.stringify(data)}</div> */}
+                    {/* If create - User */}
+                    {method === 'post' && (
+                        <div className="grid grid-cols-4 items-center py-2">
+                            <Label htmlFor="date" className="text-xl">
+                                User
+                            </Label>
+                            <div className="col-span-3">
+                                <select
+                                    value={data.user_id}
+                                    onChange={(
+                                        e: React.ChangeEvent<HTMLSelectElement>,
+                                    ) => setData('user_id', e.target.value)}
+                                    className="text-sm"
+                                >
+                                    <option value="" disabled>
+                                        Select user
+                                    </option>
+                                    {users.map((user) => (
+                                        <option key={user.id} value={user.id}>
+                                            {user.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                    )}
 
                     {/* DATE */}
                     <div className="grid grid-cols-4 items-center py-2">
@@ -177,7 +212,6 @@ export default function DutyDialog({
                                 id="notes"
                                 name="notes"
                                 autoComplete="off"
-                                required
                                 value={data.notes}
                                 onChange={(e) =>
                                     setData('notes', e.target.value)
@@ -196,7 +230,7 @@ export default function DutyDialog({
                         </Button>
 
                         {method === 'patch' && (
-                            <ArchiveDuty
+                            <DutyArchive
                                 url={`/duties/${data.id}`}
                                 absenceOptions={absenceOptions}
                                 onSuccess={() => {
