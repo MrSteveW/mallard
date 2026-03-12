@@ -35,6 +35,16 @@ class DutySeeder extends Seeder
             'notes' => 'Data from seeeder',
             ]);
         Duty::create([
+            'user_id' => 1,
+            'task_id' => 1,
+            'date' => Carbon::create(2026, 3, 12)->toDateString(),
+            'shift_type' => 'Late',
+            'start_time' => '14:00',
+            'end_time' => '22:00',
+            'duration' => 480,
+            'notes' => 'Data from seeeder',
+            ]);
+        Duty::create([
             'user_id' => 3,
             'task_id' => 2,
             'date' => Carbon::create(2026, 3, 19)->toDateString(),
@@ -42,7 +52,7 @@ class DutySeeder extends Seeder
             'start_time' => '20:00',
             'end_time' => '08:00',
             'duration' => 720,
-            'notes' => 'Data from seeeder',
+            'notes' => 'Testing id is for event',
             ]);
     }
 }

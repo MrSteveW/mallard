@@ -64,6 +64,10 @@ export interface ShiftTypeOption {
     end_time: string | null;
 }
 
+export interface AbsenceOption {
+    value: string;
+}
+
 export interface ShiftPatternDay {
     user_id: number | '';
     day: number;
@@ -74,7 +78,8 @@ export interface ShiftPatternDay {
 
 export interface DutyEvent {
     id: string;
-    name: string;
+    user_id: number;
+    user_name: string;
     start: string;
     end: string;
     shift_type: string;

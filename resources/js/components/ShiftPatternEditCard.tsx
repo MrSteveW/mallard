@@ -1,8 +1,7 @@
 import { usePage } from '@inertiajs/react';
 import TimeSelect from '@/components/TimeSelect';
-import type { TimeOptions } from '@/types';
-import type { ShiftTypeOption } from '@/types';
 import { getShiftBgColor } from '@/constants/shiftBgColors';
+import type { TimeOptions, ShiftTypeOption } from '@/types';
 
 interface ShiftDay {
     user_id: number | '';

@@ -1,4 +1,4 @@
-# OnShift booking system v3
+# Mallard booking system v3
 
 ## Description:
 

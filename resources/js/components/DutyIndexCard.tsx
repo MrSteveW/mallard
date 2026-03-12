@@ -12,11 +12,10 @@ export default function DutyIndexCard({
     return (
         <div
             onClick={() => handleEventSelect(dutyEvent)}
-            className="m-2 w-full border"
+            className="m-1 w-full cursor-pointer rounded-xl border p-2 hover:bg-amber-200"
         >
-            {/* <div className="text-xs">{JSON.stringify(dutyEvent)}</div> */}
             <div className="flex">
-                <div className="">{dutyEvent.name}</div>
+                <div className="">{dutyEvent.user_name}</div>
                 <div className="">{dutyEvent.grade}</div>
             </div>
             <div className="flex">

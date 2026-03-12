@@ -4,7 +4,8 @@ import type { DutyEvent } from '@/types';
 export function mapToDutyEvent(arg: EventContentArg): DutyEvent {
     return {
         id: arg.event.id,
-        name: arg.event.title,
+        user_id: arg.event.extendedProps.user_id,
+        user_name: arg.event.title,
         start: arg.event.startStr,
         end: arg.event.endStr,
         shift_type: arg.event.extendedProps.shift_type,

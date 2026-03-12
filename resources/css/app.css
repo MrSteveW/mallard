@@ -141,3 +141,8 @@
         @apply bg-background text-foreground;
     }
 }
+
+/* Remove grey bg to FC single events */
+.fc-event:hover {
+    background-color: transparent !important;
+}

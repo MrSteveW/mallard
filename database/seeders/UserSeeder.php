@@ -45,54 +45,54 @@ class UserSeeder extends Seeder
          'role' => UserRole::Editor,
          ]);
 
-         // User::create([
-         // 'name' => 'Francine',
-         // 'email' => 'francine@example.com',
-         // 'password' => 'password',
-         // 'role' => UserRole::Viewer,
-         // ]);
+         User::create([
+         'name' => 'Francine',
+         'email' => 'francine@example.com',
+         'password' => 'password',
+         'role' => UserRole::Viewer,
+         ]);
 
-         // User::create([
-         // 'name' => 'Gary',
-         // 'email' => 'gary@example.com',
-         // 'password' => 'password',
-         // 'role' => UserRole::Viewer,
-         // ]);
+         User::create([
+         'name' => 'Gary',
+         'email' => 'gary@example.com',
+         'password' => 'password',
+         'role' => UserRole::Viewer,
+         ]);
 
-         // User::create([
-         // 'name' => 'Hilda',
-         // 'email' => 'hilda@example.com',
-         // 'password' => 'password',
-         // 'role' => UserRole::Viewer,
-         // ]);
+         User::create([
+         'name' => 'Hilda',
+         'email' => 'hilda@example.com',
+         'password' => 'password',
+         'role' => UserRole::Viewer,
+         ]);
 
-         // User::create([
-         // 'name' => 'Iain',
-         // 'email' => 'iain@example.com',
-         // 'password' => 'password',
-         // 'role' => UserRole::Editor,
-         // ]);
+         User::create([
+         'name' => 'Iain',
+         'email' => 'iain@example.com',
+         'password' => 'password',
+         'role' => UserRole::Editor,
+         ]);
 
-         // User::create([
-         // 'name' => 'Jane',
-         // 'email' => 'jane@example.com',
-         // 'password' => 'password',
-         // 'role' => UserRole::Viewer,
-         // ]);
+         User::create([
+         'name' => 'Jane',
+         'email' => 'jane@example.com',
+         'password' => 'password',
+         'role' => UserRole::Viewer,
+         ]);
 
-         // User::create([
-         // 'name' => 'Kier',
-         // 'email' => 'kier@example.com',
-         // 'password' => 'password',
-         // 'role' => UserRole::Viewer,
-         // ]);
+         User::create([
+         'name' => 'Kier',
+         'email' => 'kier@example.com',
+         'password' => 'password',
+         'role' => UserRole::Viewer,
+         ]);
 
-         // User::create([
-         // 'name' => 'Lisa',
-         // 'email' => 'lisa@example.com',
-         // 'password' => 'password',
-         // 'role' => UserRole::Viewer,
-         // ]);
+         User::create([
+         'name' => 'Lisa',
+         'email' => 'lisa@example.com',
+         'password' => 'password',
+         'role' => UserRole::Viewer,
+         ]);
 
          // User::create([
          // 'name' => 'Mika',

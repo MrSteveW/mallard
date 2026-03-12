@@ -39,11 +39,12 @@ class DutyController extends Controller
                         ? $duty->date . 'T23:59:00'
                         : $duty->date . 'T' . $duty->end_time,
                     'extendedProps' => [
+                        'user_id'    => $duty->user_id,
                         'shift_type' => $duty->shift_type,
                         'start_time' => $duty->start_time,
                         'end_time'   => $duty->end_time,
-                        'notes'   => $duty->notes,
-                        'grade' => $duty->user->employee->grade->name
+                        'notes'      => $duty->notes,
+                        'grade'      => $duty->user->employee->grade->name
                     ],
                 ]);
 
@@ -92,19 +93,35 @@ class DutyController extends Controller
     return redirect('/duties');
 }
 
-    public function update(Duty $duty)
+    public function update(Duty $duty, Request $request)
     {
-        // 11.3 require an Absence reason if soft deleting a Duty record :)
-        $request->validate([
-    'absence' => [
-        'nullable',
-        Rule::when($duty->deleted_at !== null, ['required']),
-    ],
-]);
+        $validated = $request->validate([
+            'user_id' => ['required', 'integer'],
+            'task_id' => ['nullable', 'integer'], 
+            'date' => ['required', 'date_format:Y-m-d'],
+            'shift_type' => ['required', 'string'],
+            'start_time' => ['required', 'date_format:H:i'],
+            'end_time' => ['required', 'date_format:H:i'],
+            'duration' => ['nullable', 'integer'],
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        $duty->update($validated);
+        return redirect()->back();
     }
 
-    public function destroy(Duty $duty)
+
+
+
+    public function destroy(Duty $duty, Request $request)
     {
+        $request->validate([
+            'absence' => ['required', 'string'],
+        ]);
+
+        $duty->absence = $request->absence;
+        $duty->save();
+        
         $duty->delete();
         return redirect('/duties');
     }

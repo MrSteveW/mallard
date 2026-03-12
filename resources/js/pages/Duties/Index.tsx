@@ -2,8 +2,8 @@ import type { EventContentArg, EventSourceFuncArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/react';
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
-import DutyEditDialog from '@/components/DutyEditDialog';
+import { useState, useRef } from 'react';
+import DutyDialog from '@/components/DutyDialog';
 import DutyIndexCard from '@/components/DutyIndexCard';
 import AppLayout from '@/layouts/app-layout';
 import { jsonFetch } from '@/lib/api';
@@ -13,6 +13,11 @@ import type { DutyEvent } from '@/types.ts';
 export default function Index() {
     const [selectedEvent, setSelectedEvent] = useState<DutyEvent | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+    const calendarRefresh = useRef<FullCalendar>(null);
+
+    const handleRefresh = () => {
+        calendarRefresh.current?.getApi().refetchEvents();
+    };
 
     function handleEventSelect(dutyEvent: DutyEvent) {
         setSelectedEvent(dutyEvent);
@@ -24,8 +29,15 @@ export default function Index() {
             <Head title="Duties" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <FullCalendar
+                    ref={calendarRefresh}
                     plugins={[dayGridPlugin]}
-                    dayHeaderFormat={{ weekday: 'long' }}
+                    locale="en-gb"
+                    dayHeaderFormat={{
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'numeric',
+                        omitCommas: true,
+                    }}
                     initialView="dayGridWeek"
                     weekNumberCalculation={'ISO'}
                     events={async (fetchInfo: EventSourceFuncArg) => {
@@ -42,10 +54,14 @@ export default function Index() {
                     )}
                 />
                 {selectedEvent && (
-                    <DutyEditDialog
-                        dutyEvent={selectedEvent}
+                    <DutyDialog
+                        key={selectedEvent?.id}
+                        initialEvent={selectedEvent}
                         isDialogOpen={isDialogOpen}
                         onClose={setIsDialogOpen}
+                        action={`/duties/${selectedEvent.id}`}
+                        method="patch"
+                        onSuccess={handleRefresh}
                     />
                 )}
             </div>

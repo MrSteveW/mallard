@@ -50,6 +50,7 @@ class HandleInertiaRequests extends Middleware
                 'minutes' => \App\Enums\MinutesEnum::options(),
             ],
             'shiftTypeOptions' => \App\Enums\ShiftType::options(),
+            'absenceOptions' => \App\Enums\AbsenceOptions::options(),
         ];
     }
 }

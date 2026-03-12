@@ -25,7 +25,7 @@ export default function Edit({ user, roles, grades }: Props) {
 
                 <div className="rounded-lg bg-red-300 p-2">
                     <div className="my-2">Danger zone</div>
-                    <DeleteAction url={`/users/${user.id}`} name={user.name} />
+                    <DeleteAction name={user.name} url={`/users/${user.id}`} />
                 </div>
             </div>
         </AppLayout>

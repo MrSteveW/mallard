@@ -5,7 +5,7 @@ import { createRoot } from 'react-dom/client';
 import '../css/app.css';
 import { initializeTheme } from './hooks/use-appearance';
 
-const appName = import.meta.env.VITE_APP_NAME || 'OnShift';
+const appName = import.meta.env.VITE_APP_NAME || 'Mallard';
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
