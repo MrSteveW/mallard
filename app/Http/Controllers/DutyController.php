@@ -41,8 +41,8 @@ class DutyController extends Controller
                     'extendedProps' => [
                         'user_id'    => $duty->user_id,
                         'shift_type' => $duty->shift_type,
-                        'start_time' => $duty->start_time,
-                        'end_time'   => $duty->end_time,
+                        'start_time' => Carbon::createFromFormat('H:i:s', $duty->start_time)->format('H:i'),
+                        'end_time'   => Carbon::createFromFormat('H:i:s', $duty->end_time)->format('H:i'),
                         'notes'      => $duty->notes,
                         'grade'      => $duty->user->employee?->grade?->name ?? '',
                     ],
@@ -102,6 +102,11 @@ class DutyController extends Controller
 
     public function update(Duty $duty, Request $request)
     {
+        $request->merge([
+            'start_time' => $request->start_time ? substr($request->start_time, 0, 5) : null,
+            'end_time'   => $request->end_time   ? substr($request->end_time, 0, 5)   : null,
+        ]);
+
         $validated = $request->validate([
             'user_id' => ['required', 'integer'],
             'task_id' => ['nullable', 'integer'], 
