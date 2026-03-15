@@ -16,7 +16,6 @@ export default function Create({ users, tasks }: CreateDutyProps) {
             <Head title="Duties" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className=""></div>
-                <div>{JSON.stringify(users)}</div>
                 <AssigningDuties
                     date="2026-03-12" //change to route param or query param
                     users={users}

@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { Head } from '@inertiajs/react';
 import { ClipboardPen } from 'lucide-react';
+import { PrimaryLink } from '@/components/ui/primary-link';
 import AppLayout from '@/layouts/app-layout';
 
 interface Task {
@@ -18,16 +19,11 @@ export default function Index({ tasks }: Props) {
             <Head title="Tasks" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="my-3">
-                    <Link
-                        href="/tasks/create"
-                        className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                    >
-                        + Task
-                    </Link>
+                    <PrimaryLink href="/tasks/create">+ Task</PrimaryLink>
                 </div>
                 {/* Display */}
                 <div className="relative h-[calc(100vh-160px)] w-1/2 overflow-y-auto">
-                    <div className="sticky top-0 z-10 grid grid-cols-[2fr_1fr] border-b bg-white pb-2 font-bold">
+                    <div className="sticky top-0 z-10 grid grid-cols-[2fr_1fr] border-b bg-white pb-2 font-bold text-mallard-green">
                         <div>Name</div>
                         <div></div>
                     </div>
@@ -39,7 +35,7 @@ export default function Index({ tasks }: Props) {
                             <div className="text-lg">{task.name} </div>
                             <Link
                                 href={`/tasks/${task.id}/edit`}
-                                className="hover:text-slate-300 hover:underline"
+                                className="hover:text-mallard-green"
                             >
                                 <ClipboardPen />
                             </Link>

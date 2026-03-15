@@ -1,4 +1,4 @@
-import { Form, Head } from '@inertiajs/react';
+import { Form, Head, router } from '@inertiajs/react';
 import InputError from '@/components/auth/input-error';
 import TextLink from '@/components/auth/text-link';
 import { Button } from '@/components/ui/button';
@@ -17,9 +17,17 @@ type Props = {
 };
 
 export default function Login({ status, canResetPassword }: Props) {
+    const loginAsGuest = () => {
+        router.post(store.url(), {
+            email: 'adam@example.com',
+            password: 'password',
+            remember: false,
+        });
+    };
+
     return (
         <AuthLayout
-            title="Log in to your account"
+            title="Welcome"
             description="Enter your email and password below to log in"
         >
             <Head title="Log in" />
@@ -33,6 +41,14 @@ export default function Login({ status, canResetPassword }: Props) {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    className="w-full"
+                                    onClick={loginAsGuest}
+                                >
+                                    Continue as Guest
+                                </Button>
                                 <Label htmlFor="email">Email address</Label>
                                 <Input
                                     id="email"

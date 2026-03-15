@@ -41,7 +41,7 @@ export default function Index({ users }: IndexProps) {
                 <div>
                     <Button
                         onClick={handleCreateClick}
-                        className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                        className="hover:mallard-green/80 rounded-md bg-mallard-green px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
                     >
                         + Duty
                     </Button>

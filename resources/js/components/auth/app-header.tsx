@@ -188,7 +188,7 @@ export function AppHeader() {
                                             {item.title}
                                         </Link>
                                         {isCurrentUrl(item.href) && (
-                                            <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-red-200 dark:bg-white"></div>
+                                            <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-mallard-green dark:bg-white"></div>
                                         )}
                                     </NavigationMenuItem>
                                 ))}
@@ -219,7 +219,7 @@ export function AppHeader() {
                                                 {item.title}
                                             </Link>
                                             {isCurrentUrl(item.href) && (
-                                                <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"></div>
+                                                <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-mallard-green dark:bg-white"></div>
                                             )}
                                         </NavigationMenuItem>
                                     ))}

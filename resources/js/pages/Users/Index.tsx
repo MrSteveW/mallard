@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { Head } from '@inertiajs/react';
 import { UserRoundPen } from 'lucide-react';
+import { PrimaryLink } from '@/components/ui/primary-link';
 import AppLayout from '@/layouts/app-layout';
 import type { User } from '@/types';
 
@@ -16,18 +17,13 @@ export default function Index({ users, totalCount }: Props) {
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="my-3 flex flex-row">
                     <div>
-                        <Link
-                            href="/users/create"
-                            className="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                        >
-                            + User
-                        </Link>
+                        <PrimaryLink href="/users/create">+ User</PrimaryLink>
                     </div>
                     <div className="ml-6">Total users: {totalCount}</div>
                 </div>
                 {/* Display */}
                 <div className="relative h-[calc(100vh-160px)] w-1/2 overflow-y-auto">
-                    <div className="sticky top-0 z-10 grid grid-cols-[2fr_2fr_2fr_1fr] border-b bg-white pb-2 font-bold">
+                    <div className="sticky top-0 z-10 grid grid-cols-[2fr_2fr_2fr_1fr] border-b bg-white pb-2 font-bold text-mallard-green">
                         <div>Name</div>
                         <div>Grade</div>
                         <div>Role</div>
@@ -45,7 +41,7 @@ export default function Index({ users, totalCount }: Props) {
                             <div className="text-lg">{user.role}</div>
                             <Link
                                 href={`/users/${user.id}/edit`}
-                                className="hover:text-slate-300 hover:underline"
+                                className="hover:text-mallard-green"
                             >
                                 <UserRoundPen />
                             </Link>
