@@ -1,12 +1,43 @@
+import type { EventContentArg, EventSourceFuncArg } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import FullCalendar from '@fullcalendar/react';
 import { Head } from '@inertiajs/react';
+import { useRef } from 'react';
+import DutyIndexCard from '@/components/DutyIndexCard';
 import AppLayout from '@/layouts/app-layout';
+import { jsonFetch } from '@/lib/api';
+import { mapToDutyEvent } from '@/lib/mapToDutyEvent';
+import type { DutyEvent } from '@/types.ts';
 
-export default function Dashboard() {
+export default function Index() {
+    const calendarRefresh = useRef<FullCalendar>(null);
+
     return (
         <AppLayout>
-            <Head title="Dashboard" />
+            <Head title="Duties" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div>Showing your personal calendar of duties...</div>
+                <FullCalendar
+                    ref={calendarRefresh}
+                    plugins={[dayGridPlugin]}
+                    locale="en-gb"
+                    dayHeaderFormat={{
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'numeric',
+                        omitCommas: true,
+                    }}
+                    initialView="dayGridWeek"
+                    weekNumberCalculation={'ISO'}
+                    events={async (fetchInfo: EventSourceFuncArg) => {
+                        const duties: DutyEvent[] = await jsonFetch(
+                            `/duties?start=${fetchInfo.startStr}&end=${fetchInfo.endStr}`,
+                        );
+                        return duties;
+                    }}
+                    eventContent={(arg: EventContentArg) => (
+                        <DutyIndexCard dutyEvent={mapToDutyEvent(arg)} />
+                    )}
+                />
             </div>
         </AppLayout>
     );
