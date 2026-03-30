@@ -1,3 +1,4 @@
+import { getShiftBgColor } from '@/constants/shiftBgColors';
 import type { DutyEvent } from '@/types.ts';
 
 interface IndexCardProps {
@@ -9,10 +10,11 @@ export default function DutyIndexCard({
     dutyEvent,
     handleEventSelect,
 }: IndexCardProps) {
+    const bgColor = getShiftBgColor(dutyEvent?.shift_type);
     return (
         <div
             onClick={() => handleEventSelect(dutyEvent)}
-            className="m-1 w-full cursor-pointer rounded-xl border p-2 hover:bg-amber-200"
+            className={`${bgColor} "m-1 w-full cursor-pointer rounded-xl border p-2 hover:bg-amber-200`}
         >
             <div className="flex">
                 <div className="">{dutyEvent.user_name}</div>

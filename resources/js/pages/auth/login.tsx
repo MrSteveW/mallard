@@ -1,4 +1,5 @@
-import { Form, Head, router } from '@inertiajs/react';
+import { Form, Head, usePage } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import InputError from '@/components/auth/input-error';
 import TextLink from '@/components/auth/text-link';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,7 @@ import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
+import type { SharedData } from '@/types/index';
 
 type Props = {
     status?: string;
@@ -17,12 +19,17 @@ type Props = {
 };
 
 export default function Login({ status, canResetPassword }: Props) {
-    const loginAsGuest = () => {
-        router.post(store.url(), {
-            email: 'adam@example.com',
-            password: 'password',
-            remember: false,
-        });
+    const { guestCredentials } = usePage<SharedData>().props;
+
+    const { post, processing: guestProcessing } = useForm({
+        email: guestCredentials.email,
+        password: guestCredentials.password,
+        remember: false,
+    });
+
+    const loginAsGuest = (e: React.MouseEvent) => {
+        e.preventDefault(); // prevent the parent Form from firing
+        post(store.url());
     };
 
     return (
@@ -31,7 +38,6 @@ export default function Login({ status, canResetPassword }: Props) {
             description="Enter your email and password below to log in"
         >
             <Head title="Log in" />
-
             <Form
                 {...store.form()}
                 resetOnSuccess={['password']}
@@ -42,10 +48,10 @@ export default function Login({ status, canResetPassword }: Props) {
                         <div className="grid gap-6">
                             <div className="grid gap-2">
                                 <Button
-                                    type="button"
-                                    variant="outline"
+                                    variant="secondary"
                                     className="w-full"
                                     onClick={loginAsGuest}
+                                    disabled={guestProcessing}
                                 >
                                     Continue as Guest
                                 </Button>

@@ -1,7 +1,7 @@
 import { useDroppable } from '@dnd-kit/core';
 import { memo } from 'react';
 import type { Duty, Task } from '@/types';
-import { DutyCard } from './DutyCard';
+import { DutyCard } from './DutyCreateCard';
 
 type TaskSlotProps = {
     task: Task;

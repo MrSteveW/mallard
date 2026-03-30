@@ -16,12 +16,23 @@ use Illuminate\Validation\Rule;
 
 class DutyController extends Controller
 {
-    public function index(Request $request): Response|JsonResponse|InertiaResponse
+    public function index()
     {
-        if ($request->expectsJson()) {
+        
+        $users = User::with('employee.grade')->get();
+        return Inertia::render('Duties/Index', [
+            'users' => $users->map(fn($user) => [
+                'id'    => $user->id,
+                'name'  => $user->name,
+                'grade' => $user->employee->grade->name ?? '',
+            ]),
+        ]);
+    }
+
+    public function apiIndex(Request $request) {
             $request->validate([
-                'start' => ['required', 'date'],
-                'end'   => ['required', 'date'],
+                'start' => ['required', 'string'],
+                'end'   => ['required', 'string'],
             ]);
             $start = Carbon::parse($request->start)->toDateString();
             $end   = Carbon::parse($request->end)->toDateString();
@@ -47,16 +58,6 @@ class DutyController extends Controller
                 ]);
 
             return response()->json($duties);
-        }
-
-        $users = User::with('employee.grade')->get();
-        return Inertia::render('Duties/Index', [
-            'users' => $users->map(fn($user) => [
-                'id'    => $user->id,
-                'name'  => $user->name,
-                'grade' => $user->employee->grade->name ?? '',
-            ]),
-        ]);
     }
 
 

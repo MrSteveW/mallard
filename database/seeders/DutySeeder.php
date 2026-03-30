@@ -38,7 +38,7 @@ class DutySeeder extends Seeder
             'user_id' => 1,
             'task_id' => 1,
             'date' => Carbon::create(2026, 3, 12)->toDateString(),
-            'shift_type' => 'Late',
+            'shift_type' => 'Late2',
             'start_time' => '14:00',
             'end_time' => '22:00',
             'duration' => 480,

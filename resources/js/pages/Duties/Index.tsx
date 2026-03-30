@@ -2,12 +2,12 @@ import type { EventContentArg, EventSourceFuncArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/react';
 import { Head } from '@inertiajs/react';
-import { useState, useRef } from 'react';
+import axios from 'axios';
+import { useState } from 'react';
 import DutyDialog from '@/components/DutyDialog';
 import DutyIndexCard from '@/components/DutyIndexCard';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { jsonFetch } from '@/lib/api';
 import { mapToDutyEvent } from '@/lib/mapToDutyEvent';
 import type { DutyEvent, AssignableUser } from '@/types.ts';
 
@@ -18,11 +18,6 @@ interface IndexProps {
 export default function Index({ users }: IndexProps) {
     const [selectedEvent, setSelectedEvent] = useState<DutyEvent | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-    const calendarRefresh = useRef<FullCalendar>(null);
-
-    const handleRefresh = () => {
-        calendarRefresh.current?.getApi().refetchEvents();
-    };
 
     function handleEventSelect(dutyEvent: DutyEvent) {
         setSelectedEvent(dutyEvent);
@@ -48,7 +43,16 @@ export default function Index({ users }: IndexProps) {
                 </div>
 
                 <FullCalendar
-                    ref={calendarRefresh}
+                    events={async (fetchInfo: EventSourceFuncArg) => {
+                        const response = await axios.get('/api/duties', {
+                            params: {
+                                start: fetchInfo.startStr,
+                                end: fetchInfo.endStr,
+                            },
+                        });
+                        return response.data;
+                    }}
+                    weekNumberCalculation={'ISO'}
                     plugins={[dayGridPlugin]}
                     locale="en-gb"
                     dayHeaderFormat={{
@@ -58,13 +62,6 @@ export default function Index({ users }: IndexProps) {
                         omitCommas: true,
                     }}
                     initialView="dayGridWeek"
-                    weekNumberCalculation={'ISO'}
-                    events={async (fetchInfo: EventSourceFuncArg) => {
-                        const duties: DutyEvent[] = await jsonFetch(
-                            `/duties?start=${fetchInfo.startStr}&end=${fetchInfo.endStr}`,
-                        );
-                        return duties;
-                    }}
                     eventContent={(arg: EventContentArg) => (
                         <DutyIndexCard
                             dutyEvent={mapToDutyEvent(arg)}
@@ -84,7 +81,6 @@ export default function Index({ users }: IndexProps) {
                             : '/duties'
                     }
                     method={selectedEvent ? 'patch' : 'post'}
-                    onSuccess={handleRefresh}
                 />
             </div>
         </AppLayout>

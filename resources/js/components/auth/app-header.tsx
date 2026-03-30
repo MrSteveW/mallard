@@ -130,6 +130,19 @@ export function AppHeader() {
                                                     <span>{item.title}</span>
                                                 </Link>
                                             ))}
+
+                                            {adminNavItems.map((item) => (
+                                                <Link
+                                                    key={item.title}
+                                                    href={item.href}
+                                                    className="flex items-center space-x-2 font-medium"
+                                                >
+                                                    {item.icon && (
+                                                        <item.icon className="h-5 w-5" />
+                                                    )}
+                                                    <span>{item.title}</span>
+                                                </Link>
+                                            ))}
                                         </div>
 
                                         <div className="flex flex-col space-y-4">
@@ -195,7 +208,8 @@ export function AppHeader() {
                             </NavigationMenuList>
 
                             {/* Admin only */}
-                            {auth.user.role === 'Admin' && (
+                            {(auth.user.role === 'Admin' ||
+                                auth.user.role === 'Guest') && (
                                 <NavigationMenuList className="flex h-full items-stretch space-x-2">
                                     {adminNavItems.map((item, index) => (
                                         <NavigationMenuItem

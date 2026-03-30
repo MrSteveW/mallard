@@ -47,8 +47,5 @@ Route::middleware(['auth', 'can:viewAny,' . User::class])->group(function () {
 
 });
 
-Route::get('/board', [UserController::class, 'board']);
-
-
 
 require __DIR__.'/settings.php';

@@ -8,5 +8,9 @@ export type SharedData = {
     name: string;
     auth: Auth;
     sidebarOpen: boolean;
+    guestCredentials: {
+        email: string;
+        password: string;
+    };
     [key: string]: unknown;
 };

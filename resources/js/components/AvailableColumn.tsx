@@ -1,6 +1,6 @@
 import { useDroppable } from '@dnd-kit/core';
 import { memo } from 'react';
-import { DutyCard } from '@/components/DutyCard';
+import { DutyCreateCard } from '@/components/DutyCreateCard';
 import type { Duty } from '@/types';
 
 interface AvailableColumnProps {
@@ -22,7 +22,7 @@ export const AvailableColumn = memo(function AvailableColumn({
             <h2 className="font-semibold text-neutral-100">Available users</h2>
             <div ref={setNodeRef} className="flex flex-1 flex-col gap-1">
                 {duties.map((duty) => (
-                    <DutyCard
+                    <DutyCreateCard
                         key={duty.id}
                         duty={duty}
                         getUserDetails={getUserDetails}

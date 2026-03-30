@@ -31,12 +31,11 @@ export default function Index({ shiftpatterns, dayNames }: Props) {
     return (
         <AppLayout>
             <Head title="Shift patterns" />
-            {/* <div>{JSON.stringify(shiftpatterns)}</div> */}
             <div className="relative my-3 h-[calc(100vh-100px)] w-full overflow-auto rounded-lg border bg-slate-50">
                 <div className="grid" style={{ gridTemplateColumns }}>
                     {/* --- STICKY HEADER --- */}
-                    <div className="sticky top-0 z-20 flex items-center justify-center border-r border-b"></div>
-                    <div className="sticky top-0 z-20 flex items-center justify-center border-r border-b"></div>
+                    <div className="sticky top-0 z-20 flex items-center justify-center border-r border-b bg-white"></div>
+                    <div className="sticky top-0 z-20 flex items-center justify-center border-r border-b bg-white"></div>
 
                     {shiftpatterns.map((user) => (
                         <div

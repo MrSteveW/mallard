@@ -6,7 +6,7 @@ type DutyCardProps = {
     getUserDetails: (userId: number) => { name: string; grade: string };
 };
 
-export function DutyCard({ duty, getUserDetails }: DutyCardProps) {
+export function DutyCreateCard({ duty, getUserDetails }: DutyCardProps) {
     const userDetails = getUserDetails(duty.user_id);
     const { attributes, listeners, setNodeRef, transform } = useDraggable({
         id: duty.id,

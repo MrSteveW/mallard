@@ -73,7 +73,7 @@
     --popover-foreground: oklch(0.145 0 0);
     --primary: oklch(0.48 0.1 185); /*mallard-green*/
     --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
+    --secondary: oklch(0.75 0.16 60.34); /*mallard-orange*/
     --secondary-foreground: oklch(0.205 0 0);
     --muted: oklch(0.97 0 0);
     --muted-foreground: oklch(0.556 0 0);

@@ -23,33 +23,6 @@ class UserController extends Controller
         ];
     }
 
-    // public function board()
-    // {
-        // Get all users and convert them to duties for the drag-and-drop board
-    //     $users = User::all();
-        
-    //     $duties = $users->map(function ($user) {
-    //         return [
-    //             'id' => $user->id,
-    //             'user_id' => $user->id,
-    //             'task_id' => null, // No task assigned initially
-    //             'shift_type' => null,
-    //             'hours' => null,
-    //             'analyser_id' => null, // All start as unassigned
-    //             'user' => [
-    //                 'id' => $user->id,
-    //                 'name' => $user->name,
-    //                 'grade' => $user->grade,
-    //             ],
-    //             'task' => null,
-    //         ];
-    //     });
-
-    //     return Inertia::render('Dashboard', [
-    //         'duties' => $duties
-    //     ]);
-    // }
-
 
   public function index()
 {

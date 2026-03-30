@@ -12,6 +12,9 @@ class UserPolicy
         if ($user->role===UserRole::Admin) {
             return true;
         }
+        elseif ($user->role===UserRole::Guest) {
+            return true;
+        }
         return null;
     }
 

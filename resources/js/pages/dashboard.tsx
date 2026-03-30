@@ -11,7 +11,7 @@ import type { DutyEvent } from '@/types.ts';
 
 export default function Index() {
     const calendarRefresh = useRef<FullCalendar>(null);
-
+    function handleEventSelect() {}
     return (
         <AppLayout>
             <Head title="Duties" />
@@ -35,7 +35,10 @@ export default function Index() {
                         return duties;
                     }}
                     eventContent={(arg: EventContentArg) => (
-                        <DutyIndexCard dutyEvent={mapToDutyEvent(arg)} />
+                        <DutyIndexCard
+                            dutyEvent={mapToDutyEvent(arg)}
+                            handleEventSelect={handleEventSelect}
+                        />
                     )}
                 />
             </div>

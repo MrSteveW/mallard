@@ -44,6 +44,10 @@ class HandleInertiaRequests extends Middleware
                 ? UserResource::make($request->user())
                 : null,
             ],
+            'guestCredentials' => [
+                'email' => env('GUEST_EMAIL'),
+                'password' => env('GUEST_PASSWORD')
+            ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'timeOptions' => [
                 'hours' => \App\Enums\HourEnum::options(),
