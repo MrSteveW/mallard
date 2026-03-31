@@ -10,12 +10,10 @@ class ShiftRepeat extends Model
 {
     public $timestamps = false;
  
-    protected $fillable = [
-        'total_days',
-    ];
+     protected $guarded = [];
 
     protected $casts = [
-        'start_on' => 'date',
+        'shift_pattern_start_date' => 'date',
     ];
 
 }

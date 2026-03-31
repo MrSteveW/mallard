@@ -19,6 +19,8 @@ return new class extends Migration
             $table->integer('duration');
             $table->string('notes')->nullable();
             $table->string('absence')->nullable();
+            $table->string('status')->default('generated');
+            $table->integer('generated_from_pattern_day')->nullable();
             $table->softDeletes();
         });
     }

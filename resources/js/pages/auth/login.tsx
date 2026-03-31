@@ -28,7 +28,7 @@ export default function Login({ status, canResetPassword }: Props) {
     });
 
     const loginAsGuest = (e: React.MouseEvent) => {
-        e.preventDefault(); // prevent the parent Form from firing
+        e.preventDefault();
         post(store.url());
     };
 
@@ -48,6 +48,7 @@ export default function Login({ status, canResetPassword }: Props) {
                         <div className="grid gap-6">
                             <div className="grid gap-2">
                                 <Button
+                                    type="button"
                                     variant="secondary"
                                     className="w-full"
                                     onClick={loginAsGuest}

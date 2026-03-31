@@ -8,6 +8,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\DutyController;
 use App\Http\Controllers\ShiftPatternController;
+use App\Http\Resources\DutyResource;
 use App\Models\User;
 
 Route::get('/', function () {
@@ -28,7 +29,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     
-    Route::resource('duties', DutyController::class);
 
 });
 
@@ -44,7 +44,9 @@ Route::middleware(['auth', 'can:viewAny,' . User::class])->group(function () {
     Route::resource('grades', GradeController::class);
     Route::resource('shiftpatterns', ShiftPatternController::class)
     ->parameters(['shiftpatterns' => 'user']);
-
+    Route::post('duties/generate', [DutyController::class, 'generate']);
+    Route::resource('duties', DutyController::class);
+    
 });
 
 

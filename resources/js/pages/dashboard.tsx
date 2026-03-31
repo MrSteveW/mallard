@@ -2,12 +2,11 @@ import type { EventContentArg, EventSourceFuncArg } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/react';
 import { Head } from '@inertiajs/react';
+import axios from 'axios';
 import { useRef } from 'react';
 import DutyIndexCard from '@/components/DutyIndexCard';
 import AppLayout from '@/layouts/app-layout';
-import { jsonFetch } from '@/lib/api';
 import { mapToDutyEvent } from '@/lib/mapToDutyEvent';
-import type { DutyEvent } from '@/types.ts';
 
 export default function Index() {
     const calendarRefresh = useRef<FullCalendar>(null);
@@ -29,10 +28,13 @@ export default function Index() {
                     initialView="dayGridWeek"
                     weekNumberCalculation={'ISO'}
                     events={async (fetchInfo: EventSourceFuncArg) => {
-                        const duties: DutyEvent[] = await jsonFetch(
-                            `/duties?start=${fetchInfo.startStr}&end=${fetchInfo.endStr}`,
-                        );
-                        return duties;
+                        const response = await axios.get('/api/duties', {
+                            params: {
+                                start: fetchInfo.startStr,
+                                end: fetchInfo.endStr,
+                            },
+                        });
+                        return response.data;
                     }}
                     eventContent={(arg: EventContentArg) => (
                         <DutyIndexCard

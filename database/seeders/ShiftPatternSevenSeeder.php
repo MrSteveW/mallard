@@ -93,6 +93,8 @@ class ShiftPatternSevenSeeder extends Seeder
             'user_id' => 7,
             'day' => 14,
             'shift_type' => ShiftType::Night,
+            'start_time' => '20:00',
+            'end_time' => '08:00',
             ]);
         // 
         ShiftPattern::create([

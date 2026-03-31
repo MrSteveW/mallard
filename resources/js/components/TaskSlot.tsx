@@ -1,7 +1,7 @@
 import { useDroppable } from '@dnd-kit/core';
 import { memo } from 'react';
 import type { Duty, Task } from '@/types';
-import { DutyCard } from './DutyCreateCard';
+import { DutyCreateCard } from './DutyCreateCard';
 
 type TaskSlotProps = {
     task: Task;
@@ -24,7 +24,10 @@ export const TaskSlot = memo(function TaskSlot({
             <h2 className="mb-4 font-semibold text-neutral-100">{task.name}</h2>
             <div ref={setNodeRef} className="flex flex-1 flex-col gap-4">
                 {duty && (
-                    <DutyCard duty={duty} getUserDetails={getUserDetails} />
+                    <DutyCreateCard
+                        duty={duty}
+                        getUserDetails={getUserDetails}
+                    />
                 )}
             </div>
         </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\GenerateMonthlyDuties;
 use App\Models\Duty;
 use App\Models\User;
 use App\Models\Task;
@@ -16,6 +17,17 @@ use Illuminate\Validation\Rule;
 
 class DutyController extends Controller
 {
+    public function generate(Request $request)
+    {
+        $request->validate([
+             'month' => ['required', 'date_format:Y-m']
+        ]);
+
+        $month = Carbon::createFromFormat('Y-m-d', $request->month . '-01')->startOfMonth();
+        (new GenerateMonthlyDuties())->handle($month);
+        return redirect()->back();
+    }
+
     public function index()
     {
         

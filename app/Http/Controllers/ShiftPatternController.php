@@ -94,8 +94,8 @@ class ShiftPatternController extends Controller
         'shiftArray'             => ['required', 'array'],
         'shiftArray.*.day'       => ['required', 'integer'],
         'shiftArray.*.shift_type'=> ['required', 'string'],
-        'shiftArray.*.start_time'=> ['nullable', 'string'],
-        'shiftArray.*.end_time'  => ['nullable', 'string'],
+        'shiftArray.*.start_time'=> ['nullable', 'required_unless:shiftArray.*.shift_type,Off', 'date_format:H:i'],
+        'shiftArray.*.end_time'  => ['nullable', 'required_unless:shiftArray.*.shift_type,Off', 'date_format:H:i'],
     ]);
 
     DB::transaction(function () use ($validated, $user) {
