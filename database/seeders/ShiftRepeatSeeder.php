@@ -12,7 +12,7 @@ class ShiftRepeatSeeder extends Seeder
     {
         ShiftRepeat::create([
             'total_days' => 91,
-            'shift_pattern_start_date' => Carbon::createFromFormat('d-m-Y', '26-01-2026'),
+            'shift_pattern_start_date' => '2026-01-26',
             ]);
     }
 }
