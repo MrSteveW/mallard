@@ -34,5 +34,5 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    'guest' => ['email' => env('GUEST_EMAIL'), 'password' => env('GUEST_PASSWORD')],
 ];

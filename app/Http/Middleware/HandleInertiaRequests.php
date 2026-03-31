@@ -45,8 +45,8 @@ class HandleInertiaRequests extends Middleware
                 : null,
             ],
             'guestCredentials' => [
-                'email' => env('GUEST_EMAIL'),
-                'password' => env('GUEST_PASSWORD')
+                'email' => config('services.guest.email'),
+                'password' => config('services.guest.password'),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'timeOptions' => [
