@@ -31,9 +31,6 @@ export default function Login({ status, canResetPassword }: Props) {
         e.preventDefault();
         post(store.url());
     };
-
-    console.log(guestCredentials);
-
     return (
         <AuthLayout
             title="Welcome"
