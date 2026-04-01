@@ -12,8 +12,6 @@ class DutySeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('duties')->truncate(); 
-
         Duty::create([
             'user_id' => 1,
             'task_id' => 4,
