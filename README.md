@@ -10,7 +10,7 @@ User table id | name | grade | date_started | date_ended | (soft)deleted_at
 Task table id | name | (soft)deleted_at  
 Duty table id | user_id | task_id | dutydate | shift_type | hours
 
-- [x] Tech stack - Laravel | Inertia | React | Tailwind
+- [x] Tech stack - Laravel 12 | Inertia | React | Tailwind
 - [x] Auth with Laravel built-in auth
 - [x] Model, resource controller and migration for User, Task and Duty.
 - [x] Softdelete for User and Task

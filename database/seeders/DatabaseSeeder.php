@@ -12,6 +12,8 @@ class DatabaseSeeder extends Seeder
     {
        $this->call([
             ShiftRepeatSeeder::class,
+            UserSeeder::class,
+            EmployeeSeeder::class,
             ShiftPatternOneSeeder::class,
             ShiftPatternTwoSeeder::class,
             ShiftPatternThreeSeeder::class,
@@ -25,8 +27,6 @@ class DatabaseSeeder extends Seeder
             ShiftPatternElevenSeeder::class,
             ShiftPatternTwelveSeeder::class,
             GradeSeeder::class,
-            UserSeeder::class,
-            EmployeeSeeder::class,
             TaskSeeder::class,
             DutySeeder::class,
         ]);

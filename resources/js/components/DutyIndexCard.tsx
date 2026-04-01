@@ -24,7 +24,7 @@ export default function DutyIndexCard({
                 <div>
                     <div>{dutyEvent?.start_time}</div>
                 </div>
-                <div>:</div>
+                <div>-</div>
                 <div>{dutyEvent?.end_time}</div>
             </div>
         </div>

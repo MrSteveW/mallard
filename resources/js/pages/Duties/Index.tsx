@@ -17,9 +17,10 @@ import type { DutyEvent, AssignableUser } from '@/types.ts';
 
 interface IndexProps {
     users: AssignableUser[];
+    generatedMonths: string[];
 }
 
-export default function Index({ users }: IndexProps) {
+export default function Index({ users, generatedMonths }: IndexProps) {
     const [selectedEvent, setSelectedEvent] = useState<DutyEvent | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
     const [selectedMonth, setSelectedMonth] = useState<string>('');
@@ -56,30 +57,31 @@ export default function Index({ users }: IndexProps) {
                     >
                         + Duty
                     </Button>
-                    <Button
-                        onClick={() =>
-                            router.post(
-                                '/duties/generate',
-                                { month: selectedMonth },
-                                {
-                                    onSuccess: () =>
-                                        calendarRef.current
-                                            ?.getApi()
-                                            .refetchEvents(),
-                                },
-                            )
-                        }
-                        className="hover:mallard-green/80 rounded-md bg-mallard-green px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                    >
-                        Generate{' '}
-                        {selectedMonth
-                            ? new Date(selectedMonth + '-01').toLocaleString(
-                                  'default',
-                                  { month: 'long' },
-                              )
-                            : ''}{' '}
-                        Duties
-                    </Button>
+                    {!generatedMonths.includes(selectedMonth) && (
+                        <Button
+                            onClick={() =>
+                                router.post(
+                                    '/duties/generate',
+                                    { month: selectedMonth },
+                                    {
+                                        onSuccess: () =>
+                                            calendarRef.current
+                                                ?.getApi()
+                                                .refetchEvents(),
+                                    },
+                                )
+                            }
+                            className="hover:mallard-green/80 rounded-md bg-mallard-green px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                        >
+                            Generate{' '}
+                            {selectedMonth
+                                ? new Date(
+                                      selectedMonth + '-01',
+                                  ).toLocaleString('default', { month: 'long' })
+                                : ''}{' '}
+                            Duties
+                        </Button>
+                    )}
                 </div>
 
                 <FullCalendar

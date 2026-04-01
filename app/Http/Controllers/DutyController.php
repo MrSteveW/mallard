@@ -7,13 +7,11 @@ use App\Models\Duty;
 use App\Models\User;
 use App\Models\Task;
 use App\Http\Resources\TaskResource;
-use Illuminate\Http\Response;
-use Illuminate\Http\JsonResponse;
+use App\Models\DutyGenerationRun;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Inertia\Response as InertiaResponse;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use Illuminate\Validation\Rule;
 
 class DutyController extends Controller
 {
@@ -24,7 +22,7 @@ class DutyController extends Controller
         ]);
 
         $month = Carbon::createFromFormat('Y-m-d', $request->month . '-01')->startOfMonth();
-        (new GenerateMonthlyDuties())->handle($month);
+        (new GenerateMonthlyDuties())->handle($month, 'manual', Auth::id());
         return redirect()->back();
     }
 
@@ -32,12 +30,15 @@ class DutyController extends Controller
     {
         
         $users = User::with('employee.grade')->get();
+        $generatedMonths = DutyGenerationRun::pluck('year_month');
+
         return Inertia::render('Duties/Index', [
             'users' => $users->map(fn($user) => [
                 'id'    => $user->id,
                 'name'  => $user->name,
                 'grade' => $user->employee->grade->name ?? '',
             ]),
+            'generatedMonths' => $generatedMonths,
         ]);
     }
 

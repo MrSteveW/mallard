@@ -3,13 +3,14 @@
 namespace App\Actions;
 
 use App\Models\Duty;
+use App\Models\DutyGenerationRun;
 use App\Models\ShiftPattern;
 use Carbon\Carbon;
 use App\Models\ShiftRepeat;
 
 class GenerateMonthlyDuties
 {
-    public function handle(Carbon $month)
+    public function handle(Carbon $month, ?string $triggeredBy = 'schedule', ?int $userId=null)
     {
         $shiftRepeat = ShiftRepeat::sole();
         $totalDays = $shiftRepeat->total_days;
@@ -51,5 +52,9 @@ class GenerateMonthlyDuties
 
             }
         }
+        DutyGenerationRun::firstorCreate(['year_month' => $month->format('Y-m')],
+        ['triggered_by' => $triggeredBy,
+        'user_id' => $userId,
+        'created_at' => now()]);
     }
 }

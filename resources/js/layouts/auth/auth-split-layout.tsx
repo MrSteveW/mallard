@@ -6,7 +6,6 @@ import type { AuthLayoutProps } from '@/types/index';
 
 export default function AuthSplitLayout({
     children,
-    title,
     description,
 }: AuthLayoutProps) {
     return (
