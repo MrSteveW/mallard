@@ -14,7 +14,7 @@ export default function Index({ users, totalCount }: Props) {
     return (
         <AppLayout>
             <Head title="Users" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div className="flex h-full w-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 md:w-1/2">
                 <div className="my-3 flex flex-row">
                     <div>
                         <PrimaryLink href="/users/create">+ User</PrimaryLink>
@@ -22,7 +22,7 @@ export default function Index({ users, totalCount }: Props) {
                     <div className="ml-6">Total users: {totalCount}</div>
                 </div>
                 {/* Display */}
-                <div className="relative h-[calc(100vh-160px)] w-1/2 overflow-y-auto">
+                <div className="relative h-[calc(100vh-160px)] overflow-y-auto">
                     <div className="sticky top-0 z-10 grid grid-cols-[2fr_2fr_2fr_1fr] border-b bg-white pb-2 font-bold text-mallard-green">
                         <div>Name</div>
                         <div>Grade</div>

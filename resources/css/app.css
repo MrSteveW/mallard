@@ -149,3 +149,36 @@
 .fc-event:hover {
     background-color: transparent !important;
 }
+
+/* FullCalendar responsive overrides */
+.fc-header-toolbar {
+    margin-bottom: 0.5em !important;
+}
+
+.fc-toolbar-title {
+    font-size: 0.875rem !important;
+}
+
+.fc-button-primary {
+    font-size: 0.7rem !important;
+    padding: 0.2rem 0.4rem !important;
+}
+
+.fc-col-header-cell-cushion {
+    font-size: 0.65rem !important;
+}
+
+@media (min-width: 768px) {
+    .fc-toolbar-title {
+        font-size: 1.25rem !important;
+    }
+
+    .fc-button-primary {
+        font-size: 0.875rem !important;
+        padding: 0.4rem 0.75rem !important;
+    }
+
+    .fc-col-header-cell-cushion {
+        font-size: 0.875rem !important;
+    }
+}

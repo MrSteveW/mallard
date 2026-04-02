@@ -16,6 +16,7 @@ export default function Index() {
             <Head title="Duties" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <FullCalendar
+                    height="calc(100vh - 150px)"
                     ref={calendarRefresh}
                     plugins={[dayGridPlugin]}
                     locale="en-gb"
