@@ -7,7 +7,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/react';
 import { Head, router } from '@inertiajs/react';
 import axios from 'axios';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import DutyCreateDialog from '@/components/DutyCreateDialog';
 import DutyIndexCard from '@/components/DutyIndexCard';
 import { Button } from '@/components/ui/button';
@@ -25,6 +25,13 @@ export default function Index({ users, generatedMonths }: IndexProps) {
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
     const [selectedMonth, setSelectedMonth] = useState<string>('');
     const calendarRef = useRef<FullCalendar>(null);
+    const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
+
+    useEffect(() => {
+        const handler = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handler);
+        return () => window.removeEventListener('resize', handler);
+    }, []);
 
     function handleEventSelect(dutyEvent: DutyEvent) {
         setSelectedEvent(dutyEvent);
@@ -51,12 +58,7 @@ export default function Index({ users, generatedMonths }: IndexProps) {
             <Head title="Duties" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div>
-                    <Button
-                        onClick={handleCreateClick}
-                        className="hover:mallard-green/80 rounded-md bg-mallard-green px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
-                    >
-                        + Duty
-                    </Button>
+                    <Button onClick={handleCreateClick}>+ Duty</Button>
                     {!generatedMonths.includes(selectedMonth) && (
                         <Button
                             onClick={() =>
@@ -86,6 +88,7 @@ export default function Index({ users, generatedMonths }: IndexProps) {
 
                 <FullCalendar
                     ref={calendarRef}
+                    height="calc(100vh - 150px)"
                     datesSet={handleDateSet}
                     events={async (fetchInfo: EventSourceFuncArg) => {
                         const response = await axios.get('/api/duties', {
@@ -100,7 +103,7 @@ export default function Index({ users, generatedMonths }: IndexProps) {
                     plugins={[dayGridPlugin]}
                     locale="en-gb"
                     dayHeaderFormat={{
-                        weekday: 'long',
+                        weekday: isMobile ? 'short' : 'long',
                         day: 'numeric',
                         month: 'numeric',
                         omitCommas: true,

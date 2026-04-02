@@ -64,7 +64,6 @@ export default function ShiftPatternForm({
                         </div>
                     ))}
                 </div>
-                {/* <div className="text-xs">{JSON.stringify(data.shiftArray)}</div> */}
                 <div className="flex w-full items-center border bg-gray-50 p-2">
                     <div className="ml-100 text-lg">
                         Edit Shift Pattern for {user.name}

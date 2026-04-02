@@ -13,12 +13,12 @@ export default function Index({ grades }: IndexProps) {
     return (
         <AppLayout>
             <Head title="Grades" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div className="flex h-full w-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 md:w-1/2">
                 <div className="my-3">
                     <PrimaryLink href="/grades/create">+ Grade</PrimaryLink>
                 </div>
                 {/* Display */}
-                <div className="relative h-[calc(100vh-160px)] w-1/2 overflow-y-auto">
+                <div className="relative h-[calc(100vh-160px)] overflow-y-auto">
                     <div className="sticky top-0 z-10 grid grid-cols-[2fr_1fr] border-b bg-white pb-2 font-bold text-mallard-green">
                         <div>Name</div>
                         <div></div>
