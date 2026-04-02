@@ -28,7 +28,6 @@ class DatabaseSeeder extends Seeder
             ShiftPatternTwelveSeeder::class,
             GradeSeeder::class,
             TaskSeeder::class,
-            DutySeeder::class,
         ]);
     }
 }

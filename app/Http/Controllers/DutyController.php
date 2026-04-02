@@ -105,7 +105,7 @@ class DutyController extends Controller
          if ($end->lessThanOrEqualTo($start)) {
             $end->addDay();
             }
-        $validated['duration'] = $end->diffInMinutes($start);
+        $validated['duration'] = $start->diffInMinutes($end);
 
         Duty::create($validated);
         return redirect()->back();
