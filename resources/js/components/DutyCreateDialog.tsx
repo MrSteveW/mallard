@@ -1,4 +1,5 @@
 import { useForm, usePage } from '@inertiajs/react';
+import { useState } from 'react';
 import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import DutyArchive from '@/components/DutyArchive';
@@ -14,6 +15,8 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { getShiftBgColor } from '@/constants/shiftBgColors';
+import { calculateDuration } from '@/lib/utils';
 import type {
     DutyEvent,
     TimeOptions,
@@ -32,7 +35,7 @@ interface DialogProps {
     onSuccess?: () => void;
 }
 
-export default function DutyDialog({
+export default function DutyCreateDialog({
     initialEvent,
     users,
     isDialogOpen,
@@ -51,7 +54,9 @@ export default function DutyDialog({
         absenceOptions: AbsenceOption[];
     };
 
-    const { data, setData, post, patch, processing, errors, reset } = useForm({
+    const [submitted, setSubmitted] = useState(false);
+
+    const { data, setData, post, patch, processing, reset } = useForm({
         id: initialEvent?.id ?? '',
         user_id: initialEvent?.user_id ?? '',
         user_name: initialEvent?.user_name ?? '',
@@ -66,9 +71,12 @@ export default function DutyDialog({
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setSubmitted(true);
         if (method === 'patch') {
             return patch(action, {
                 onSuccess: () => {
+                    reset();
+                    setSubmitted(false);
                     onSuccess?.(); // refetch calendar events
                     onClose(false); // close dialog
                 },
@@ -76,16 +84,42 @@ export default function DutyDialog({
         }
         post(action, {
             onSuccess: () => {
+                reset();
+                setSubmitted(false);
                 onSuccess?.(); // refetch calendar events
                 onClose(false); // close dialog
             },
         });
     };
 
+    const handleShiftTypeChange = (value: string) => {
+        const selected = shiftTypeOptions.find((opt) => opt.value === value);
+        if (selected && value !== 'Off') {
+            setData((prev) => ({
+                ...prev,
+                shift_type: value,
+                start_time: selected.start_time ?? '',
+                end_time: selected.end_time ?? '',
+            }));
+        } else {
+            setData((prev) => ({
+                ...prev,
+                shift_type: value,
+                start_time: '',
+                end_time: '',
+            }));
+        }
+    };
+
     const handleClose = (open: boolean) => {
-        if (!open) reset();
+        if (!open) {
+            reset();
+            setSubmitted(false);
+        }
         onClose(open);
     };
+
+    const bgColor = getShiftBgColor(data?.shift_type);
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={handleClose}>
@@ -111,7 +145,7 @@ export default function DutyDialog({
                                     onChange={(
                                         e: React.ChangeEvent<HTMLSelectElement>,
                                     ) => setData('user_id', e.target.value)}
-                                    className="text-sm"
+                                    className="rounded-md border border-input bg-background p-0.5 text-sm ring-offset-background focus:ring-0"
                                 >
                                     <option value="" disabled>
                                         Select user
@@ -122,6 +156,11 @@ export default function DutyDialog({
                                         </option>
                                     ))}
                                 </select>
+                                {submitted && !data.user_id && (
+                                    <p className="mt-1 text-xs text-red-500">
+                                        User is required.
+                                    </p>
+                                )}
                             </div>
                         </div>
                     )}
@@ -133,13 +172,18 @@ export default function DutyDialog({
                         </Label>
                         <div className="col-span-3 [&_.react-calendar]:bg-white [&_.react-date-picker__wrapper]:bg-white">
                             <DatePicker
-                                value={new Date(data.date)}
+                                value={new Date(data.date + 'T00:00:00')}
                                 onChange={(date) => {
                                     if (!date || Array.isArray(date)) return;
-                                    setData(
-                                        'date',
-                                        date.toISOString().substring(0, 10),
+                                    const year = date.getFullYear();
+                                    const month = String(
+                                        date.getMonth() + 1,
+                                    ).padStart(2, '0');
+                                    const day = String(date.getDate()).padStart(
+                                        2,
+                                        '0',
                                     );
+                                    setData('date', `${year}-${month}-${day}`);
                                 }}
                                 clearIcon={null}
                                 openCalendarOnFocus={false}
@@ -150,7 +194,7 @@ export default function DutyDialog({
 
                     {/* Shift type */}
                     <div className="grid grid-cols-4 items-center py-2">
-                        <Label htmlFor="date" className="text-xl">
+                        <Label htmlFor="type" className="text-xl">
                             Shift type
                         </Label>
                         <div className="col-span-3">
@@ -158,8 +202,8 @@ export default function DutyDialog({
                                 value={data.shift_type}
                                 onChange={(
                                     e: React.ChangeEvent<HTMLSelectElement>,
-                                ) => setData('shift_type', e.target.value)}
-                                className="text-sm"
+                                ) => handleShiftTypeChange(e.target.value)}
+                                className={`${bgColor} rounded-md border border-input bg-background p-0.5 text-sm ring-offset-background focus:ring-0`}
                             >
                                 {shiftTypeOptions.map((opt) => (
                                     <option key={opt.value} value={opt.value}>
@@ -167,42 +211,59 @@ export default function DutyDialog({
                                     </option>
                                 ))}
                             </select>
+                            {submitted && !data.shift_type && (
+                                <p className="mt-1 text-xs text-red-500">
+                                    Shift type is required.
+                                </p>
+                            )}
                         </div>
                     </div>
 
+                    {/* Duty Hours */}
                     <div className="grid grid-cols-4 items-center py-2">
-                        <Label htmlFor="date" className="text-xl">
-                            Duty date
+                        <Label htmlFor="time" className="text-xl">
+                            Duty hours
                         </Label>
-                        <div>
-                            <div>
-                                <TimeSelect
-                                    name="start_time"
-                                    value={data.start_time}
-                                    options={timeOptions}
-                                    onChange={(value: string) =>
-                                        setData('start_time', value)
-                                    }
-                                />
-                                {errors.start_time && (
-                                    <p>{errors.start_time}</p>
-                                )}
+                        <div className="col-span-3 flex items-center gap-x-4">
+                            <div className="flex items-center gap-x-2">
+                                <div>
+                                    <TimeSelect
+                                        name="start_time"
+                                        value={data.start_time}
+                                        options={timeOptions}
+                                        onChange={(value: string) =>
+                                            setData('start_time', value)
+                                        }
+                                    />
+                                </div>
+                                <div>-</div>
+                                <div>
+                                    <TimeSelect
+                                        name="end_time"
+                                        value={data.end_time}
+                                        options={timeOptions}
+                                        onChange={(value: string) =>
+                                            setData('end_time', value)
+                                        }
+                                    />
+                                </div>
                             </div>
-                            <div>
-                                <TimeSelect
-                                    name="end_time"
-                                    value={data.end_time}
-                                    options={timeOptions}
-                                    onChange={(value: string) =>
-                                        setData('end_time', value)
-                                    }
-                                />
-                                {errors.end_time && <p>{errors.end_time}</p>}
+                            {submitted &&
+                                (!data.start_time || !data.end_time) && (
+                                    <p className="text-xs text-red-500">
+                                        Start and end time are required.
+                                    </p>
+                                )}
+                            <div className="ml-8 flex items-center text-sm whitespace-nowrap text-muted-foreground">
+                                {calculateDuration(
+                                    data.start_time,
+                                    data.end_time,
+                                ) ?? ''}
                             </div>
                         </div>
                     </div>
 
-                    {/* NAME */}
+                    {/* NOTES */}
                     <div className="grid grid-cols-4 items-center gap-4 py-2">
                         <Label htmlFor="name" className="text-xl">
                             Notes
@@ -236,6 +297,7 @@ export default function DutyDialog({
                                     url={`/duties/${data.id}`}
                                     absenceOptions={absenceOptions}
                                     onSuccess={() => {
+                                        reset();
                                         onSuccess?.();
                                         onClose(false);
                                     }}

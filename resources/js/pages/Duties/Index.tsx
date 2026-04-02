@@ -8,7 +8,7 @@ import FullCalendar from '@fullcalendar/react';
 import { Head, router } from '@inertiajs/react';
 import axios from 'axios';
 import { useState, useRef } from 'react';
-import DutyDialog from '@/components/DutyDialog';
+import DutyCreateDialog from '@/components/DutyCreateDialog';
 import DutyIndexCard from '@/components/DutyIndexCard';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
@@ -113,18 +113,24 @@ export default function Index({ users, generatedMonths }: IndexProps) {
                         />
                     )}
                 />
-                <DutyDialog
+                <DutyCreateDialog
                     key={selectedEvent?.id ?? 'create'}
                     initialEvent={selectedEvent}
                     users={users}
                     isDialogOpen={isDialogOpen}
-                    onClose={setIsDialogOpen}
+                    onClose={(open) => {
+                        setIsDialogOpen(open);
+                        if (!open) setSelectedEvent(null);
+                    }}
                     action={
                         selectedEvent
                             ? `/duties/${selectedEvent.id}`
                             : '/duties'
                     }
                     method={selectedEvent ? 'patch' : 'post'}
+                    onSuccess={() =>
+                        calendarRef.current?.getApi().refetchEvents()
+                    }
                 />
             </div>
         </AppLayout>

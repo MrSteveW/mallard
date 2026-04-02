@@ -38,7 +38,7 @@ class GenerateMonthlyDuties
                 if ($end->lessThanOrEqualTo($start)) {
                     $end->addDay();
                 }
-                $duration = $end->diffInMinutes($start);
+                $duration = $start->diffInMinutes($end);
 
                 Duty::firstOrCreate(['user_id' => $shift->user_id, 'date' => $calendarDate],
                 [
