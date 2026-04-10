@@ -32,7 +32,7 @@ class ShiftPatternController extends Controller
         $dayNames = collect(range(1, $totalDays))->map(function ($number) {
         return [
             'number' => $number,
-            'name' => Carbon::create()->startOfWeek()->addDays(($number - 1) % 7)->dayName
+            'name' => Carbon::create()->startOfWeek()->addDays(($number - 1) % 7)->format('D')
          ];
         });
 

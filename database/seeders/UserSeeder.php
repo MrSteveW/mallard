@@ -96,26 +96,26 @@ class UserSeeder extends Seeder
       'role' => UserRole::Viewer,
       ]);
 
-      User::create([
-      'name' => 'Mika',
-      'email' => 'mika@example.com',
-      'password' => 'password',
-      'role' => UserRole::Viewer,
-      ]);
-
-      User::create([
-      'name' => 'Narissa',
-      'email' => 'narissa@example.com',
-      'password' => 'password',
-      'role' => UserRole::Viewer,
-      ]);
-
-      User::create([
+       User::create([
          'name' => 'Guest',
          'email' => 'guest@example.com',
          'password' => 'guestpassword',
          'role' => UserRole::Guest,
       ]);
+
+      // User::create([
+      // 'name' => 'Mika',
+      // 'email' => 'mika@example.com',
+      // 'password' => 'password',
+      // 'role' => UserRole::Viewer,
+      // ]);
+
+      // User::create([
+      // 'name' => 'Narissa',
+      // 'email' => 'narissa@example.com',
+      // 'password' => 'password',
+      // 'role' => UserRole::Viewer,
+      // ]);
 
       // User::create([
       // 'name' => 'Odette',

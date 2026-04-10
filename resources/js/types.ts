@@ -88,3 +88,10 @@ export interface DutyEvent {
     grade: string;
     notes: string;
 }
+
+export interface CalendarNote {
+    id: number;
+    date: string;
+    note: string;
+    source: string;
+}
