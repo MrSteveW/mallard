@@ -13,7 +13,7 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->string('note');
-            $table->string('source', ['manual', 'bank_holiday']);
+            $table->enum('source', ['manual', 'bank_holiday'])->default('manual');
             $table->timestamps();
         });
     }
