@@ -7,8 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\DutyController;
+use App\Http\Controllers\CalendarNoteController;
 use App\Http\Controllers\ShiftPatternController;
-use App\Http\Resources\DutyResource;
 use App\Models\User;
 
 Route::get('/', function () {
@@ -46,6 +46,8 @@ Route::middleware(['auth', 'can:viewAny,' . User::class])->group(function () {
     ->parameters(['shiftpatterns' => 'user']);
     Route::post('duties/generate', [DutyController::class, 'generate']);
     Route::resource('duties', DutyController::class);
+    Route::resource('calendar-notes', CalendarNoteController::class)
+        ->only(['store', 'update', 'destroy']);
     
 });
 

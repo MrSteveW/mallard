@@ -27,7 +27,7 @@ interface Props {
 }
 
 export default function Index({ shiftpatterns, dayNames }: Props) {
-    const gridTemplateColumns = `40px 80px repeat(${shiftpatterns.length}, 70px)`;
+    const gridTemplateColumns = `40px 40px repeat(${shiftpatterns.length}, 70px)`;
     return (
         <AppLayout>
             <Head title="Shift patterns" />

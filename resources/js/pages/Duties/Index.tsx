@@ -7,31 +7,33 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/react';
 import { Head, router } from '@inertiajs/react';
 import axios from 'axios';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
+import CalendarNoteDialog from '@/components/CalendarNoteDialog';
 import DutyCreateDialog from '@/components/DutyCreateDialog';
+import DutyDayHeader from '@/components/DutyDayHeader';
 import DutyIndexCard from '@/components/DutyIndexCard';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { mapToDutyEvent } from '@/lib/mapToDutyEvent';
-import type { DutyEvent, AssignableUser } from '@/types.ts';
+import type { DutyEvent, AssignableUser, CalendarNote } from '@/types.ts';
 
 interface IndexProps {
     users: AssignableUser[];
     generatedMonths: string[];
+    calendarNotes: CalendarNote[];
 }
 
-export default function Index({ users, generatedMonths }: IndexProps) {
+export default function Index({
+    users,
+    generatedMonths,
+    calendarNotes,
+}: IndexProps) {
     const [selectedEvent, setSelectedEvent] = useState<DutyEvent | null>(null);
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+    const [isNoteDialogOpen, setIsNoteDialogOpen] = useState<boolean>(false);
+    const [selectedNoteDate, setSelectedNoteDate] = useState<string>('');
     const [selectedMonth, setSelectedMonth] = useState<string>('');
     const calendarRef = useRef<FullCalendar>(null);
-    const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
-
-    useEffect(() => {
-        const handler = () => setIsMobile(window.innerWidth < 768);
-        window.addEventListener('resize', handler);
-        return () => window.removeEventListener('resize', handler);
-    }, []);
 
     function handleEventSelect(dutyEvent: DutyEvent) {
         setSelectedEvent(dutyEvent);
@@ -51,6 +53,22 @@ export default function Index({ users, generatedMonths }: IndexProps) {
         const year = target.getFullYear();
         const month = String(target.getMonth() + 1).padStart(2, '0');
         setSelectedMonth(year + '-' + month);
+    }
+
+    const calendarNotesByDate: Record<string, CalendarNote[]> =
+        calendarNotes.reduce<Record<string, CalendarNote[]>>((acc, note) => {
+            if (!acc[note.date]) {
+                acc[note.date] = [];
+            }
+            acc[note.date].push(note);
+            return acc;
+        }, {});
+
+    const selectedDateNotes = calendarNotesByDate[selectedNoteDate] ?? [];
+
+    function onAddOrEditNote(dateStr: string) {
+        setSelectedNoteDate(dateStr);
+        setIsNoteDialogOpen(true);
     }
 
     return (
@@ -102,12 +120,14 @@ export default function Index({ users, generatedMonths }: IndexProps) {
                     weekNumberCalculation={'ISO'}
                     plugins={[dayGridPlugin]}
                     locale="en-gb"
-                    dayHeaderFormat={{
-                        weekday: isMobile ? 'short' : 'long',
-                        day: 'numeric',
-                        month: 'numeric',
-                        omitCommas: true,
-                    }}
+                    dayHeaderContent={(arg) => (
+                        <DutyDayHeader
+                            date={arg.date}
+                            calendarNotes={calendarNotesByDate}
+                            editable={true}
+                            onAddOrEditNote={onAddOrEditNote}
+                        />
+                    )}
                     initialView="dayGridWeek"
                     eventContent={(arg: EventContentArg) => (
                         <DutyIndexCard
@@ -133,6 +153,25 @@ export default function Index({ users, generatedMonths }: IndexProps) {
                     method={selectedEvent ? 'patch' : 'post'}
                     onSuccess={() =>
                         calendarRef.current?.getApi().refetchEvents()
+                    }
+                />
+                <CalendarNoteDialog
+                    key={selectedNoteDate || 'calendar-note-dialog'}
+                    initialNotes={{
+                        date: selectedNoteDate,
+                        notes: selectedDateNotes,
+                    }}
+                    isDialogOpen={isNoteDialogOpen}
+                    onClose={(open) => {
+                        setIsNoteDialogOpen(open);
+                        if (!open) {
+                            setSelectedNoteDate('');
+                        }
+                    }}
+                    onSuccess={() =>
+                        router.reload({
+                            only: ['calendarNotes'],
+                        })
                     }
                 />
             </div>

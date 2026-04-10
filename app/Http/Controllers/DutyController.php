@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Actions\GenerateMonthlyDuties;
+use App\Http\Resources\CalendarNoteResource;
 use App\Models\Duty;
 use App\Models\User;
 use App\Models\Task;
+use App\Models\CalendarNote;
 use App\Http\Resources\TaskResource;
 use App\Models\DutyGenerationRun;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use App\Services\BankHolidayService;
 
 class DutyController extends Controller
 {
@@ -39,6 +42,7 @@ class DutyController extends Controller
                 'grade' => $user->employee->grade->name ?? '',
             ]),
             'generatedMonths' => $generatedMonths,
+            'calendarNotes' => CalendarNoteResource::collection(CalendarNote::orderBy('date')->get()),
         ]);
     }
 
