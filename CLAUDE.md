@@ -34,6 +34,7 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
 
 ## Current build state
 
+- This app is being built using VS Code version 1.115, in WSL version: 2.5.9.0, using ZSH terminal zsh 5.9 (x86_64-ubuntu-linux-gnu).
 - App is built for a single organisation with approximately 40 staff.
 - Auth uses a typical Fortify approach. New users cannot be created from a 'signup' page, but is controlled by Admin creating a new User.
 - The preferred reset command in development is 'app:migrate:fresh' as defined in `routes/console.php`. This refreshes all migration table and additionally calls the Database Seeders defined in `database/seeders/DatabaseSeeder` and my custom Action `app/Actions/ImportBankHolidaysAction.php`.
@@ -102,6 +103,8 @@ This project has domain-specific skills available. You MUST activate the relevan
 - You must follow all existing code conventions used in this application. When creating or editing a file, check sibling files for the correct structure, approach, and naming.
 - Use descriptive names for variables and methods. For example, `isRegisteredForDiscounts`, not `discount()`.
 - Check for existing components to reuse before writing a new one.
+- I prefer to use a ModelResource::collection instead of ->get(['field'])
+- I will use 'discuss only' when I do not want any code from you. I want your output to be a learning opportunity for me. I want you to evaluate and provide pros and cons to the most suitable options. I want to learn conventional design patterns and secure, stable architecture.
 
 ## Verification Scripts
 

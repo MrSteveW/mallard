@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use App\Models\CalendarNote;
+use App\Http\Resources\CalendarNoteResource;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\GradeController;
@@ -25,7 +27,9 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
-    return Inertia::render('dashboard');
+        return Inertia::render('dashboard', [
+            'calendarNotes' => CalendarNoteResource::collection(CalendarNote::orderBy('date')->get()),
+        ]);
     })->name('dashboard');
 
     

@@ -47,7 +47,7 @@ export default function DutyDayHeader({
             </div>
             <div className="flex">
                 {notes.length > 0 && (
-                    <div className="flex flex-col text-[12px] leading-4">
+                    <div className="flex flex-col text-[12px] leading-4 text-mallard-green">
                         {notes.slice(0, 2).map((entry, index) => (
                             <div key={`${dateStr}-${index}-${entry.note}`}>
                                 {entry.note}
