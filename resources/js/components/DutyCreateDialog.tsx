@@ -21,7 +21,7 @@ import type {
     DutyEvent,
     TimeOptions,
     ShiftTypeOption,
-    AbsenceOption,
+    CancelledOption,
     AssignableUser,
 } from '@/types.ts';
 
@@ -50,8 +50,8 @@ export default function DutyCreateDialog({
     const { shiftTypeOptions } = usePage().props as unknown as {
         shiftTypeOptions: ShiftTypeOption[];
     };
-    const { absenceOptions } = usePage().props as unknown as {
-        absenceOptions: AbsenceOption[];
+    const { cancelledOptions } = usePage().props as unknown as {
+        cancelledOptions: CancelledOption[];
     };
 
     const [submitted, setSubmitted] = useState(false);
@@ -294,8 +294,8 @@ export default function DutyCreateDialog({
                         <div>
                             {method === 'patch' && (
                                 <DutyArchive
-                                    url={`/duties/${data.id}`}
-                                    absenceOptions={absenceOptions}
+                                    url={`/duties/${data.id}/cancel`}
+                                    cancelledOptions={cancelledOptions}
                                     onSuccess={() => {
                                         reset();
                                         onSuccess?.();

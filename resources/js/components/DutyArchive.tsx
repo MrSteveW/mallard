@@ -11,53 +11,54 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import type { AbsenceOption } from '@/types';
+import type { CancelledOption } from '@/types';
 
 type DutyArchiveProps = {
     url: string;
-    absenceOptions: AbsenceOption[];
+    cancelledOptions: CancelledOption[];
     onSuccess?: () => void;
 };
 
 export default function DutyArchive({
     url,
-    absenceOptions,
+    cancelledOptions,
     onSuccess,
 }: DutyArchiveProps) {
-    const [absence, setAbsence] = useState<string>('');
+    const [cancelReason, setCancelReason] = useState<string>('');
 
-    const handleDelete = () => {
-        router.delete(url, {
-            data: { absence },
-            onSuccess: () => onSuccess?.(),
-        });
+    const handleCancel = () => {
+        router.patch(
+            url,
+            { cancel_reason: cancelReason },
+            { onSuccess: () => onSuccess?.() },
+        );
     };
 
     const handleClose = (open: boolean) => {
-        if (!open) setAbsence('');
+        if (!open) setCancelReason('');
     };
 
     return (
         <Dialog onOpenChange={handleClose}>
             <DialogTrigger asChild>
-                <Button variant="destructive">Remove</Button>
+                <Button variant="destructive">Cancel Duty</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Confirm remove</DialogTitle>
+                    <DialogTitle>Confirm cancel</DialogTitle>
                     <DialogDescription className="text-lg">
                         <div>Please select reason for absence</div>
                         <div className="align-center items-center justify-center justify-items-center">
                             <select
-                                value={absence}
+                                value={cancelReason}
                                 onChange={(
                                     e: React.ChangeEvent<HTMLSelectElement>,
-                                ) => setAbsence(e.target.value)}
+                                ) => setCancelReason(e.target.value)}
                             >
                                 <option value="" disabled>
                                     Please select
                                 </option>
-                                {absenceOptions.map((opt) => (
+                                {cancelledOptions.map((opt) => (
                                     <option key={opt.value} value={opt.value}>
                                         {opt.value}
                                     </option>
@@ -72,10 +73,10 @@ export default function DutyArchive({
                     </DialogClose>
                     <Button
                         variant="destructive"
-                        disabled={!absence}
-                        onClick={handleDelete}
+                        disabled={!cancelReason}
+                        onClick={handleCancel}
                     >
-                        Confirm remove
+                        Confirm cancel
                     </Button>
                 </DialogFooter>
             </DialogContent>

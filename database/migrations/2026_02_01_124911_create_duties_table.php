@@ -18,10 +18,11 @@ return new class extends Migration
             $table->time('end_time');
             $table->integer('duration');
             $table->string('notes')->nullable();
-            $table->string('absence')->nullable();
             $table->string('status')->default('generated');
             $table->integer('generated_from_pattern_day')->nullable();
-            $table->softDeletes();
+            $table->timestamp('cancelled_at')->nullable();
+            $table->foreignId('cancelled_by')->nullable()->constrained('users');
+            $table->string('cancel_reason')->nullable();
         });
     }
 

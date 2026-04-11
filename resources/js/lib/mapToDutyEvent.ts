@@ -13,5 +13,7 @@ export function mapToDutyEvent(arg: EventContentArg): DutyEvent {
         end_time: arg.event.extendedProps.end_time,
         grade: arg.event.extendedProps.grade,
         notes: arg.event.extendedProps.notes,
+        cancelled_at: arg.event.extendedProps.cancelled_at ?? null,
+        cancel_reason: arg.event.extendedProps.cancel_reason ?? null,
     };
 }

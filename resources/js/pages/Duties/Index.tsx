@@ -113,9 +113,15 @@ export default function Index({
                             params: {
                                 start: fetchInfo.startStr,
                                 end: fetchInfo.endStr,
+                                include_cancelled: 1,
                             },
                         });
                         return response.data;
+                    }}
+                    eventOrder={(a: unknown, b: unknown) => {
+                        const aOrder = (a as { extendedProps: { sort_order?: number } }).extendedProps?.sort_order ?? 0;
+                        const bOrder = (b as { extendedProps: { sort_order?: number } }).extendedProps?.sort_order ?? 0;
+                        return aOrder - bOrder;
                     }}
                     weekNumberCalculation={'ISO'}
                     plugins={[dayGridPlugin]}
