@@ -19,6 +19,6 @@ Duty table id | user_id | task_id | dutydate | shift_type | hours
 
 1. Fork the repository and clone your fork to your local machine
 2. Run `npm install`
-3. Run `php artisan migrate` to run all SQLite migrations on your local machine
+3. Run `php artisan app:migrate:fresh` to run SQLite migrations and seed data
 4. Run `composer run dev` to start the PHP server and development server
 5. Open http://localhost:8000 with your browser to see the app

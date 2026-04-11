@@ -27,3 +27,11 @@ Schedule::call(function (ImportBankHolidaysAction $action) {
     $targetYear = now()->addYear()->year;
     $action->handle($targetYear);
 })->yearlyOn(1, 1, '00:00');
+
+Artisan::command('app:migrate:fresh', function () {
+    $this->call('migrate:fresh', ['--seed' => true]);
+
+    $this->call('bank-holidays:backfill');
+
+    $this->info('Ran migrations, seeded data and backfilled bank holidays.');
+})->purpose('Run migrate:fresh --seed and bank-holidays:backfill in sequence');
