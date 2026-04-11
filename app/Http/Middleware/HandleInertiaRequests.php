@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-use App\Http\Resources\UserResource;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -54,7 +54,7 @@ class HandleInertiaRequests extends Middleware
                 'minutes' => \App\Enums\MinutesEnum::options(),
             ],
             'shiftTypeOptions' => \App\Enums\ShiftType::options(),
-            'absenceOptions' => \App\Enums\AbsenceOptions::options(),
+            'cancelledOptions' => \App\Enums\CancelledDutyOptions::options(),
         ];
     }
 }

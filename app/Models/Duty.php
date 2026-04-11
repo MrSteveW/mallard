@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Models;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
 
 class Duty extends Model
 {
@@ -14,8 +13,6 @@ class Duty extends Model
     protected $guarded = [];
 
     public $timestamps = false;
-
-    use SoftDeletes;
 
     public function user()
     {
@@ -40,5 +37,4 @@ class Duty extends Model
             get: fn (string $value) => substr($value, 0, 5),
         );
     }
-
 }

@@ -48,6 +48,7 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
     - Automatic Laravel Scheduler in `routes/console.php`
     - Admin manually triggers the Laravel Action `app/Actions/GenerateMonthlyDuties.php`
 - Bank Holiday information is provided by a UK Government API and cleansed at `app/Services/BankHolidayService.php`. The data is then used to create CalendarNote records in `ImportBankHolidaysAction.php`. A CalendarNote source either be made automatically (bank_holidays) or manually by admin (manual) then passed to the Duty Index FullCalendar.
+- Duty records for a specified week are fetched by an internal API, apiIndex action in `app/Http/Controllers/DutyController` and passed to either Duty Index or Dashboard to be rendered by FullCalendar.
 - There is a Guest user feature that allows any human user to visit the app with Guest user-based access.
 
 ## Features for future development

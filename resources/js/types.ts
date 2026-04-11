@@ -64,7 +64,7 @@ export interface ShiftTypeOption {
     end_time: string | null;
 }
 
-export interface AbsenceOption {
+export interface CancelledOption {
     value: string;
 }
 
@@ -87,6 +87,8 @@ export interface DutyEvent {
     end_time: string;
     grade: string;
     notes: string;
+    cancelled_at: string | null;
+    cancel_reason: string | null;
 }
 
 export interface CalendarNote {
