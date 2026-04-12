@@ -3,10 +3,15 @@
 use App\Models\User;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\Notification;
+use Tests\Traits\MocksUserObserver;
+
+uses(MocksUserObserver::class);
+
 
 test('sends verification notification', function () {
     Notification::fake();
 
+    /** @var User $user */
     $user = User::factory()->unverified()->create();
 
     $this->actingAs($user)
@@ -19,6 +24,7 @@ test('sends verification notification', function () {
 test('does not send verification notification if email is verified', function () {
     Notification::fake();
 
+    /** @var User $user */
     $user = User::factory()->create();
 
     $this->actingAs($user)

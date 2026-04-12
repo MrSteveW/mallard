@@ -3,6 +3,9 @@
 use App\Models\User;
 use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Fortify\Features;
+use Tests\Traits\MocksUserObserver;
+
+uses(MocksUserObserver::class);
 
 test('login screen can be rendered', function () {
     $response = $this->get(route('login'));
@@ -62,6 +65,7 @@ test('users can not authenticate with invalid password', function () {
 });
 
 test('users can logout', function () {
+    /** @var User $user */
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->post(route('logout'));

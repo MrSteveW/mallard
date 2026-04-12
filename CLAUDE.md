@@ -36,7 +36,7 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
 
 - This app is being built using VS Code version 1.115, in WSL version: 2.5.9.0, using ZSH terminal zsh 5.9 (x86_64-ubuntu-linux-gnu).
 - App is built for a single organisation with approximately 40 staff.
-- Auth uses a typical Fortify approach. New users cannot be created from a 'signup' page, but is controlled by Admin creating a new User.
+- Auth uses a typical Fortify approach. There is no 'register' route and Admin manually create a new User.
 - The preferred reset command in development is 'app:migrate:fresh' as defined in `routes/console.php`. This refreshes all migration table and additionally calls the Database Seeders defined in `database/seeders/DatabaseSeeder` and my custom Action `app/Actions/ImportBankHolidaysAction.php`.
 - Role-based access rights to specific routes are defined in `routes/web.php`.
 - Individual users should be able to log in, see the calendar dashboard of Duties and request Leave.

@@ -1,6 +1,11 @@
 <?php
 
 use App\Models\User;
+use App\Observers\UserObserver;
+
+beforeEach(function () {
+    $this->mock(UserObserver::class)->shouldIgnoreMissing();
+});
 
 test('guests are redirected to the login page', function () {
     $response = $this->get(route('dashboard'));
@@ -8,7 +13,9 @@ test('guests are redirected to the login page', function () {
 });
 
 test('authenticated users can visit the dashboard', function () {
+    /** @var User $user */
     $user = User::factory()->create();
+    
     $this->actingAs($user);
 
     $response = $this->get(route('dashboard'));

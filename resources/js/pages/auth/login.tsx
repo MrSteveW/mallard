@@ -15,7 +15,6 @@ import type { SharedData } from '@/types/index';
 type Props = {
     status?: string;
     canResetPassword: boolean;
-    canRegister: boolean;
 };
 
 export default function Login({ status, canResetPassword }: Props) {
