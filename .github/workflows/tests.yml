@@ -54,3 +54,8 @@ jobs:
 
       - name: Tests
         run: ./vendor/bin/pest
+        env:
+          GUEST_EMAIL: ${{ secrets.GUEST_EMAIL }}
+          GUEST_PASSWORD: ${{ secrets.GUEST_PASSWORD }}
+          BOOTSTRAP_EMAIL: ${{ secrets.BOOTSTRAP_EMAIL }}
+          BOOTSTRAP_PASSWORD: ${{ secrets.BOOTSTRAP_PASSWORD }}

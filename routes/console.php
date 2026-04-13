@@ -3,8 +3,8 @@ use App\Actions\GenerateMonthlyDuties;
 use App\Actions\ImportBankHolidaysAction;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schedule;
+
 
 Schedule::call(function () {
     (new GenerateMonthlyDuties())
@@ -35,3 +35,5 @@ Artisan::command('app:migrate:fresh', function () {
 
     $this->info('Ran migrations, seeded data and backfilled bank holidays.');
 })->purpose('Run migrate:fresh --seed and bank-holidays:backfill in sequence');
+
+
