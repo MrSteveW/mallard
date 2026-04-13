@@ -35,4 +35,5 @@ return [
         ],
     ],
     'guest' => ['email' => env('GUEST_EMAIL'), 'password' => env('GUEST_PASSWORD')],
+    'bootstrapUser' => ['email' => env('BOOTSTRAP_EMAIL'), 'password' => env('BOOTSTRAP_PASSWORD')],
 ];

@@ -15,10 +15,18 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'Adam',
-            'email' => 'adam@example.com',
-            'password' => 'password',
+            'email' => config('services.bootstrapUser.email'),
+            'password' => config('services.bootstrapUser.password'),
             'role' => UserRole::Admin,
         ]);
+
+        User::create([
+            'name' => 'Guest',
+            'email' => config('services.guest.email'),
+            'password' => config('services.guest.password'),
+            'role' => UserRole::Guest,
+        ]);
+
         User::create([
             'name' => 'Betty',
             'email' => 'betty@example.com',
@@ -94,13 +102,6 @@ class UserSeeder extends Seeder
             'email' => 'lisa@example.com',
             'password' => 'password',
             'role' => UserRole::Viewer,
-        ]);
-
-        User::create([
-            'name' => 'Guest',
-            'email' => 'guest@example.com',
-            'password' => 'guestpassword',
-            'role' => UserRole::Guest,
         ]);
 
         // User::create([

@@ -15,6 +15,11 @@ Duty table id | user_id | task_id | dutydate | shift_type | hours
 - [x] Model, resource controller and migration for User, Task and Duty.
 - [x] Softdelete for User and Task
 
+    ## First Deployment
+    1. Set all environment variables from `.env.example` in Laravel Cloud
+    2. Run `php artisan migrate --force`
+    3. Run `php artisan app:bootstrap`
+
 ## Setup instructions
 
 1. Fork the repository and clone your fork to your local machine
