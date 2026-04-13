@@ -212,6 +212,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 - Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
 - Run the minimum number of tests needed to ensure code quality and speed. Use `php artisan test --compact` with a specific filename or filter.
+- When a test operates on a value sourced from config, environment variables, or any state not created inline by the test itself, assert that value is not null before using it — use `expect($value)->not->toBeNull('descriptive message')`. A test that silently passes on null or missing data provides false confidence and is worse than no test at all.
 
 === inertia-laravel/core rules ===
 
