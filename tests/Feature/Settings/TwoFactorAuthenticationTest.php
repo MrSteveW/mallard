@@ -21,6 +21,7 @@ test('two factor settings page can be rendered', function () {
 
     $user = User::factory()->create();
 
+    /** @var User $user */
     $this->actingAs($user)
         ->withSession(['auth.password_confirmed_at' => time()])
         ->get(route('two-factor.show'))
