@@ -24,8 +24,8 @@ test('can authoriser view dashboard', function () {
     ->assertInertia();
 });
 
-test('can viewer view dashboard', function () {
-    $user = User::factory()->viewer()->create();
+test('can user view dashboard', function () {
+    $user = User::factory()->user()->create();
     $this->actingAs($user)
     ->get(route('dashboard'))
     ->assertInertia();
