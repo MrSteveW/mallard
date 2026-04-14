@@ -47,10 +47,10 @@ class UserFactory extends Factory
         ]);
     }
 
-    public function viewer(): static
+    public function user(): static
     {
         return $this->state(fn (array $attributes) => [
-            'role' => UserRole::Viewer,
+            'role' => UserRole::User,
         ]);
     }
 

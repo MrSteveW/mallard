@@ -16,11 +16,11 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
 - UserRole enum values are
     - Admin
     - Authoriser
-    - Viewer
+    - User
     - Guest
 - Admin have full editing rights to all Models
 - Authoriser will only have access to authorise LeaveRequests and remove Duties - feature not currently in scope.
-- Viewer will only have access to dashboard and their own Leave Requests - Leave Requests not currently in scope.
+- User will only have access to dashboard and their own Leave Requests - Leave Requests not currently in scope.
 - Guest will have full viewing rights - leave this alone.
 - CalendarNote is a display annotation on the calendar. It contains the date, a string note and the generation source (manual from user or bank_holiday from ImportBankHolidaysAction)
 
