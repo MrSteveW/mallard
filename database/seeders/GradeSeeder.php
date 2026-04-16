@@ -8,21 +8,21 @@ use Illuminate\Database\Seeder;
 class GradeSeeder extends Seeder
 {
     public function run(): void
-   {
+    {
         Grade::create([
             'name' => 'AP',
-            ]);
+        ]);
 
         Grade::create([
             'name' => 'BMS5',
-            ]);
+        ]);
 
-         Grade::create([
+        Grade::create([
             'name' => 'BMS6',
-            ]);
+        ]);
 
-         Grade::create([
+        Grade::create([
             'name' => 'BMS7',
-            ]);
+        ]);
     }
 }

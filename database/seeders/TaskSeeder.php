@@ -11,18 +11,18 @@ class TaskSeeder extends Seeder
     {
         Task::create([
             'name' => 'Analyser 1',
-            ]);
+        ]);
 
         Task::create([
             'name' => 'Analyser 2',
-            ]);
+        ]);
 
-         Task::create([
+        Task::create([
             'name' => 'Pipetting',
-            ]);
+        ]);
 
-         Task::create([
+        Task::create([
             'name' => 'Bossing around',
-            ]);
+        ]);
     }
 }

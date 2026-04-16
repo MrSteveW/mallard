@@ -3,21 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Grade extends Model
 {
-        protected $fillable = ['name'];
+    protected $fillable = ['name'];
 
-        public $timestamps = false;
+    public $timestamps = false;
 
-        use SoftDeletes;
+    use SoftDeletes;
 
-        public function employee(): HasMany
+    public function employee(): HasMany
     {
         return $this->hasMany(Employee::class);
     }
-
-
 }

@@ -2,9 +2,9 @@
 
 namespace App\Observers;
 
-use App\Models\User;
-use App\Models\ShiftRepeat;
 use App\Actions\InitialiseShiftPatterns;
+use App\Models\ShiftRepeat;
+use App\Models\User;
 
 class UserObserver
 {

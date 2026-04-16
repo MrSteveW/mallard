@@ -2,334 +2,333 @@
 
 namespace Database\Seeders;
 
+use App\Enums\ShiftType;
 use App\Models\ShiftPattern;
 use Illuminate\Database\Seeder;
-use App\Enums\ShiftType;
 
 class ShiftPatternThreeSeeder extends Seeder
 {
-
     public function run(): void
     {
-       ShiftPattern::create([
+        ShiftPattern::create([
             'user_id' => 3,
             'day' => 1,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 2,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 3,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 4,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 5,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 6,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 7,
             'shift_type' => ShiftType::Early,
             'start_time' => '08:00',
             'end_time' => '20:00',
-            ]);
-        // 
+        ]);
+        //
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 8,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 9,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 10,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 11,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 12,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 13,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 14,
             'shift_type' => ShiftType::Off,
-            ]);
-        // 
+        ]);
+        //
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 15,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 16,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 17,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 18,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 19,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 20,
             'shift_type' => ShiftType::Early,
             'start_time' => '08:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 21,
             'shift_type' => ShiftType::Off,
-            ]);
-        // 
+        ]);
+        //
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 22,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 23,
             'shift_type' => ShiftType::Late2,
             'start_time' => '14:00',
             'end_time' => '22:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 24,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 25,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 26,
             'shift_type' => ShiftType::Late2,
             'start_time' => '14:00',
             'end_time' => '22:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 27,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 28,
             'shift_type' => ShiftType::Off,
-            ]);
-        // 
+        ]);
+        //
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 29,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 30,
             'shift_type' => ShiftType::Night,
             'start_time' => '20:00',
             'end_time' => '08:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 31,
             'shift_type' => ShiftType::Night,
             'start_time' => '20:00',
             'end_time' => '08:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 32,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 33,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 34,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 35,
             'shift_type' => ShiftType::Early,
             'start_time' => '08:00',
             'end_time' => '20:00',
-            ]);
-        // 
+        ]);
+        //
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 36,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 37,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 38,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 39,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 40,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 41,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 42,
             'shift_type' => ShiftType::Off,
-            ]);
-        // 
+        ]);
+        //
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 43,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 44,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 45,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 46,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 47,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 48,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 49,
             'shift_type' => ShiftType::Off,
-            ]);
-        // 
+        ]);
+        //
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 50,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 51,
@@ -343,256 +342,256 @@ class ShiftPatternThreeSeeder extends Seeder
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 53,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 54,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 55,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 56,
             'shift_type' => ShiftType::Off,
-            ]);
-        // 
+        ]);
+        //
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 57,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 58,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 59,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 60,
             'shift_type' => ShiftType::Late2,
             'start_time' => '14:00',
             'end_time' => '22:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 61,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 62,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 63,
             'shift_type' => ShiftType::Night,
             'start_time' => '20:00',
             'end_time' => '08:00',
-            ]);
-        // 
+        ]);
+        //
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 64,
             'shift_type' => ShiftType::Night,
             'start_time' => '20:00',
             'end_time' => '08:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 65,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 66,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 67,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 68,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 69,
             'shift_type' => ShiftType::Early,
             'start_time' => '08:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 70,
             'shift_type' => ShiftType::Off,
-            ]);
-        // 
+        ]);
+        //
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 71,
             'shift_type' => ShiftType::Late2,
             'start_time' => '14:00',
             'end_time' => '22:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 72,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 73,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 74,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 75,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 76,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 77,
             'shift_type' => ShiftType::Off,
-            ]);
-        // 
+        ]);
+        //
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 78,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 79,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 80,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 81,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 82,
             'shift_type' => ShiftType::Early,
             'start_time' => '07:45',
             'end_time' => '15:45',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 83,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 84,
             'shift_type' => ShiftType::Off,
-            ]);
-        // 
+        ]);
+        //
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 85,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 86,
             'shift_type' => ShiftType::Late,
             'start_time' => '12:00',
             'end_time' => '20:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 87,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 88,
             'shift_type' => ShiftType::Night,
             'start_time' => '20:00',
             'end_time' => '08:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 89,
             'shift_type' => ShiftType::Night,
             'start_time' => '20:00',
             'end_time' => '08:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 90,
             'shift_type' => ShiftType::Night,
             'start_time' => '20:00',
             'end_time' => '08:00',
-            ]);
+        ]);
         ShiftPattern::create([
             'user_id' => 3,
             'day' => 91,
             'shift_type' => ShiftType::Off,
-            ]);
+        ]);
     }
 }

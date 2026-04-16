@@ -7,7 +7,6 @@ use Tests\Traits\MocksUserObserver;
 
 uses(MocksUserObserver::class);
 
-
 test('sends verification notification', function () {
     Notification::fake();
 

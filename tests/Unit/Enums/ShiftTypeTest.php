@@ -17,7 +17,7 @@ describe('defaultTimes', function () {
         ]);
     })->with([
         'Early' => [ShiftType::Early, '08:00', '16:00'],
-        'Late'  => [ShiftType::Late,  '12:00', '20:00'],
+        'Late' => [ShiftType::Late,  '12:00', '20:00'],
         'Late2' => [ShiftType::Late2, '14:00', '22:00'],
         'Night' => [ShiftType::Night, '20:00', '08:00'],
     ]);

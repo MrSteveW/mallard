@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ShiftType;
-use App\Models\ShiftPattern;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
 use App\Http\Resources\ShiftPatternResource;
-use App\Models\User;
+use App\Models\ShiftPattern;
 use App\Models\ShiftRepeat;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class ShiftPatternController extends Controller
 {
@@ -20,20 +20,20 @@ class ShiftPatternController extends Controller
     {
         $users = User::with('shiftPatterns')->get();
         $groupedPatterns = $users->map(function ($user) {
-        return [
-            'user_id'       => $user->id,
-            'user_name'     => $user->name,
-            'shift_pattern' => ShiftPatternResource::collection($user->shiftPatterns),
-        ];
-    })->values();
+            return [
+                'user_id' => $user->id,
+                'user_name' => $user->name,
+                'shift_pattern' => ShiftPatternResource::collection($user->shiftPatterns),
+            ];
+        })->values();
 
         $shiftRepeat = ShiftRepeat::first();
-        $totalDays = $shiftRepeat?->total_days ?? 7; 
+        $totalDays = $shiftRepeat?->total_days ?? 7;
         $dayNames = collect(range(1, $totalDays))->map(function ($number) {
-        return [
-            'number' => $number,
-            'name' => Carbon::create()->startOfWeek()->addDays(($number - 1) % 7)->format('D')
-         ];
+            return [
+                'number' => $number,
+                'name' => Carbon::create()->startOfWeek()->addDays(($number - 1) % 7)->format('D'),
+            ];
         });
 
         return Inertia::render('ShiftPatterns/Index', [
@@ -42,80 +42,69 @@ class ShiftPatternController extends Controller
         ]);
     }
 
-
     public function store(Request $request)
-{   
-    $shiftRepeat = ShiftRepeat::first();
-
-    $validated = $request->validate([
-        'shiftArray'                => ['required', 'array', 'min:1'],
-        'shiftArray.*.user_id'      => ['required', 'integer', 'exists:users,id'],
-        'shiftArray.*.day'          => ['required', 'integer', 'min:1', 'max:' . $shiftRepeat->total_days],
-        'shiftArray.*.shift_type'   => ['required', new Enum(ShiftType::class)],
-        'shiftArray.*.start_time' => ['nullable', 'required_unless:shiftArray.*.shift_type,Off', 'date_format:H:i'],
-        'shiftArray.*.end_time'   => ['nullable', 'required_unless:shiftArray.*.shift_type,Off', 'date_format:H:i']
-    ]);
-
-    foreach ($validated['shiftArray'] as $index => $shift) {
-    if (
-        $shift['shift_type'] !== 'Night' &&
-        !empty($shift['start_time']) &&
-        !empty($shift['end_time']) &&
-        $shift['end_time'] <= $shift['start_time']
-    ) {
-        throw ValidationException::withMessages([
-            "shiftArray.{$index}.end_time" => 'End time must be after start time.',
-        ]);
-    }
-
-    ShiftPattern::create($shift);
-}
-}
-
-
-    public function show(ShiftPattern $shiftPattern)
     {
-        
+        $shiftRepeat = ShiftRepeat::first();
+
+        $validated = $request->validate([
+            'shiftArray' => ['required', 'array', 'min:1'],
+            'shiftArray.*.user_id' => ['required', 'integer', 'exists:users,id'],
+            'shiftArray.*.day' => ['required', 'integer', 'min:1', 'max:'.$shiftRepeat->total_days],
+            'shiftArray.*.shift_type' => ['required', new Enum(ShiftType::class)],
+            'shiftArray.*.start_time' => ['nullable', 'required_unless:shiftArray.*.shift_type,Off', 'date_format:H:i'],
+            'shiftArray.*.end_time' => ['nullable', 'required_unless:shiftArray.*.shift_type,Off', 'date_format:H:i'],
+        ]);
+
+        foreach ($validated['shiftArray'] as $index => $shift) {
+            if (
+                $shift['shift_type'] !== 'Night' &&
+                ! empty($shift['start_time']) &&
+                ! empty($shift['end_time']) &&
+                $shift['end_time'] <= $shift['start_time']
+            ) {
+                throw ValidationException::withMessages([
+                    "shiftArray.{$index}.end_time" => 'End time must be after start time.',
+                ]);
+            }
+
+            ShiftPattern::create($shift);
+        }
     }
 
+    public function show(ShiftPattern $shiftPattern) {}
 
     public function edit(User $user)
     {
-    return Inertia::render('ShiftPatterns/Edit', [
-        'user' => $user->only('id', 'name'),
-        'initialPattern' => ShiftPatternResource::collection($user->shiftPatterns),
-    ]);
+        return Inertia::render('ShiftPatterns/Edit', [
+            'user' => $user->only('id', 'name'),
+            'initialPattern' => ShiftPatternResource::collection($user->shiftPatterns),
+        ]);
     }
-
 
     public function update(Request $request, User $user)
-{
-       $validated = $request->validate([
-        'shiftArray'             => ['required', 'array'],
-        'shiftArray.*.day'       => ['required', 'integer'],
-        'shiftArray.*.shift_type'=> ['required', 'string'],
-        'shiftArray.*.start_time'=> ['nullable', 'required_unless:shiftArray.*.shift_type,Off', 'date_format:H:i'],
-        'shiftArray.*.end_time'  => ['nullable', 'required_unless:shiftArray.*.shift_type,Off', 'date_format:H:i'],
-    ]);
-
-    DB::transaction(function () use ($validated, $user) {
-        foreach ($validated['shiftArray'] as $day) {
-            ShiftPattern::where('user_id', $user->id)
-                ->where('day', $day['day'])
-                ->update([
-                    'shift_type' => $day['shift_type'],
-                    'start_time' => $day['start_time'] ?? null,
-                    'end_time'   => $day['end_time'] ?? null,
-                ]);
-        }
-    });
-
-    return redirect('/shiftpatterns')->with('message', 'Shift pattern saved successfully.');
-}
-
-
-    public function destroy(ShiftPattern $shiftPattern)
     {
-        
+        $validated = $request->validate([
+            'shiftArray' => ['required', 'array'],
+            'shiftArray.*.day' => ['required', 'integer'],
+            'shiftArray.*.shift_type' => ['required', 'string'],
+            'shiftArray.*.start_time' => ['nullable', 'required_unless:shiftArray.*.shift_type,Off', 'date_format:H:i'],
+            'shiftArray.*.end_time' => ['nullable', 'required_unless:shiftArray.*.shift_type,Off', 'date_format:H:i'],
+        ]);
+
+        DB::transaction(function () use ($validated, $user) {
+            foreach ($validated['shiftArray'] as $day) {
+                ShiftPattern::where('user_id', $user->id)
+                    ->where('day', $day['day'])
+                    ->update([
+                        'shift_type' => $day['shift_type'],
+                        'start_time' => $day['start_time'] ?? null,
+                        'end_time' => $day['end_time'] ?? null,
+                    ]);
+            }
+        });
+
+        return redirect('/shiftpatterns')->with('message', 'Shift pattern saved successfully.');
     }
+
+    public function destroy(ShiftPattern $shiftPattern) {}
 }

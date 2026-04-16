@@ -13,13 +13,14 @@ class Employee extends Model
         'grade_id',
         'date_started',
         'date_ended',
-        'training'
+        'training',
     ];
+
     public $timestamps = false;
 
     use SoftDeletes;
 
-     protected function casts(): array
+    protected function casts(): array
     {
         return [
             'date_started' => 'datetime',

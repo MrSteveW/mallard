@@ -2,17 +2,17 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Employee;
 use App\Enums\UserRole;
+use App\Models\User;
 
 class EmployeePolicy
 {
-    public function before(User $user): bool|null
+    public function before(User $user): ?bool
     {
-        if ($user->role===UserRole::Admin) {
+        if ($user->role === UserRole::Admin) {
             return true;
         }
+
         return null;
     }
 

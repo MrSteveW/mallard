@@ -10,7 +10,7 @@ class TaskController extends Controller
     public function index()
     {
         return Inertia::render('Tasks/Index', [
-            'tasks' => Task::all()
+            'tasks' => Task::all(),
         ]);
     }
 
@@ -22,16 +22,17 @@ class TaskController extends Controller
     public function store()
     {
         Task::create([
-            'name' => request('name')
+            'name' => request('name'),
         ]);
+
         return redirect('/tasks');
     }
 
     public function show(Task $task)
     {
         return Inertia::render('Tasks/Show', [
-        'task' => $task
-    ]);
+            'task' => $task,
+        ]);
     }
 
     public function edit(Task $task)
@@ -42,14 +43,16 @@ class TaskController extends Controller
     public function update(Task $task)
     {
         $task->update([
-            'name' => request('name')
+            'name' => request('name'),
         ]);
+
         return redirect('tasks/');
     }
 
     public function destroy(Task $task)
     {
         $task->delete();
+
         return redirect('/tasks');
     }
 }

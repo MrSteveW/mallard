@@ -29,7 +29,7 @@ test('two factor settings page can be rendered', function () {
             ->component('settings/two-factor')
             ->where('twoFactorEnabled', false)
         );
-})->skip($skip);;
+})->skip($skip);
 
 test('two factor settings page requires password confirmation when enabled', function () {
     if (! Features::canManageTwoFactorAuthentication()) {
@@ -47,7 +47,7 @@ test('two factor settings page requires password confirmation when enabled', fun
         ->get(route('two-factor.show'));
 
     $response->assertRedirect(route('password.confirm'));
-})->skip($skip);;
+})->skip($skip);
 
 test('two factor settings page does not requires password confirmation when disabled', function () {
     if (! Features::canManageTwoFactorAuthentication()) {
@@ -67,7 +67,7 @@ test('two factor settings page does not requires password confirmation when disa
         ->assertInertia(fn (Assert $page) => $page
             ->component('settings/two-factor')
         );
-})->skip($skip);;
+})->skip($skip);
 
 test('two factor settings page returns forbidden response when two factor is disabled', function () {
     if (! Features::canManageTwoFactorAuthentication()) {
@@ -82,4 +82,4 @@ test('two factor settings page returns forbidden response when two factor is dis
         ->withSession(['auth.password_confirmed_at' => time()])
         ->get(route('two-factor.show'))
         ->assertForbidden();
-})->skip($skip);;
+})->skip($skip);

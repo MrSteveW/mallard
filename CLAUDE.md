@@ -24,14 +24,6 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
 - Guest will have full viewing rights - leave this alone.
 - CalendarNote is a display annotation on the calendar. It contains the date, a string note and the generation source (manual from user or bank_holiday from ImportBankHolidaysAction)
 
-## Model relationships
-
-- One User has one Employee and has many ShiftPatterns.
-- One Employee has one Grade.
-- One Duty belongs to a Task.
-- One User has many Duties.
-- One Task can have many Duties.
-
 ## Current build state
 
 - This app is being built using VS Code version 1.115, in WSL version: 2.5.9.0, using ZSH terminal zsh 5.9 (x86_64-ubuntu-linux-gnu).
@@ -78,6 +70,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/sanctum (SANCTUM) - v4
 - laravel/wayfinder (WAYFINDER) - v0
 - tightenco/ziggy (ZIGGY) - v2
+- larastan/larastan (LARASTAN) - v3
 - laravel/mcp (MCP) - v0
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
@@ -104,8 +97,6 @@ This project has domain-specific skills available. You MUST activate the relevan
 - You must follow all existing code conventions used in this application. When creating or editing a file, check sibling files for the correct structure, approach, and naming.
 - Use descriptive names for variables and methods. For example, `isRegisteredForDiscounts`, not `discount()`.
 - Check for existing components to reuse before writing a new one.
-- I prefer to use a ModelResource::collection instead of ->get(['field'])
-- I will use 'discuss only' when I do not want any code from you. I want your output to be a learning opportunity for me. I want you to evaluate and provide pros and cons to the most suitable options. I want to learn conventional design patterns and secure, stable architecture.
 
 ## Verification Scripts
 
@@ -212,7 +203,6 @@ protected function isAccessible(User $user, ?string $path = null): bool
 
 - Every change must be programmatically tested. Write a new test or update an existing test, then run the affected tests to make sure they pass.
 - Run the minimum number of tests needed to ensure code quality and speed. Use `php artisan test --compact` with a specific filename or filter.
-- When a test operates on a value sourced from config, environment variables, or any state not created inline by the test itself, assert that value is not null before using it — use `expect($value)->not->toBeNull('descriptive message')`. A test that silently passes on null or missing data provides false confidence and is worse than no test at all.
 
 === inertia-laravel/core rules ===
 

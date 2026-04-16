@@ -7,7 +7,7 @@ use Tests\Traits\MocksUserObserver;
 uses(MocksUserObserver::class);
 
 test('confirm password screen can be rendered', function () {
-      /** @var User $user */
+    /** @var User $user */
     $user = User::factory()->create();
 
     $response = $this->actingAs($user)->get(route('password.confirm'));

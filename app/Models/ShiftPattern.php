@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ShiftPattern extends Model
 {
-      protected $fillable = [
+    protected $fillable = [
         'user_id',
         'day',
         'shift_type',
@@ -22,15 +21,16 @@ class ShiftPattern extends Model
 
     use SoftDeletes;
 
-    protected function casts(): array {
-    return [
+    protected function casts(): array
+    {
+        return [
 
-    ];
-}
+        ];
+    }
 
-// $CarbonTime = Carbon::createFromFormat('H:i', $shiftPattern->start_time);
+    // $CarbonTime = Carbon::createFromFormat('H:i', $shiftPattern->start_time);
 
- public function user(): BelongsTo
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
@@ -42,11 +42,10 @@ class ShiftPattern extends Model
         );
     }
 
-protected function endTime(): Attribute
+    protected function endTime(): Attribute
     {
         return Attribute::make(
             get: fn (?string $value) => $value ? substr($value, 0, 5) : null,
         );
     }
-
 }

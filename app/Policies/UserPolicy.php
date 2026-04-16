@@ -7,14 +7,14 @@ use App\Models\User;
 
 class UserPolicy
 {
-    public function before(User $user): bool|null
+    public function before(User $user): ?bool
     {
-        if ($user->role===UserRole::Admin) {
+        if ($user->role === UserRole::Admin) {
+            return true;
+        } elseif ($user->role === UserRole::Guest) {
             return true;
         }
-        elseif ($user->role===UserRole::Guest) {
-            return true;
-        }
+
         return null;
     }
 

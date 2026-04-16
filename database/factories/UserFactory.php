@@ -39,7 +39,7 @@ class UserFactory extends Factory
             'role' => UserRole::Admin,
         ]);
     }
-    
+
     public function authoriser(): static
     {
         return $this->state(fn (array $attributes) => [
@@ -54,7 +54,7 @@ class UserFactory extends Factory
         ]);
     }
 
-      public function guest(): static
+    public function guest(): static
     {
         return $this->state(fn (array $attributes) => [
             'role' => UserRole::Guest,

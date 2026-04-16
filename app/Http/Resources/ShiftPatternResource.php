@@ -18,7 +18,7 @@ class ShiftPatternResource extends JsonResource
             'day' => $this->day,
             'shift_type' => $this->shift_type,
             'start_time' => $this->start_time ? substr($this->start_time, 0, 5) : null,
-            'end_time'   => $this->end_time   ? substr($this->end_time, 0, 5)   : null,
+            'end_time' => $this->end_time ? substr($this->end_time, 0, 5) : null,
         ];
     }
 }

@@ -9,7 +9,7 @@ uses(MocksUserObserver::class);
 test('password update page is displayed', function () {
     $user = User::factory()->create();
 
-     /** @var User $user */
+    /** @var User $user */
     $response = $this
         ->actingAs($user)
         ->get(route('user-password.edit'));
@@ -18,7 +18,7 @@ test('password update page is displayed', function () {
 });
 
 test('password can be updated', function () {
-     /** @var User $user */
+    /** @var User $user */
     $user = User::factory()->create();
 
     $response = $this
@@ -38,7 +38,7 @@ test('password can be updated', function () {
 });
 
 test('correct password must be provided to update password', function () {
-     /** @var User $user */
+    /** @var User $user */
     $user = User::factory()->create();
 
     $response = $this

@@ -1,14 +1,14 @@
 <?php
+
 use App\Actions\GenerateMonthlyDuties;
 use App\Actions\ImportBankHolidaysAction;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 
-
 Schedule::call(function () {
-    (new GenerateMonthlyDuties())
-    ->handle(Carbon::now()->addMonths(6)->startOfMonth());
+    (new GenerateMonthlyDuties)
+        ->handle(Carbon::now()->addMonths(6)->startOfMonth());
 })->monthlyOn(1, '00:00');
 
 // One-time backfill command (current year + next year)
@@ -35,5 +35,3 @@ Artisan::command('app:migrate:fresh', function () {
 
     $this->info('Ran migrations, seeded data and backfilled bank holidays.');
 })->purpose('Run migrate:fresh --seed and bank-holidays:backfill in sequence');
-
-

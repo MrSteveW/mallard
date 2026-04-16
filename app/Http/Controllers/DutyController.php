@@ -119,8 +119,6 @@ class DutyController extends Controller
 
         Duty::create($validated);
 
-        return redirect()->back();
-
         return redirect('/duties');
     }
 
