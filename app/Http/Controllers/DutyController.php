@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Actions\GenerateMonthlyDuties;
 use App\Http\Resources\CalendarNoteResource;
+use App\Http\Resources\DutyAssignResource;
+use App\Http\Resources\DutyCalendarResource;
 use App\Http\Resources\TaskResource;
+use App\Http\Resources\UserResource;
 use App\Models\CalendarNote;
 use App\Models\Duty;
 use App\Models\DutyGenerationRun;
@@ -46,7 +49,7 @@ class DutyController extends Controller
         ]);
     }
 
-    public function apiIndex(Request $request): \Illuminate\Http\JsonResponse
+    public function apiCalendar(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $request->validate([
             'start' => ['required', 'string'],
@@ -57,35 +60,27 @@ class DutyController extends Controller
         $start = Carbon::parse($request->start)->toDateString();
         $end = Carbon::parse($request->end)->toDateString();
 
-        $query = Duty::with('user')
+        $query = Duty::with(['user', 'user.employee.grade'])
             ->whereBetween('date', [$start, $end]);
 
         if (! $request->boolean('include_cancelled')) {
             $query->whereNull('cancelled_at');
         }
 
-        $duties = $query->get()
-            ->map(fn (Duty $duty) => [
-                'id' => $duty->id,
-                'title' => $duty->user->name,
-                'start' => $duty->date.'T'.$duty->start_time.':00',
-                'end' => $duty->end_time < $duty->start_time
-                    ? $duty->date.'T23:59:00'
-                    : $duty->date.'T'.$duty->end_time.':00',
-                'extendedProps' => [
-                    'user_id' => $duty->user_id,
-                    'shift_type' => $duty->shift_type,
-                    'start_time' => $duty->start_time,
-                    'end_time' => $duty->end_time,
-                    'notes' => $duty->notes,
-                    'grade' => $duty->user->employee?->grade?->name ?? '',
-                    'cancelled_at' => $duty->cancelled_at,
-                    'cancel_reason' => $duty->cancel_reason,
-                    'sort_order' => $duty->cancelled_at ? 1 : 0,
-                ],
-            ]);
+        return DutyCalendarResource::collection($query->get());
+    }
 
-        return response()->json($duties);
+    public function assign(string $date): \Inertia\Response
+    {
+        $duties = Duty::with(['user', 'user.employee.grade', 'task'])
+            ->where('date', $date)
+            ->get();
+
+        return Inertia::render('Duties/Assign', [
+            'duties' => DutyAssignResource::collection($duties),
+            'users' => UserResource::collection(User::with('employee.grade')->get()),
+            'tasks' => TaskResource::collection(Task::all()),
+        ]);
     }
 
     public function create()

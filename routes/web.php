@@ -47,6 +47,9 @@ Route::middleware(['auth', 'can:viewAny,'.User::class])->group(function () {
         ->parameters(['shiftpatterns' => 'user']);
     Route::post('duties/generate', [DutyController::class, 'generate']);
     Route::patch('duties/{duty}/cancel', [DutyController::class, 'cancel']);
+
+    Route::get('/duties/{date}', [DutyController::class, 'assign']);
+
     Route::resource('duties', DutyController::class);
     Route::resource('calendar-notes', CalendarNoteController::class)
         ->only(['store', 'update', 'destroy']);

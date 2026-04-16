@@ -10,7 +10,7 @@ interface CreateDutyProps {
     tasks?: Task[];
 }
 
-export default function Create({ users, tasks }: CreateDutyProps) {
+export default function Assign({ users, tasks }: CreateDutyProps) {
     return (
         <AppLayout>
             <Head title="Duties" />
