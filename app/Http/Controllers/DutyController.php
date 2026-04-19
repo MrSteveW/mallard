@@ -42,7 +42,7 @@ class DutyController extends Controller
             'users' => $users->map(fn ($user) => [
                 'id' => $user->id,
                 'name' => $user->name,
-                'grade' => $user->employee->grade->name ?? '',
+                'grade' => $user->employee?->grade?->name ?? '',
             ]),
             'generatedMonths' => $generatedMonths,
             'calendarNotes' => CalendarNoteResource::collection(CalendarNote::orderBy('date')->get()),
@@ -60,7 +60,7 @@ class DutyController extends Controller
         $start = Carbon::parse($request->start)->toDateString();
         $end = Carbon::parse($request->end)->toDateString();
 
-        $query = Duty::with(['user', 'user.employee.grade'])
+        $query = Duty::with(['user' => fn ($q) => $q->withTrashed(), 'user.employee.grade'])
             ->whereBetween('date', [$start, $end]);
 
         if (! $request->boolean('include_cancelled')) {
@@ -91,7 +91,7 @@ class DutyController extends Controller
             'users' => $users->map(fn ($user) => [
                 'id' => $user->id,
                 'name' => $user->name,
-                'grade' => $user->employee->grade->name ?? '',
+                'grade' => $user->employee?->grade?->name ?? '',
             ]),
             'tasks' => TaskResource::collection(Task::all()),
         ]);
