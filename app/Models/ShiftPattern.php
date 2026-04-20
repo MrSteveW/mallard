@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @property string $start_time
+ * @property string $end_time
+ */
 class ShiftPattern extends Model
 {
     protected $fillable = [
