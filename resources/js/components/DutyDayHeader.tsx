@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react';
 import { BookmarkPlus } from 'lucide-react';
 import type { CalendarNote } from '@/types';
 
@@ -5,6 +6,7 @@ interface HeaderProps {
     date: Date;
     calendarNotes: Record<string, CalendarNote[]>;
     editable?: boolean;
+    linkable?: boolean;
     onAddOrEditNote?: (date: string) => void;
 }
 
@@ -12,6 +14,7 @@ export default function DutyDayHeader({
     date,
     calendarNotes,
     editable,
+    linkable,
     onAddOrEditNote,
 }: HeaderProps) {
     const dateStr = [
@@ -24,26 +27,36 @@ export default function DutyDayHeader({
 
     return (
         <>
-            <div className="flex items-center justify-center">
-                <div className="fc-day-label mr-2">
-                    {date.toLocaleDateString('en-GB', {
-                        weekday: 'short',
-                        day: 'numeric',
-                        month: 'short',
-                    })}
+            <div className="flex flex-col items-center justify-center">
+                <div className="flex gap-x-2">
+                    <div>
+                        {date.toLocaleDateString('en-GB', {
+                            weekday: 'short',
+                            day: 'numeric',
+                            month: 'short',
+                        })}
+                    </div>
+                    <div>
+                        {editable && onAddOrEditNote && (
+                            <button
+                                style={{ cursor: 'pointer' }}
+                                type="button"
+                                aria-label={`Add or edit note for ${dateStr}`}
+                                onClick={() => onAddOrEditNote(dateStr)}
+                            >
+                                <BookmarkPlus className="size-4 text-mallard-green hover:text-mallard-orange" />
+                            </button>
+                        )}
+                    </div>
                 </div>
-                <div>
-                    {editable && onAddOrEditNote && (
-                        <button
-                            style={{ cursor: 'pointer' }}
-                            type="button"
-                            aria-label={`Add or edit note for ${dateStr}`}
-                            onClick={() => onAddOrEditNote(dateStr)}
-                        >
-                            <BookmarkPlus className="size-4" />
-                        </button>
-                    )}
-                </div>
+                {linkable && (
+                    <Link
+                        href={`/duties/${dateStr}/tasks`}
+                        className="fc-day-label mr-2 text-mallard-green hover:text-mallard-orange"
+                    >
+                        Assign duties
+                    </Link>
+                )}
             </div>
             <div className="flex">
                 {notes.length > 0 && (

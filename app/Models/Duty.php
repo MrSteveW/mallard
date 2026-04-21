@@ -19,11 +19,13 @@ class Duty extends Model
 
     public $timestamps = false;
 
+    /** @return BelongsTo<User, $this> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /** @return BelongsTo<Task, $this> */
     public function task()
     {
         return $this->belongsTo(Task::class)->withTrashed();

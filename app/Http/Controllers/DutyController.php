@@ -42,7 +42,7 @@ class DutyController extends Controller
             'users' => $users->map(fn ($user) => [
                 'id' => $user->id,
                 'name' => $user->name,
-                'grade' => $user->employee?->grade?->name ?? '',
+                'grade' => $user->employee?->grade->name ?? '',
             ]),
             'generatedMonths' => $generatedMonths,
             'calendarNotes' => CalendarNoteResource::collection(CalendarNote::orderBy('date')->get()),
@@ -68,33 +68,6 @@ class DutyController extends Controller
         }
 
         return DutyCalendarResource::collection($query->get());
-    }
-
-    public function assign(string $date): \Inertia\Response
-    {
-        $duties = Duty::with(['user', 'user.employee.grade', 'task'])
-            ->where('date', $date)
-            ->get();
-
-        return Inertia::render('Duties/Assign', [
-            'duties' => DutyAssignResource::collection($duties),
-            'users' => UserResource::collection(User::with('employee.grade')->get()),
-            'tasks' => TaskResource::collection(Task::all()),
-        ]);
-    }
-
-    public function create()
-    {
-        $users = User::with('employee.grade')->get();
-
-        return Inertia::render('Duties/Create', [
-            'users' => $users->map(fn ($user) => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'grade' => $user->employee?->grade?->name ?? '',
-            ]),
-            'tasks' => TaskResource::collection(Task::all()),
-        ]);
     }
 
     public function store(Request $request)
@@ -156,6 +129,44 @@ class DutyController extends Controller
         ]);
 
         $duty->update($validated);
+
+        return redirect()->back();
+    }
+
+    public function destroy(Duty $duty)
+    {
+        $duty->delete();
+
+        return redirect('/duties');
+    }
+
+    public function showTasks(string $date): \Inertia\Response
+    {
+        $duties = Duty::with(['user', 'user.employee.grade', 'task'])
+            ->where('date', $date)
+            ->get();
+
+        return Inertia::render('Duties/ShowTasks', [
+            'date' => $date,
+            'duties' => DutyAssignResource::collection($duties),
+            'users' => UserResource::collection(User::with('employee.grade')->get()),
+            'tasks' => TaskResource::collection(Task::all()),
+        ]);
+    }
+
+    public function updateTasks(string $date, Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $validated = $request->validate([
+            'duties' => ['required', 'array'],
+            'duties.*.id' => ['required', 'integer', 'exists:duties,id'],
+            'duties.*.task_id' => ['nullable', 'integer', 'exists:tasks,id'],
+        ]);
+
+        foreach ($validated['duties'] as $item) {
+            Duty::where('id', $item['id'])
+                ->where('date', $date)
+                ->update(['task_id' => $item['task_id']]);
+        }
 
         return redirect()->back();
     }

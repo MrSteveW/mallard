@@ -28,7 +28,7 @@ class ShiftPatternController extends Controller
         })->values();
 
         $shiftRepeat = ShiftRepeat::first();
-        $totalDays = $shiftRepeat?->total_days ?? 7;
+        $totalDays = $shiftRepeat->total_days ?? 7;
         $dayNames = collect(range(1, $totalDays))->map(function ($number) {
             return [
                 'number' => $number,

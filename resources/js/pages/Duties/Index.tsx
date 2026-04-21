@@ -119,8 +119,12 @@ export default function Index({
                         return response.data;
                     }}
                     eventOrder={(a: unknown, b: unknown) => {
-                        const aOrder = (a as { extendedProps: { sort_order?: number } }).extendedProps?.sort_order ?? 0;
-                        const bOrder = (b as { extendedProps: { sort_order?: number } }).extendedProps?.sort_order ?? 0;
+                        const aOrder =
+                            (a as { extendedProps: { sort_order?: number } })
+                                .extendedProps?.sort_order ?? 0;
+                        const bOrder =
+                            (b as { extendedProps: { sort_order?: number } })
+                                .extendedProps?.sort_order ?? 0;
                         return aOrder - bOrder;
                     }}
                     weekNumberCalculation={'ISO'}
@@ -131,6 +135,7 @@ export default function Index({
                             date={arg.date}
                             calendarNotes={calendarNotesByDate}
                             editable={true}
+                            linkable={true}
                             onAddOrEditNote={onAddOrEditNote}
                         />
                     )}

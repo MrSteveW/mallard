@@ -51,11 +51,6 @@ const mainNavItems: NavItem[] = [
         href: '/duties',
         icon: CalendarDays,
     },
-    {
-        title: 'Assign',
-        href: '/duties/create',
-        icon: CalendarPlus2,
-    },
 ];
 
 const adminNavItems: NavItem[] = [
