@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
 use App\Http\Resources\UserResource;
+use App\Mail\UserCreated;
 use App\Models\Grade;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -51,7 +53,7 @@ class UserController extends Controller
             'training' => ['nullable', 'string'],
         ]);
 
-        DB::transaction(function () use ($validated) {
+        $user = DB::transaction(function () use ($validated) {
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
@@ -63,7 +65,11 @@ class UserController extends Controller
                 'grade_id' => $validated['grade_id'],
                 'training' => $validated['training'],
             ]);
+
+            return $user;
         });
+
+        Mail::to($user)->queue(new UserCreated($user));
 
         return redirect('/users')->with('message', 'User created successfully.');
     }
