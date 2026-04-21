@@ -5,7 +5,7 @@ use Tests\Traits\MocksUserObserver;
 
 uses(MocksUserObserver::class);
 
-test('can unathenticated user view dashboard', function () {
+test('unauthenticated user is redirected from dashboard', function () {
     $response = $this->get(route('dashboard'));
     $response->assertRedirect(route('login'));
 });

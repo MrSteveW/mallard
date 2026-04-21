@@ -28,6 +28,17 @@ Schedule::call(function (ImportBankHolidaysAction $action) {
     $action->handle($targetYear);
 })->yearlyOn(1, 1, '00:00');
 
+Artisan::command('app:cleanse', function () {
+    $this->info('Running Pint...');
+    passthru('vendor/bin/pint --dirty --format agent');
+
+    $this->info('Running tests...');
+    $this->call('test', ['--compact' => true]);
+
+    $this->info('Running PHPStan...');
+    passthru('vendor/bin/phpstan analyse');
+})->purpose('Run Pint, tests, and PHPStan before pushing');
+
 Artisan::command('app:migrate:fresh', function () {
     $this->call('migrate:fresh', ['--seed' => true]);
 

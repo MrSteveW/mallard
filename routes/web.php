@@ -8,6 +8,7 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\CalendarNoteResource;
 use App\Models\CalendarNote;
+use App\Models\Duty;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
-// Admin only auth
+// Admin only
 Route::middleware(['auth', 'can:viewAny,'.User::class])->group(function () {
 
     Route::resource('users', UserController::class)->except(['show']);
@@ -45,15 +46,20 @@ Route::middleware(['auth', 'can:viewAny,'.User::class])->group(function () {
     Route::resource('grades', GradeController::class);
     Route::resource('shiftpatterns', ShiftPatternController::class)
         ->parameters(['shiftpatterns' => 'user']);
-    Route::post('duties/generate', [DutyController::class, 'generate']);
-    Route::patch('duties/{duty}/cancel', [DutyController::class, 'cancel']);
 
-    Route::get('/duties/{date}', [DutyController::class, 'assign']);
-
-    Route::resource('duties', DutyController::class);
     Route::resource('calendar-notes', CalendarNoteController::class)
         ->only(['store', 'update', 'destroy']);
+});
 
+
+// Admin + Authoriser
+Route::middleware(['auth', 'can:viewAny,'.Duty::class])->group(function () {
+    Route::post('duties/generate', [DutyController::class, 'generate']);
+    Route::patch('duties/{duty}/cancel', [DutyController::class, 'cancel']);
+    Route::get('/duties/{date}/tasks', [DutyController::class, 'showTasks'])
+    ->name('duties.showTasks');
+    Route::patch('/duties/{date}/tasks', [DutyController::class, 'updateTasks']);
+    Route::resource('duties', DutyController::class)->only(['index', 'store', 'update', 'destroy']);
 });
 
 require __DIR__.'/settings.php';

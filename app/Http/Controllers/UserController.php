@@ -8,7 +8,6 @@ use App\Mail\UserCreated;
 use App\Models\Grade;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
@@ -16,13 +15,6 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    // Authorization
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('can:viewAny,App\Models\User'),
-        ];
-    }
 
     public function index()
     {

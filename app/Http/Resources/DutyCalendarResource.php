@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
-   * @mixin \App\Models\Duty
-   */
+ * @mixin \App\Models\Duty
+ */
 class DutyCalendarResource extends JsonResource
 {
     /**
@@ -33,7 +33,7 @@ class DutyCalendarResource extends JsonResource
                 'start_time' => $startTime,
                 'end_time' => $endTime,
                 'notes' => $this->notes,
-                'grade' => $this->user->employee?->grade?->name ?? '',
+                'grade' => $this->user->employee?->grade->name ?? '',
                 'cancelled_at' => $this->cancelled_at,
                 'cancel_reason' => $this->cancel_reason,
                 'sort_order' => $this->cancelled_at ? 1 : 0,

@@ -11,6 +11,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
+/**
+ * @property UserRole $role
+ */
 class User extends Authenticatable
 {
     use Notifiable, TwoFactorAuthenticatable;
@@ -59,11 +62,13 @@ class User extends Authenticatable
         ];
     }
 
+    /** @return HasOne<Employee, $this> */
     public function employee(): HasOne
     {
         return $this->hasOne(Employee::class);
     }
 
+    /** @return HasMany<ShiftPattern, $this> */
     public function shiftPatterns(): HasMany
     {
         return $this->hasMany(ShiftPattern::class);

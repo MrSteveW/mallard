@@ -27,3 +27,9 @@ Duty table id | user_id | task_id | dutydate | shift_type | hours
 3. Run `php artisan app:migrate:fresh` to run SQLite migrations and seed data
 4. Run `composer run dev` to start the PHP server and development server
 5. Open http://localhost:8000 with your browser to see the app
+
+## Development commands
+
+Run `composer phpstan` to run PHPStan
+Run `php artisan app:cleanse` to run Pint, all Pest tests and PHPStan.
+Run `php artisan queue:work` to release queued jobs from database queue

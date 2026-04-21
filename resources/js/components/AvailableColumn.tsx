@@ -18,7 +18,7 @@ export const AvailableColumn = memo(function AvailableColumn({
     });
 
     return (
-        <div className="flex h-screen w-80 flex-col rounded-lg bg-blue-700 p-4">
+        <div className="flex h-screen w-80 flex-col rounded-lg bg-mallard-green p-4">
             <h2 className="font-semibold text-neutral-100">Available users</h2>
             <div ref={setNodeRef} className="flex flex-1 flex-col gap-1">
                 {duties.map((duty) => (

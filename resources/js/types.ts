@@ -26,9 +26,9 @@ export interface Duty {
     id: number;
     user_id: number;
     task_id: number | null;
-    dutydate: string;
+    date: string;
     shift_type?: string;
-    hours?: number;
+    duration?: number;
 }
 
 export interface Task {
