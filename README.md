@@ -1,26 +1,30 @@
-# Mallard booking system v3
+# Mallard Staff Management v1.0
 
 ## Description:
 
-Booking system for managers to book each user to one task per day.
+Staff management system for admin/authorisers to book each user to one task per day.  
+Admin edit a repeating shift pattern and populate a live diary of Duties.  
+Admin manage and assign tasks for staff on duty each day.
 
 ## Current version features
 
-User table id | name | grade | date_started | date_ended | (soft)deleted_at  
-Task table id | name | (soft)deleted_at  
-Duty table id | user_id | task_id | dutydate | shift_type | hours
+- [x] Tech stack - Laravel 12 | Inertia | React | PostgreSQL
+- [x] Laravel Fortify for authentication with role-based user access (in Model Policies)
+- [x] Calendar managed by [FullCalendar](https://fullcalendar.io/docs/react)
+- [x] Drag N Drop by [dnd kit](https://dndkit.com/)
+- [x] Bank Holidays listed by [Gov.uk API](https://www.api.gov.uk/gds/bank-holidays/#govuk-notification-banner-title)
+- [x] Includes Laravel tools: Auth starter kit, Fortify, Wayfinder, Boost
+- [x] Unit and Feature Pest testing
+- [x] Includes: Service to import and cleanse Bank Holiday API. Actions to auto generate Duties and populate Bank Holidays into Calendar Notes.
+- [x] Hosted by [Laravel Cloud](cloud.laravel.com)
 
-- [x] Tech stack - Laravel 12 | Inertia | React | Tailwind
-- [x] Auth with Laravel built-in auth
-- [x] Model, resource controller and migration for User, Task and Duty.
-- [x] Softdelete for User and Task
+## First Deployment
 
-    ## First Deployment
-    1. Set all environment variables from `.env.example` in Laravel Cloud
-    2. Run `php artisan migrate --force`
-    3. Run `php artisan app:bootstrap`
+1. Set all environment variables from `.env.example` in Laravel Cloud
+2. Run `php artisan migrate --force`
+3. Run `php artisan app:bootstrap`
 
-## Setup instructions
+## Local development instructions
 
 1. Fork the repository and clone your fork to your local machine
 2. Run `npm install`
@@ -33,3 +37,5 @@ Duty table id | user_id | task_id | dutydate | shift_type | hours
 Run `composer phpstan` to run PHPStan
 Run `php artisan app:cleanse` to run Pint, all Pest tests and PHPStan.
 Run `php artisan queue:work` to release queued jobs from database queue
+
+[Mallard by freepick](https://www.freepik.com/free-vector/flat-mother-duck-ducklings-outside_5422457.htm#fromView=search&page=3&position=27&uuid=183c85bf-d0c6-42a3-a92e-1b01bf1eb975&query=mallard)
