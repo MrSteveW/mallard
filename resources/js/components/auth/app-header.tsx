@@ -6,7 +6,6 @@ import {
     UserStar,
     ClipboardCheck,
     CalendarDays,
-    CalendarPlus2,
     CalendarSync,
 } from 'lucide-react';
 import { UserMenuContent } from '@/components/auth/user-menu-content';
