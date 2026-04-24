@@ -7,13 +7,13 @@ use Tests\Traits\MocksUserObserver;
 
 uses(MocksUserObserver::class);
 
-test('login screen can be rendered', function () {
+it('renders the login screen', function () {
     $response = $this->get(route('login'));
 
     $response->assertOk();
 });
 
-test('users can authenticate using the login screen', function () {
+it('allows a user to authenticate using the login screen', function () {
     $user = User::factory()->create();
 
     $response = $this->post(route('login.store'), [
@@ -25,7 +25,7 @@ test('users can authenticate using the login screen', function () {
     $response->assertRedirect(route('dashboard', absolute: false));
 });
 
-test('users with two factor enabled are redirected to two factor challenge', function () {
+it('redirects a user with two factor enabled to two factor challenge', function () {
     if (! Features::canManageTwoFactorAuthentication()) {
         $this->markTestSkipped('Two-factor authentication is not enabled.');
     }
@@ -53,7 +53,7 @@ test('users with two factor enabled are redirected to two factor challenge', fun
     $this->assertGuest();
 });
 
-test('users can not authenticate with invalid password', function () {
+it('does not allow user to authenticate with invalid password', function () {
     $user = User::factory()->create();
 
     $this->post(route('login.store'), [
@@ -64,7 +64,7 @@ test('users can not authenticate with invalid password', function () {
     $this->assertGuest();
 });
 
-test('users can logout', function () {
+it('allows a user to logout', function () {
     /** @var User $user */
     $user = User::factory()->create();
 
@@ -74,7 +74,7 @@ test('users can logout', function () {
     $response->assertRedirect(route('home'));
 });
 
-test('users are rate limited', function () {
+it('rate limits a user', function () {
     $user = User::factory()->create();
 
     RateLimiter::increment(md5('login'.implode('|', [$user->email, '127.0.0.1'])), amount: 5);

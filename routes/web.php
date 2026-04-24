@@ -51,15 +51,20 @@ Route::middleware(['auth', 'can:viewAny,'.User::class])->group(function () {
         ->only(['store', 'update', 'destroy']);
 });
 
-
-// Admin + Authoriser
+// Guest + Admin + Authoriser
 Route::middleware(['auth', 'can:viewAny,'.Duty::class])->group(function () {
+    Route::resource('duties', DutyController::class)->only(['index']);
+    Route::get('/duties/{date}/tasks', [DutyController::class, 'showTasks'])
+        ->name('duties.showTasks');
+
+});
+
+// Admin + Authoriser only
+Route::middleware(['auth', 'can:create,'.Duty::class])->group(function () {
+    Route::resource('duties', DutyController::class)->only(['store', 'update', 'destroy']);
     Route::post('duties/generate', [DutyController::class, 'generate']);
     Route::patch('duties/{duty}/cancel', [DutyController::class, 'cancel']);
-    Route::get('/duties/{date}/tasks', [DutyController::class, 'showTasks'])
-    ->name('duties.showTasks');
     Route::patch('/duties/{date}/tasks', [DutyController::class, 'updateTasks']);
-    Route::resource('duties', DutyController::class)->only(['index', 'store', 'update', 'destroy']);
 });
 
 require __DIR__.'/settings.php';

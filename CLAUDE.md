@@ -11,7 +11,7 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
 - The number of ShiftPatterns created is specific by the ShiftRepeat total_days field.
 - Admin being able to manually change the ShiftRepeat start_date and total_days is not currently in scope.
 - Duty is an actual shift instance on a specific calendar date.
-- A Task is an activity that a staff member is required to do on a Duty - the Task feature of a Duty is not currently in scope.
+- A Task is an activity that a staff member is required to do on a date-specific Duty
 - A Grade is an Employee's seniority level. A Grade is currently for purely visual information.
 - UserRole enum values are
     - Admin
@@ -53,6 +53,8 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
 
 <laravel-boost-guidelines>
 === foundation rules ===
+
+Only answer the question asked. Do not suggest additional changes, follow-up tasks, or improvements unless explicitly requested.
 
 # Laravel Boost Guidelines
 
