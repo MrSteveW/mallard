@@ -43,6 +43,14 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
 - Duty records for a specified week are fetched by an internal API, apiCalendar action in `app/Http/Controllers/DutyController` and passed to either Duty Index or Dashboard to be rendered by FullCalendar.
 - There is a Guest user feature that allows any human user to visit the app with Guest user-based access.
 
+## Filament admin panel
+
+- Filament v5 panel is at `/admin` and handles User management, Employee management, Task management and Grade management
+- The existing Inertia/React admin views handle Dashboard, Duty management and ShiftPatterns
+- Filament uses [its own auth guard / the existing Fortify auth] for admin access
+- Filament resources live in `app/Filament/Resources/`
+- When building a new admin feature, prefer Filament unless it requires FullCalendar or real-time interactivity
+
 ## Features for future development
 
 - Users can make a Leave Request
@@ -54,8 +62,6 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
 <laravel-boost-guidelines>
 === foundation rules ===
 
-Only answer the question asked. Do not suggest additional changes, follow-up tasks, or improvements unless explicitly requested.
-
 # Laravel Boost Guidelines
 
 The Laravel Boost guidelines are specifically curated by Laravel maintainers for this application. These guidelines should be followed closely to ensure the best experience when building Laravel applications.
@@ -65,12 +71,14 @@ The Laravel Boost guidelines are specifically curated by Laravel maintainers for
 This application is a Laravel application and its main Laravel ecosystems package & versions are below. You are an expert with them all. Ensure you abide by these specific packages & versions.
 
 - php - 8.3.28
+- filament/filament (FILAMENT) - v5
 - inertiajs/inertia-laravel (INERTIA) - v2
 - laravel/fortify (FORTIFY) - v1
 - laravel/framework (LARAVEL) - v12
 - laravel/prompts (PROMPTS) - v0
 - laravel/sanctum (SANCTUM) - v4
 - laravel/wayfinder (WAYFINDER) - v0
+- livewire/livewire (LIVEWIRE) - v4
 - tightenco/ziggy (ZIGGY) - v2
 - larastan/larastan (LARASTAN) - v3
 - laravel/mcp (MCP) - v0
