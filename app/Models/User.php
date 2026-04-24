@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\UserRole;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -13,7 +15,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 /**
  * @property UserRole $role
  */
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use Notifiable, TwoFactorAuthenticatable;
 
@@ -58,6 +60,11 @@ class User extends Authenticatable
             'two_factor_confirmed_at' => 'datetime',
             'role' => UserRole::class,
         ];
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->role === UserRole::Admin;
     }
 
     /** @return HasOne<Employee, $this> */
