@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\GenerateMonthlyDuties;
+use App\Enums\ShiftType;
 use App\Http\Resources\CalendarNoteResource;
 use App\Http\Resources\DutyAssignResource;
 use App\Http\Resources\DutyCalendarResource;
@@ -13,9 +14,11 @@ use App\Models\Duty;
 use App\Models\DutyGenerationRun;
 use App\Models\Task;
 use App\Models\User;
+use App\Rules\QuarterHourTime;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class DutyController extends Controller
@@ -74,12 +77,12 @@ class DutyController extends Controller
     {
 
         $validated = $request->validate([
-            'user_id' => ['required', 'integer'],
-            'task_id' => ['nullable', 'integer'],
+            'user_id' => ['required', 'exists:users,id'],
+            'task_id' => ['nullable', 'exists:tasks,id'],
             'date' => ['required', 'date_format:Y-m-d'],
-            'shift_type' => ['required', 'string'],
-            'start_time' => ['required', 'date_format:H:i'],
-            'end_time' => ['required', 'date_format:H:i'],
+            'shift_type' => ['required', Rule::enum(ShiftType::class)],
+            'start_time' => ['required', new QuarterHourTime],
+            'end_time' => ['required', new QuarterHourTime],
             'notes' => ['nullable', 'string'],
         ]);
 
@@ -118,12 +121,12 @@ class DutyController extends Controller
         ]);
 
         $validated = $request->validate([
-            'user_id' => ['required', 'integer'],
-            'task_id' => ['nullable', 'integer'],
+            'user_id' => ['required', 'exists:users,id'],
+            'task_id' => ['nullable', 'exists:tasks,id'],
             'date' => ['required', 'date_format:Y-m-d'],
-            'shift_type' => ['required', 'string'],
-            'start_time' => ['required', 'date_format:H:i'],
-            'end_time' => ['required', 'date_format:H:i'],
+            'shift_type' => ['required', Rule::enum(ShiftType::class)],
+            'start_time' => ['required', new QuarterHourTime],
+            'end_time' => ['required', new QuarterHourTime],
             'duration' => ['nullable', 'integer'],
             'notes' => ['nullable', 'string'],
         ]);

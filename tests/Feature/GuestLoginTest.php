@@ -5,7 +5,7 @@ use Tests\Traits\MocksUserObserver;
 
 uses(MocksUserObserver::class);
 
-test('guest user can authenticate using guest credentials', function () {
+it('allows guest user to authenticate using guest credentials', function () {
     $email = config('services.guest.email');
     $password = config('services.guest.password');
 

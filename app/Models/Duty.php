@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -12,6 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Duty extends Model
 {
+    use HasFactory;
+
     // set custom table name
     protected $table = 'duties';
 
@@ -28,7 +31,7 @@ class Duty extends Model
     /** @return BelongsTo<Task, $this> */
     public function task()
     {
-        return $this->belongsTo(Task::class)->withTrashed();
+        return $this->belongsTo(Task::class);
     }
 
     protected function startTime(): Attribute

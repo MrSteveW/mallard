@@ -5,33 +5,33 @@ use Tests\Traits\MocksUserObserver;
 
 uses(MocksUserObserver::class);
 
-test('unauthenticated user is redirected from dashboard', function () {
+it('redirects an unauthenticated user from dashboard', function () {
     $response = $this->get(route('dashboard'));
     $response->assertRedirect(route('login'));
 });
 
-test('can admin view dashboard', function () {
+it('allows admin to view dashboard', function () {
     $user = User::factory()->admin()->create();
     $this->actingAs($user)
         ->get(route('dashboard'))
         ->assertInertia();
 });
 
-test('can authoriser view dashboard', function () {
+it('allows authoriser to view dashboard', function () {
     $user = User::factory()->authoriser()->create();
     $this->actingAs($user)
         ->get(route('dashboard'))
         ->assertInertia();
 });
 
-test('can user view dashboard', function () {
+it('allows user to view dashboard', function () {
     $user = User::factory()->user()->create();
     $this->actingAs($user)
         ->get(route('dashboard'))
         ->assertInertia();
 });
 
-test('can guest view dashboard', function () {
+it('allows guest to view dashboard', function () {
     $user = User::factory()->guest()->create();
     $this->actingAs($user)
         ->get(route('dashboard'))
