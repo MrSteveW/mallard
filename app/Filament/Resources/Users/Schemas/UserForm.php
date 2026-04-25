@@ -3,10 +3,10 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use App\Enums\UserRole;
-use Filament\Forms\Components\DateTimePicker;
+use App\Models\Grade;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
 class UserForm
@@ -20,20 +20,22 @@ class UserForm
                 TextInput::make('email')
                     ->label('Email address')
                     ->email()
+                    ->unique(ignoreRecord: true)
                     ->required(),
-                DateTimePicker::make('email_verified_at'),
                 TextInput::make('password')
                     ->password()
-                    ->required(),
+                    ->required(fn (string $operation): bool => $operation === 'create')
+                    ->dehydrated(fn (?string $state): bool => filled($state)),
                 Select::make('role')
                     ->options(UserRole::class)
                     ->default('User')
                     ->required(),
-                Textarea::make('two_factor_secret')
+                Select::make('grade_id')
+                    ->label('Grade')
+                    ->options(Grade::pluck('name', 'id'))
+                    ->required(),
+                Textarea::make('training')
                     ->columnSpanFull(),
-                Textarea::make('two_factor_recovery_codes')
-                    ->columnSpanFull(),
-                DateTimePicker::make('two_factor_confirmed_at'),
             ]);
     }
 }

@@ -55,17 +55,17 @@ const mainNavItems: NavItem[] = [
 const adminNavItems: NavItem[] = [
     {
         title: 'Users',
-        href: '/users',
+        href: '/admin/users',
         icon: UserPen,
     },
     {
         title: 'Tasks',
-        href: '/tasks',
+        href: '/admin/tasks',
         icon: ClipboardCheck,
     },
     {
         title: 'Grades',
-        href: '/grades',
+        href: '/admin/grades',
         icon: UserStar,
     },
     {
