@@ -40,8 +40,8 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
     - Admin manually triggers the Laravel Action `app/Actions/GenerateMonthlyDuties.php`
 - Bank Holiday information is provided by a UK Government API and cleansed at `app/Services/BankHolidayService.php`. The data is then used to create CalendarNote records in `ImportBankHolidaysAction.php`. A CalendarNote source either be made automatically (bank_holidays) or manually by admin (manual) then passed to the Duty Index FullCalendar.
 - Duty records for a specified week are fetched by an internal API, apiCalendar action in `app/Http/Controllers/DutyController` and passed to either Duty Index or Dashboard to be rendered by FullCalendar.
-
 - Assigning a task to a User's Duty.
+- Migration strategy: This app is in active development. Modify existing migrations directly rather than creating new additive migrations. Do not create separate migrations for constraint additions or column changes.
 
 ## Filament admin panel
 
@@ -56,7 +56,6 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
 - Users can make a Leave Request
 - Users can request email password change
 - Email notification of leave request
-
 - Multi-tenant app
 
 <laravel-boost-guidelines>
