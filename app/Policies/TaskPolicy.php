@@ -3,9 +3,10 @@
 namespace App\Policies;
 
 use App\Enums\UserRole;
+use App\Models\Task;
 use App\Models\User;
 
-class UserPolicy
+class TaskPolicy
 {
     public function before(User $user): ?bool
     {
@@ -21,7 +22,7 @@ class UserPolicy
         return $user->role === UserRole::Guest;
     }
 
-    public function view(User $user): bool
+    public function view(User $user, Task $task): bool
     {
         return $user->role === UserRole::Guest;
     }
@@ -31,12 +32,12 @@ class UserPolicy
         return false;
     }
 
-    public function update(User $user): bool
+    public function update(User $user, Task $task): bool
     {
         return false;
     }
 
-    public function delete(User $user): bool
+    public function delete(User $user, Task $task): bool
     {
         return false;
     }

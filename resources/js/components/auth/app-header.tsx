@@ -32,7 +32,7 @@ import {
 
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { useInitials } from '@/hooks/use-initials';
-import { cn, toUrl } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import type { NavItem, SharedData } from '@/types/index';
 import AppLogo from './app-logo';
@@ -54,24 +54,27 @@ const mainNavItems: NavItem[] = [
 
 const adminNavItems: NavItem[] = [
     {
-        title: 'Users',
-        href: '/admin/users',
+        title: 'Shift Patterns',
+        href: '/shiftpatterns',
+        icon: CalendarSync,
+    },
+    {
+        title: 'Admin',
+        href: '/admin',
         icon: UserPen,
+        external: true,
     },
     {
         title: 'Tasks',
         href: '/admin/tasks',
         icon: ClipboardCheck,
+        external: true,
     },
     {
         title: 'Grades',
         href: '/admin/grades',
         icon: UserStar,
-    },
-    {
-        title: 'Shift Patterns',
-        href: '/shiftpatterns',
-        icon: CalendarSync,
+        external: true,
     },
 ];
 
@@ -125,35 +128,31 @@ export function AppHeader() {
                                                 </Link>
                                             ))}
 
-                                            {adminNavItems.map((item) => (
-                                                <Link
-                                                    key={item.title}
-                                                    href={item.href}
-                                                    className="flex items-center space-x-2 font-medium"
-                                                >
-                                                    {item.icon && (
-                                                        <item.icon className="h-5 w-5" />
-                                                    )}
-                                                    <span>{item.title}</span>
-                                                </Link>
-                                            ))}
-                                        </div>
-
-                                        <div className="flex flex-col space-y-4">
-                                            {adminNavItems.map((item) => (
-                                                <a
-                                                    key={item.title}
-                                                    href={toUrl(item.href)}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="flex items-center space-x-2 font-medium"
-                                                >
-                                                    {item.icon && (
-                                                        <item.icon className="h-5 w-5" />
-                                                    )}
-                                                    <span>{item.title}</span>
-                                                </a>
-                                            ))}
+                                            {adminNavItems.map((item) =>
+                                                item.external ? (
+                                                    <a
+                                                        key={item.title}
+                                                        href={item.href as string}
+                                                        className="flex items-center space-x-2 font-medium"
+                                                    >
+                                                        {item.icon && (
+                                                            <item.icon className="h-5 w-5" />
+                                                        )}
+                                                        <span>{item.title}</span>
+                                                    </a>
+                                                ) : (
+                                                    <Link
+                                                        key={item.title}
+                                                        href={item.href}
+                                                        className="flex items-center space-x-2 font-medium"
+                                                    >
+                                                        {item.icon && (
+                                                            <item.icon className="h-5 w-5" />
+                                                        )}
+                                                        <span>{item.title}</span>
+                                                    </Link>
+                                                ),
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -210,22 +209,37 @@ export function AppHeader() {
                                             key={index}
                                             className="relative flex h-full items-center"
                                         >
-                                            <Link
-                                                href={item.href}
-                                                className={cn(
-                                                    navigationMenuTriggerStyle(),
-                                                    whenCurrentUrl(
-                                                        item.href,
-                                                        activeItemStyles,
-                                                    ),
-                                                    'h-9 cursor-pointer px-3',
-                                                )}
-                                            >
-                                                {item.icon && (
-                                                    <item.icon className="mr-2 h-4 w-4" />
-                                                )}
-                                                {item.title}
-                                            </Link>
+                                            {item.external ? (
+                                                <a
+                                                    href={item.href as string}
+                                                    className={cn(
+                                                        navigationMenuTriggerStyle(),
+                                                        'h-9 cursor-pointer px-3',
+                                                    )}
+                                                >
+                                                    {item.icon && (
+                                                        <item.icon className="mr-2 h-4 w-4" />
+                                                    )}
+                                                    {item.title}
+                                                </a>
+                                            ) : (
+                                                <Link
+                                                    href={item.href}
+                                                    className={cn(
+                                                        navigationMenuTriggerStyle(),
+                                                        whenCurrentUrl(
+                                                            item.href,
+                                                            activeItemStyles,
+                                                        ),
+                                                        'h-9 cursor-pointer px-3',
+                                                    )}
+                                                >
+                                                    {item.icon && (
+                                                        <item.icon className="mr-2 h-4 w-4" />
+                                                    )}
+                                                    {item.title}
+                                                </Link>
+                                            )}
                                             {isCurrentUrl(item.href) && (
                                                 <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-mallard-green dark:bg-white"></div>
                                             )}
