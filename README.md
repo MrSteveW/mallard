@@ -8,12 +8,12 @@ Admin manage and assign tasks for staff on duty each day.
 
 ## Current version features
 
-- [x] Tech stack - Laravel 12 | Inertia | React | PostgreSQL
+- [x] Tech stack - Laravel 12 | Inertia | React | Livewire | PostgreSQL
 - [x] Laravel Fortify for authentication with role-based user access (in Model Policies)
 - [x] Calendar managed by [FullCalendar](https://fullcalendar.io/docs/react)
 - [x] Drag N Drop by [dnd kit](https://dndkit.com/)
 - [x] Bank Holidays listed by [Gov.uk API](https://www.api.gov.uk/gds/bank-holidays/#govuk-notification-banner-title)
-- [x] Includes Laravel tools: Auth starter kit, Fortify, Wayfinder, Boost
+- [x] Includes Laravel tools: Auth starter kit, Fortify, Wayfinder, Boost, Filament
 - [x] Unit and Feature Pest testing
 - [x] Includes: Service to import and cleanse Bank Holiday API. Actions to auto generate Duties and populate Bank Holidays into Calendar Notes.
 - [x] Hosted by [Laravel Cloud](cloud.laravel.com)
