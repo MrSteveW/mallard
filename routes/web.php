@@ -2,10 +2,7 @@
 
 use App\Http\Controllers\CalendarNoteController;
 use App\Http\Controllers\DutyController;
-use App\Http\Controllers\GradeController;
 use App\Http\Controllers\ShiftPatternController;
-use App\Http\Controllers\TaskController;
-use App\Http\Controllers\UserController;
 use App\Http\Resources\CalendarNoteResource;
 use App\Models\CalendarNote;
 use App\Models\Duty;
@@ -37,13 +34,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // Admin only
 Route::middleware(['auth', 'can:viewAny,'.User::class])->group(function () {
 
-    Route::resource('users', UserController::class)->except(['show']);
-    Route::get('users/{user}', function () {
-        return redirect()->route('users.index');
-    });
-
-    Route::resource('tasks', TaskController::class);
-    Route::resource('grades', GradeController::class);
     Route::resource('shiftpatterns', ShiftPatternController::class)
         ->parameters(['shiftpatterns' => 'user']);
 
