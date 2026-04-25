@@ -2,11 +2,9 @@ import { Link, usePage } from '@inertiajs/react';
 import {
     LayoutGrid,
     Menu,
-    UserPen,
-    UserStar,
-    ClipboardCheck,
     CalendarDays,
     CalendarSync,
+    UserRoundCog,
 } from 'lucide-react';
 import { UserMenuContent } from '@/components/auth/user-menu-content';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -61,19 +59,7 @@ const adminNavItems: NavItem[] = [
     {
         title: 'Admin',
         href: '/admin',
-        icon: UserPen,
-        external: true,
-    },
-    {
-        title: 'Tasks',
-        href: '/admin/tasks',
-        icon: ClipboardCheck,
-        external: true,
-    },
-    {
-        title: 'Grades',
-        href: '/admin/grades',
-        icon: UserStar,
+        icon: UserRoundCog,
         external: true,
     },
 ];
@@ -132,13 +118,17 @@ export function AppHeader() {
                                                 item.external ? (
                                                     <a
                                                         key={item.title}
-                                                        href={item.href as string}
+                                                        href={
+                                                            item.href as string
+                                                        }
                                                         className="flex items-center space-x-2 font-medium"
                                                     >
                                                         {item.icon && (
                                                             <item.icon className="h-5 w-5" />
                                                         )}
-                                                        <span>{item.title}</span>
+                                                        <span>
+                                                            {item.title}
+                                                        </span>
                                                     </a>
                                                 ) : (
                                                     <Link
@@ -149,7 +139,9 @@ export function AppHeader() {
                                                         {item.icon && (
                                                             <item.icon className="h-5 w-5" />
                                                         )}
-                                                        <span>{item.title}</span>
+                                                        <span>
+                                                            {item.title}
+                                                        </span>
                                                     </Link>
                                                 ),
                                             )}

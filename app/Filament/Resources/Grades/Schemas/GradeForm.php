@@ -13,7 +13,8 @@ class GradeForm
             ->components([
                 TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->unique(ignoreRecord: true),
             ]);
     }
 }

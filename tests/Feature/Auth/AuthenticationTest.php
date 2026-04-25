@@ -74,6 +74,15 @@ it('allows a user to logout', function () {
     $response->assertRedirect(route('home'));
 });
 
+it('redirects admin to home after logging out of the admin panel', function () {
+    $admin = User::factory()->admin()->create();
+
+    $response = $this->actingAs($admin)->post(route('filament.admin.auth.logout'));
+
+    $this->assertGuest();
+    $response->assertRedirect('/');
+});
+
 it('rate limits a user', function () {
     $user = User::factory()->create();
 
