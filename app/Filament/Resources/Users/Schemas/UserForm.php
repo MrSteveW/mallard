@@ -24,7 +24,7 @@ class UserForm
                     ->required(),
                 TextInput::make('password')
                     ->password()
-                    ->required(fn (string $operation): bool => $operation === 'create')
+                    ->hiddenOn('create')
                     ->dehydrated(fn (?string $state): bool => filled($state)),
                 Select::make('role')
                     ->options(UserRole::class)

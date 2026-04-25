@@ -22,7 +22,6 @@ it('queues UserCreated mail when admin creates a user via Filament', function ()
         ->fillForm([
             'name' => 'Jane Doe',
             'email' => 'jane@example.com',
-            'password' => 'password',
             'role' => 'User',
             'grade_id' => $grade->id,
             'training' => null,
@@ -31,6 +30,7 @@ it('queues UserCreated mail when admin creates a user via Filament', function ()
         ->assertHasNoErrors();
 
     Mail::assertQueued(UserCreated::class, function ($mail) {
-        return $mail->user->email === 'jane@example.com';
+        return $mail->user->email === 'jane@example.com'
+            && str_contains($mail->resetUrl, 'reset-password');
     });
 });
