@@ -18,34 +18,34 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
     - Authoriser
     - User
     - Guest
-- Admin have full editing rights to all Models
-- Authoriser will only have access to authorise LeaveRequests and remove Duties - feature not currently in scope.
-- User will only have access to dashboard and their own Leave Requests - Leave Requests not currently in scope.
-- Guest will have full viewing rights - leave this alone.
+- Admin have full authorisation rights to all Models
+- Authoriser will only have access to Duty and LeaveRequest Models - not the Admin Panel
+- User will only have access to dashboard and their own Leave Requests - LeaveRequests not currently in scope.
+- Guest should have access to Admin panel but only have viewing rights to all Models.
 - CalendarNote is a display annotation on the calendar. It contains the date, a string note and the generation source (manual from user or bank_holiday from ImportBankHolidaysAction)
 
 ## Current build state
 
 - This app is being built using VS Code version 1.115, in WSL version: 2.5.9.0, using ZSH terminal zsh 5.9 (x86_64-ubuntu-linux-gnu).
 - App is built for a single organisation with approximately 40 staff.
-- Auth uses a typical Fortify approach. There is no 'register' route and Admin manually create a new User.
+- Auth uses a typical Fortify approach. There is no 'register' user route and Admin manually create a new User.
 - The preferred reset command in development is 'app:migrate:fresh' as defined in `routes/console.php`. This refreshes all migration table and additionally calls the Database Seeders defined in `database/seeders/DatabaseSeeder` and my custom Action `app/Actions/ImportBankHolidaysAction.php`.
-- Role-based access rights to specific routes are defined in `routes/web.php`.
 - Individual users should be able to log in, see the calendar dashboard of Duties and request Leave.
 - Admin should be able to add new users, new Tasks, new ShiftPatterns, new CalendarNotes, authorise Leave Requests and modify Duty events.
 - The calendar display of real duties is handled by FullCalendar JS library.
-- App will exclusively deal with UK times - including GMT/BST - and dates DD-MM-YYYY or ISO YYYY-MM-DD.
+- App will exclusively deal with UK times - including GMT/BST - and dates displayed as DD-MM-YYYY and stored as ISO YYYY-MM-DD.
 - Admin will be able to write a new CalendarNote from the Duties Index page.
 - ShiftPattern records can be calculated to the 'actual calendar day' and a Duty record made by either
     - Automatic Laravel Scheduler in `routes/console.php`
     - Admin manually triggers the Laravel Action `app/Actions/GenerateMonthlyDuties.php`
 - Bank Holiday information is provided by a UK Government API and cleansed at `app/Services/BankHolidayService.php`. The data is then used to create CalendarNote records in `ImportBankHolidaysAction.php`. A CalendarNote source either be made automatically (bank_holidays) or manually by admin (manual) then passed to the Duty Index FullCalendar.
 - Duty records for a specified week are fetched by an internal API, apiCalendar action in `app/Http/Controllers/DutyController` and passed to either Duty Index or Dashboard to be rendered by FullCalendar.
-- There is a Guest user feature that allows any human user to visit the app with Guest user-based access.
+
+- Assigning a task to a User's Duty.
 
 ## Filament admin panel
 
-- Filament v5 panel is at `/admin` and handles User management, Employee management, Task management and Grade management
+- Filament v5 panel is at `/admin` and handles User, Employee, Task and Grade management
 - The existing Inertia/React admin views handle Dashboard, Duty management and ShiftPatterns
 - Filament uses [its own auth guard / the existing Fortify auth] for admin access
 - Filament resources live in `app/Filament/Resources/`
@@ -56,7 +56,7 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
 - Users can make a Leave Request
 - Users can request email password change
 - Email notification of leave request
-- Assigning a task to a User's Duty.
+
 - Multi-tenant app
 
 <laravel-boost-guidelines>
@@ -85,6 +85,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/pint (PINT) - v1
 - laravel/sail (SAIL) - v1
 - pestphp/pest (PEST) - v4
+- pestphp/pest-plugin-livewire - v4.1
 - phpunit/phpunit (PHPUNIT) - v12
 - @inertiajs/react (INERTIA) - v2
 - react (REACT) - v19
