@@ -7,6 +7,8 @@ use App\Mail\UserCreated;
 use App\Models\User;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Str;
 
 class CreateUser extends CreateRecord
 {
@@ -25,6 +27,8 @@ class CreateUser extends CreateRecord
 
         unset($data['grade_id'], $data['training']);
 
+        $data['password'] = Str::random(64);
+
         return $data;
     }
 
@@ -35,6 +39,9 @@ class CreateUser extends CreateRecord
 
         $user->employee()->create($this->employeeData);
 
-        Mail::to($user)->queue(new UserCreated($user));
+        $token = Password::createToken($user);
+        $resetUrl = route('password.reset', ['token' => $token, 'email' => $user->email]);
+
+        Mail::to($user)->queue(new UserCreated($user, $resetUrl));
     }
 }
