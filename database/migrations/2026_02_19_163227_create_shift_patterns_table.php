@@ -15,7 +15,6 @@ return new class extends Migration
             $table->string('shift_type')->default('Off');
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
-            $table->softDeletes();
         });
     }
 
