@@ -43,7 +43,7 @@ jobs:
         run: npm run build
 
       - name: Tests
-        run: ./vendor/bin/pest
+        run: ./vendor/bin/pest ${{ matrix.php-version == '8.3' && '--coverage --min=65' || '' }}
         env:
           GUEST_EMAIL: ${{ secrets.GUEST_EMAIL }}
           GUEST_PASSWORD: ${{ secrets.GUEST_PASSWORD }}
