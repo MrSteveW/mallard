@@ -15,7 +15,6 @@ return new class extends Migration
             $table->date('date_started')->nullable();
             $table->date('date_ended')->nullable();
             $table->string('training')->nullable();
-            $table->softDeletes();
         });
     }
 
