@@ -9,33 +9,41 @@ use Tests\Traits\MocksUserObserver;
 uses(MocksUserObserver::class);
 
 it('allows admin to load the task list page', function () {
-    Task::factory()->count(3)->create();
+    $tasks = Task::factory()->count(3)->sequence(
+        ['name' => 'Task A'],
+        ['name' => 'Task B'],
+        ['name' => 'Task C'],
+    )->create();
 
     $this->actingAs(User::factory()->admin()->create());
 
     Livewire::test(ListTasks::class)
         ->assertOk()
-        ->assertCanSeeTableRecords(Task::all());
+        ->assertCanSeeTableRecords($tasks);
 });
 
-it('allows guest to load the grades list page', function () {
-    Task::factory()->count(3)->create();
+it('allows guest to load the task list page', function () {
+    $tasks = Task::factory()->count(3)->sequence(
+        ['name' => 'Task A'],
+        ['name' => 'Task B'],
+        ['name' => 'Task C'],
+    )->create();
 
     $this->actingAs(User::factory()->guest()->create());
 
     Livewire::test(ListTasks::class)
         ->assertOk()
-        ->assertCanSeeTableRecords(Task::all());
+        ->assertCanSeeTableRecords($tasks);
 });
 
-it('prevents authoriser from loading the grades list page', function () {
+it('prevents authoriser from loading the task list page', function () {
     $this->actingAs(User::factory()->authoriser()->create());
 
     Livewire::test(ListTasks::class)
         ->assertForbidden();
 });
 
-it('prevents user from loading the grades list page', function () {
+it('prevents user from loading the task list page', function () {
     $this->actingAs(User::factory()->user()->create());
 
     Livewire::test(ListTasks::class)
