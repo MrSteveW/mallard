@@ -63,7 +63,7 @@ class DutyController extends Controller
         $start = Carbon::parse($request->start)->toDateString();
         $end = Carbon::parse($request->end)->toDateString();
 
-        $query = Duty::with(['user' => fn ($q) => $q->withTrashed(), 'user.employee.grade'])
+        $query = Duty::with(['user', 'user.employee.grade'])
             ->whereBetween('date', [$start, $end]);
 
         if (! $request->boolean('include_cancelled')) {

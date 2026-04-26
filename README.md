@@ -2,7 +2,7 @@
 
 ## Description:
 
-Staff management system for admin/authorisers to book each user to one task per day.  
+Staff management system for admin/authorisers to assign each user to one task per day.  
 Admin edit a repeating shift pattern and populate a live diary of Duties.  
 Admin manage and assign tasks for staff on duty each day.
 
@@ -13,7 +13,7 @@ Admin manage and assign tasks for staff on duty each day.
 - [x] Calendar managed by [FullCalendar](https://fullcalendar.io/docs/react)
 - [x] Drag N Drop by [dnd kit](https://dndkit.com/)
 - [x] Bank Holidays listed by [Gov.uk API](https://www.api.gov.uk/gds/bank-holidays/#govuk-notification-banner-title)
-- [x] Includes Laravel tools: Auth starter kit, Fortify, Wayfinder, Boost, Filament
+- [x] Includes Laravel tools: Auth starter kit, Fortify, Wayfinder, Boost, Filament AdminPanel
 - [x] Unit and Feature Pest testing
 - [x] Includes: Service to import and cleanse Bank Holiday API. Actions to auto generate Duties and populate Bank Holidays into Calendar Notes.
 - [x] Hosted by [Laravel Cloud](cloud.laravel.com)
