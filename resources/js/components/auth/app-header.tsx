@@ -42,15 +42,14 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+];
 
+const adminNavItems: NavItem[] = [
     {
         title: 'Duties',
         href: '/duties',
         icon: CalendarDays,
     },
-];
-
-const adminNavItems: NavItem[] = [
     {
         title: 'Shift Patterns',
         href: '/shiftpatterns',

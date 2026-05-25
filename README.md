@@ -17,6 +17,7 @@ Admin manage and assign tasks for staff on duty each day.
 - [x] Unit and Feature Pest testing
 - [x] Includes: Service to import and cleanse Bank Holiday API. Actions to auto generate Duties and populate Bank Holidays into Calendar Notes.
 - [x] Hosted by [Laravel Cloud](cloud.laravel.com)
+- [x] \_ide_helper file by [barryvdh](https://github.com/barryvdh/laravel-ide-helper)
 
 ## First Deployment
 

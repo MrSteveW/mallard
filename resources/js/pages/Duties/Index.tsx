@@ -5,7 +5,7 @@ import type {
 } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/react';
-import { Head, router } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 import axios from 'axios';
 import { useState, useRef } from 'react';
 import CalendarNoteDialog from '@/components/CalendarNoteDialog';
@@ -15,6 +15,7 @@ import DutyIndexCard from '@/components/DutyIndexCard';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { mapToDutyEvent } from '@/lib/mapToDutyEvent';
+import type { SharedData } from '@/types/index';
 import type { DutyEvent, AssignableUser, CalendarNote } from '@/types.ts';
 
 interface IndexProps {
@@ -71,6 +72,8 @@ export default function Index({
         setIsNoteDialogOpen(true);
     }
 
+    const { auth } = usePage<SharedData>().props;
+
     return (
         <AppLayout>
             <Head title="Duties" />
@@ -79,6 +82,7 @@ export default function Index({
                     <Button onClick={handleCreateClick}>+ Duty</Button>
                     {!generatedMonths.includes(selectedMonth) && (
                         <Button
+                            disabled={auth.user.role === 'Guest'}
                             onClick={() =>
                                 router.post(
                                     '/duties/generate',
@@ -97,7 +101,9 @@ export default function Index({
                             {selectedMonth
                                 ? new Date(
                                       selectedMonth + '-01',
-                                  ).toLocaleString('default', { month: 'long' })
+                                  ).toLocaleString('default', {
+                                      month: 'long',
+                                  })
                                 : ''}{' '}
                             Duties
                         </Button>

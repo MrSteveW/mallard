@@ -18,6 +18,7 @@ use App\Rules\QuarterHourTime;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -25,6 +26,7 @@ class DutyController extends Controller
 {
     public function generate(Request $request)
     {
+        Gate::authorize('create', Duty::class);
         $request->validate([
             'month' => ['required', 'date_format:Y-m'],
         ]);
@@ -37,7 +39,7 @@ class DutyController extends Controller
 
     public function index()
     {
-
+        Gate::authorize('viewAny', Duty::class);
         $users = User::with('employee.grade')->get();
         $generatedMonths = DutyGenerationRun::pluck('year_month');
 
@@ -54,6 +56,7 @@ class DutyController extends Controller
 
     public function apiCalendar(Request $request): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
+        Gate::authorize('viewAny', Duty::class);
         $request->validate([
             'start' => ['required', 'string'],
             'end' => ['required', 'string'],
@@ -75,7 +78,7 @@ class DutyController extends Controller
 
     public function store(Request $request)
     {
-
+        Gate::authorize('create', Duty::class);
         $validated = $request->validate([
             'user_id' => ['required', 'exists:users,id'],
             'task_id' => ['nullable', 'exists:tasks,id'],
@@ -100,6 +103,7 @@ class DutyController extends Controller
 
     public function cancel(Duty $duty, Request $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('update', $duty);
         $validated = $request->validate([
             'cancel_reason' => ['required', 'string'],
         ]);
@@ -115,6 +119,7 @@ class DutyController extends Controller
 
     public function update(Duty $duty, Request $request)
     {
+        Gate::authorize('update', $duty);
         $request->merge([
             'start_time' => $request->start_time ? substr($request->start_time, 0, 5) : null,
             'end_time' => $request->end_time ? substr($request->end_time, 0, 5) : null,
@@ -138,6 +143,7 @@ class DutyController extends Controller
 
     public function destroy(Duty $duty)
     {
+        Gate::authorize('delete', $duty);
         $duty->delete();
 
         return redirect('/duties');
@@ -145,6 +151,7 @@ class DutyController extends Controller
 
     public function showTasks(string $date): \Inertia\Response
     {
+        Gate::authorize('viewAny', Duty::class);
         $duties = Duty::with(['user', 'user.employee.grade', 'task'])
             ->where('date', $date)
             ->get();
@@ -159,6 +166,7 @@ class DutyController extends Controller
 
     public function updateTasks(string $date, Request $request): \Illuminate\Http\RedirectResponse
     {
+        Gate::authorize('update', Duty::class);
         $validated = $request->validate([
             'duties' => ['required', 'array'],
             'duties.*.id' => ['required', 'integer', 'exists:duties,id'],
