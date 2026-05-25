@@ -1,4 +1,4 @@
-import { router } from '@inertiajs/react';
+import { router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,6 +12,7 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import type { CancelledOption } from '@/types';
+import type { SharedData } from '@/types/index';
 
 type DutyArchiveProps = {
     url: string;
@@ -37,6 +38,8 @@ export default function DutyArchive({
     const handleClose = (open: boolean) => {
         if (!open) setCancelReason('');
     };
+
+    const { auth } = usePage<SharedData>().props;
 
     return (
         <Dialog onOpenChange={handleClose}>
@@ -73,7 +76,7 @@ export default function DutyArchive({
                     </DialogClose>
                     <Button
                         variant="destructive"
-                        disabled={!cancelReason}
+                        disabled={!cancelReason || auth.user.role === 'Guest'}
                         onClick={handleCancel}
                     >
                         Confirm cancel

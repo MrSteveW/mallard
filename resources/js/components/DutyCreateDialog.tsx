@@ -17,6 +17,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { getShiftBgColor } from '@/constants/shiftBgColors';
 import { calculateDuration } from '@/lib/utils';
+import type { SharedData } from '@/types/index';
 import type {
     DutyEvent,
     TimeOptions,
@@ -120,6 +121,8 @@ export default function DutyCreateDialog({
     };
 
     const bgColor = getShiftBgColor(data?.shift_type);
+
+    const { auth } = usePage<SharedData>().props;
 
     return (
         <Dialog open={isDialogOpen} onOpenChange={handleClose}>
@@ -287,7 +290,12 @@ export default function DutyCreateDialog({
                                 <Button variant="outline">Close</Button>
                             </DialogClose>
 
-                            <Button type="submit" disabled={processing}>
+                            <Button
+                                type="submit"
+                                disabled={
+                                    processing || auth.user.role === 'Guest'
+                                }
+                            >
                                 Save
                             </Button>
                         </div>

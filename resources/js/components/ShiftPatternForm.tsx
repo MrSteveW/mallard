@@ -1,7 +1,8 @@
-import { useForm, Link } from '@inertiajs/react';
+import { useForm, Link, usePage } from '@inertiajs/react';
 import ShiftPatternEditCard from '@/components/ShiftPatternEditCard';
 import { Button } from '@/components/ui/button';
 import type { ShiftPatternUser, ShiftPatternDay } from '@/types';
+import type { SharedData } from '@/types/index';
 
 const DAY_NAMES = [
     'Monday',
@@ -54,6 +55,8 @@ export default function ShiftPatternForm({
         post(action);
     };
 
+    const { auth } = usePage<SharedData>().props;
+
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
             <div className="grid gap-1">
@@ -69,7 +72,10 @@ export default function ShiftPatternForm({
                         Edit Shift Pattern for {user.name}
                     </div>
                     <div className="ml-20 flex flex-row items-center">
-                        <Button type="submit" disabled={processing}>
+                        <Button
+                            type="submit"
+                            disabled={processing || auth.user.role === 'Guest'}
+                        >
                             Save
                         </Button>
                         <Button variant="outline" asChild>

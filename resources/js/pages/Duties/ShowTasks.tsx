@@ -1,11 +1,12 @@
 import { DndContext, type DragEndEvent } from '@dnd-kit/core';
-import { Head, Link, router } from '@inertiajs/react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useCallback, useMemo, useState } from 'react';
 import { AvailableColumn } from '@/components/AvailableColumn';
 import { TaskSlot } from '@/components/TaskSlot';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { AssignableUser, Duty, Task } from '@/types';
+import type { SharedData } from '@/types/index';
 
 interface ShowTasksProps {
     date: string;
@@ -14,7 +15,12 @@ interface ShowTasksProps {
     tasks?: Task[];
 }
 
-export default function ShowTasks({ date, duties: initialDutiesProp, users, tasks }: ShowTasksProps) {
+export default function ShowTasks({
+    date,
+    duties: initialDutiesProp,
+    users,
+    tasks,
+}: ShowTasksProps) {
     const [duties, setDuties] = useState<Duty[]>(initialDutiesProp ?? []);
 
     const handleDragEnd = useCallback((event: DragEndEvent) => {
@@ -71,6 +77,8 @@ export default function ShowTasks({ date, duties: initialDutiesProp, users, task
         [duties],
     );
 
+    const { auth } = usePage<SharedData>().props;
+
     return (
         <AppLayout>
             <Head title="Duties" />
@@ -85,10 +93,19 @@ export default function ShowTasks({ date, duties: initialDutiesProp, users, task
                         })}
                     </div>
                     <div className="ml-auto flex gap-2">
-                        <Button type="button" onClick={handleSave}>
+                        <Button
+                            type="button"
+                            onClick={handleSave}
+                            disabled={auth.user.role === 'Guest'}
+                        >
                             Save
                         </Button>
-                        <Button type="button" variant="outline" onClick={handleSaveAndClose}>
+                        <Button
+                            type="button"
+                            variant="outline"
+                            disabled={auth.user.role === 'Guest'}
+                            onClick={handleSaveAndClose}
+                        >
                             Save & Close
                         </Button>
                         <Button variant="outline">

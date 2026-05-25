@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -18,6 +19,8 @@ class ShiftPatternController extends Controller
 {
     public function index()
     {
+        Gate::authorize('viewAny', ShiftPattern::class);
+
         $users = User::with('shiftPatterns')->get();
         $groupedPatterns = $users->map(function ($user) {
             return [
@@ -44,6 +47,8 @@ class ShiftPatternController extends Controller
 
     public function store(Request $request)
     {
+        Gate::authorize('create', ShiftPattern::class);
+
         $shiftRepeat = ShiftRepeat::first();
 
         $validated = $request->validate([
@@ -71,10 +76,10 @@ class ShiftPatternController extends Controller
         }
     }
 
-    public function show(ShiftPattern $shiftPattern) {}
-
     public function edit(User $user)
     {
+        Gate::authorize('view', ShiftPattern::class);
+
         return Inertia::render('ShiftPatterns/Edit', [
             'user' => $user->only('id', 'name'),
             'initialPattern' => ShiftPatternResource::collection($user->shiftPatterns),
@@ -83,6 +88,7 @@ class ShiftPatternController extends Controller
 
     public function update(Request $request, User $user)
     {
+        Gate::authorize('update', ShiftPattern::class);
         $validated = $request->validate([
             'shiftArray' => ['required', 'array'],
             'shiftArray.*.day' => ['required', 'integer'],
@@ -105,6 +111,4 @@ class ShiftPatternController extends Controller
 
         return redirect('/shiftpatterns')->with('message', 'Shift pattern saved successfully.');
     }
-
-    public function destroy(ShiftPattern $shiftPattern) {}
 }

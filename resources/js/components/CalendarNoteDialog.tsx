@@ -1,4 +1,4 @@
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import type { CalendarNote } from '@/types';
+import type { SharedData } from '@/types/index';
 
 interface DialogProps {
     initialNotes: { date: string; notes: CalendarNote[] };
@@ -111,6 +112,8 @@ export default function DutyCreateDialog({
         onClose(open);
     };
 
+    const { auth } = usePage<SharedData>().props;
+
     return (
         <Dialog open={isDialogOpen} onOpenChange={handleClose}>
             <DialogContent className="sm:max-w-200">
@@ -138,6 +141,9 @@ export default function DutyCreateDialog({
                                                 onClick={() =>
                                                     handleEdit(entry)
                                                 }
+                                                disabled={
+                                                    auth.user.role === 'Guest'
+                                                }
                                             >
                                                 Edit
                                             </Button>
@@ -148,7 +154,10 @@ export default function DutyCreateDialog({
                                                 onClick={() =>
                                                     handleDelete(entry.id)
                                                 }
-                                                disabled={processing}
+                                                disabled={
+                                                    processing ||
+                                                    auth.user.role === 'Guest'
+                                                }
                                             >
                                                 Delete
                                             </Button>
@@ -191,7 +200,12 @@ export default function DutyCreateDialog({
                                 </Button>
                             )}
 
-                            <Button type="submit" disabled={processing}>
+                            <Button
+                                type="submit"
+                                disabled={
+                                    processing || auth.user.role === 'Guest'
+                                }
+                            >
                                 {editingNoteId ? 'Update' : 'Save'}
                             </Button>
                         </div>

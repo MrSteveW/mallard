@@ -3,10 +3,13 @@
 namespace App\Policies;
 
 use App\Enums\UserRole;
+use App\Models\CalendarNote;
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 
-class DutyPolicy
+class CalendarNotePolicy
 {
+
     public function before(User $user): ?bool
     {
         if (in_array($user->role, [UserRole::Admin, UserRole::Authoriser])) {
@@ -16,33 +19,17 @@ class DutyPolicy
         return null;
     }
 
-    public function manage(User $user): bool
-    {
-        return ($user->role === UserRole::Guest);
-    } 
-
-    public function viewAny(User $user): ?bool
-    {
-        if (in_array($user->role, [UserRole::Guest, UserRole::User])) {
-            return true;
-        }
-
-        return null;
-    }
-
-    
-
     public function create(User $user): bool
     {
         return false;
     }
 
-    public function update(User $user): bool
+    public function update(User $user, CalendarNote $calendarNote): bool
     {
         return false;
     }
 
-    public function delete(User $user): bool
+    public function delete(User $user, CalendarNote $calendarNote): bool
     {
         return false;
     }
