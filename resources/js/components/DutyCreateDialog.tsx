@@ -51,8 +51,8 @@ export default function DutyCreateDialog({
     const { shiftTypeOptions } = usePage().props as unknown as {
         shiftTypeOptions: ShiftTypeOption[];
     };
-    const { cancelledOptions } = usePage().props as unknown as {
-        cancelledOptions: CancelledOption[];
+    const { leaveOptions } = usePage().props as unknown as {
+        leaveOptions: CancelledOption[];
     };
 
     const [submitted, setSubmitted] = useState(false);
@@ -303,7 +303,7 @@ export default function DutyCreateDialog({
                             {method === 'patch' && (
                                 <DutyArchive
                                     url={`/duties/${data.id}/cancel`}
-                                    cancelledOptions={cancelledOptions}
+                                    leaveOptions={leaveOptions}
                                     onSuccess={() => {
                                         reset();
                                         onSuccess?.();

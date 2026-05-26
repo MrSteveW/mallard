@@ -78,4 +78,10 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->hasMany(ShiftPattern::class);
     }
+
+     /** @return HasMany<LeaveRequest, $this> */
+    public function leaveRequests(): HasMany
+    {
+        return $this->hasMany(LeaveRequest::class);
+    }
 }

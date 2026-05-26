@@ -5,6 +5,7 @@ import {
     CalendarDays,
     CalendarSync,
     UserRoundCog,
+    ClockFading,
 } from 'lucide-react';
 import { UserMenuContent } from '@/components/auth/user-menu-content';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -42,14 +43,22 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+    {
+        title: 'Leave Requests',
+        href: '/leaverequests',
+        icon: ClockFading,
+    },
 ];
 
-const adminNavItems: NavItem[] = [
+const authoriserNavItems: NavItem[] = [
     {
         title: 'Duties',
         href: '/duties',
         icon: CalendarDays,
     },
+];
+
+const adminNavItems: NavItem[] = [
     {
         title: 'Shift Patterns',
         href: '/shiftpatterns',
@@ -65,6 +74,87 @@ const adminNavItems: NavItem[] = [
 
 const activeItemStyles =
     'text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100';
+
+function MobileNavLinks({ items }: { items: NavItem[] }) {
+    return (
+        <>
+            {items.map((item) =>
+                item.external ? (
+                    <a
+                        key={item.title}
+                        href={item.href as string}
+                        className="flex items-center space-x-2 font-medium"
+                    >
+                        {item.icon && <item.icon className="h-5 w-5" />}
+                        <span>{item.title}</span>
+                    </a>
+                ) : (
+                    <Link
+                        key={item.title}
+                        href={item.href}
+                        className="flex items-center space-x-2 font-medium"
+                    >
+                        {item.icon && <item.icon className="h-5 w-5" />}
+                        <span>{item.title}</span>
+                    </Link>
+                ),
+            )}
+        </>
+    );
+}
+
+function NavMenuList({
+    items,
+    isCurrentUrl,
+    whenCurrentUrl,
+}: {
+    items: NavItem[];
+    isCurrentUrl: (href: string) => boolean;
+    whenCurrentUrl: (href: string, className: string) => string;
+}) {
+    return (
+        <NavigationMenuList className="flex h-full items-stretch space-x-2">
+            {items.map((item, index) => (
+                <NavigationMenuItem
+                    key={index}
+                    className="relative flex h-full items-center"
+                >
+                    {item.external ? (
+                        <a
+                            href={item.href as string}
+                            className={cn(
+                                navigationMenuTriggerStyle(),
+                                'h-9 cursor-pointer px-3',
+                            )}
+                        >
+                            {item.icon && (
+                                <item.icon className="mr-2 h-4 w-4" />
+                            )}
+                            {item.title}
+                        </a>
+                    ) : (
+                        <Link
+                            href={item.href}
+                            className={cn(
+                                navigationMenuTriggerStyle(),
+                                whenCurrentUrl(item.href, activeItemStyles),
+                                'h-9 cursor-pointer px-3',
+                            )}
+                        >
+                            {item.icon && (
+                                <item.icon className="mr-2 h-4 w-4" />
+                            )}
+                            {item.title}
+                        </Link>
+                    )}
+                    {isCurrentUrl(item.href) && (
+                        <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-mallard-green dark:bg-white"></div>
+                    )}
+                </NavigationMenuItem>
+            ))}
+        </NavigationMenuList>
+    );
+}
 
 export function AppHeader() {
     const page = usePage<SharedData>();
@@ -100,50 +190,12 @@ export function AppHeader() {
                                 <div className="flex h-full flex-1 flex-col space-y-4 p-4">
                                     <div className="flex h-full flex-col justify-between text-sm">
                                         <div className="flex flex-col space-y-4">
-                                            {mainNavItems.map((item) => (
-                                                <Link
-                                                    key={item.title}
-                                                    href={item.href}
-                                                    className="flex items-center space-x-2 font-medium"
-                                                >
-                                                    {item.icon && (
-                                                        <item.icon className="h-5 w-5" />
-                                                    )}
-                                                    <span>{item.title}</span>
-                                                </Link>
-                                            ))}
-
-                                            {adminNavItems.map((item) =>
-                                                item.external ? (
-                                                    <a
-                                                        key={item.title}
-                                                        href={
-                                                            item.href as string
-                                                        }
-                                                        className="flex items-center space-x-2 font-medium"
-                                                    >
-                                                        {item.icon && (
-                                                            <item.icon className="h-5 w-5" />
-                                                        )}
-                                                        <span>
-                                                            {item.title}
-                                                        </span>
-                                                    </a>
-                                                ) : (
-                                                    <Link
-                                                        key={item.title}
-                                                        href={item.href}
-                                                        className="flex items-center space-x-2 font-medium"
-                                                    >
-                                                        {item.icon && (
-                                                            <item.icon className="h-5 w-5" />
-                                                        )}
-                                                        <span>
-                                                            {item.title}
-                                                        </span>
-                                                    </Link>
-                                                ),
-                                            )}
+                                            <MobileNavLinks
+                                                items={mainNavItems}
+                                            />
+                                            <MobileNavLinks
+                                                items={adminNavItems}
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -162,81 +214,31 @@ export function AppHeader() {
                     {/* Desktop Navigation */}
                     <div className="ml-6 hidden h-full items-center space-x-6 lg:flex">
                         <NavigationMenu className="flex h-full items-stretch">
-                            <NavigationMenuList className="mr-2 flex h-full items-stretch space-x-2">
-                                {mainNavItems.map((item, index) => (
-                                    <NavigationMenuItem
-                                        key={index}
-                                        className="relative flex h-full items-center"
-                                    >
-                                        <Link
-                                            href={item.href}
-                                            className={cn(
-                                                navigationMenuTriggerStyle(),
-                                                whenCurrentUrl(
-                                                    item.href,
-                                                    activeItemStyles,
-                                                ),
-                                                'h-9 cursor-pointer px-3',
-                                            )}
-                                        >
-                                            {item.icon && (
-                                                <item.icon className="mr-2 h-4 w-4" />
-                                            )}
-                                            {item.title}
-                                        </Link>
-                                        {isCurrentUrl(item.href) && (
-                                            <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-mallard-green dark:bg-white"></div>
-                                        )}
-                                    </NavigationMenuItem>
-                                ))}
-                            </NavigationMenuList>
+                            <NavMenuList
+                                items={mainNavItems}
+                                isCurrentUrl={isCurrentUrl}
+                                whenCurrentUrl={whenCurrentUrl}
+                            />
+
+                            {/* Authoriser & Admin only */}
+                            {(auth.user.role === 'Admin' ||
+                                auth.user.role === 'Authoriser' ||
+                                auth.user.role === 'Guest') && (
+                                <NavMenuList
+                                    items={authoriserNavItems}
+                                    isCurrentUrl={isCurrentUrl}
+                                    whenCurrentUrl={whenCurrentUrl}
+                                />
+                            )}
 
                             {/* Admin only */}
                             {(auth.user.role === 'Admin' ||
                                 auth.user.role === 'Guest') && (
-                                <NavigationMenuList className="flex h-full items-stretch space-x-2">
-                                    {adminNavItems.map((item, index) => (
-                                        <NavigationMenuItem
-                                            key={index}
-                                            className="relative flex h-full items-center"
-                                        >
-                                            {item.external ? (
-                                                <a
-                                                    href={item.href as string}
-                                                    className={cn(
-                                                        navigationMenuTriggerStyle(),
-                                                        'h-9 cursor-pointer px-3',
-                                                    )}
-                                                >
-                                                    {item.icon && (
-                                                        <item.icon className="mr-2 h-4 w-4" />
-                                                    )}
-                                                    {item.title}
-                                                </a>
-                                            ) : (
-                                                <Link
-                                                    href={item.href}
-                                                    className={cn(
-                                                        navigationMenuTriggerStyle(),
-                                                        whenCurrentUrl(
-                                                            item.href,
-                                                            activeItemStyles,
-                                                        ),
-                                                        'h-9 cursor-pointer px-3',
-                                                    )}
-                                                >
-                                                    {item.icon && (
-                                                        <item.icon className="mr-2 h-4 w-4" />
-                                                    )}
-                                                    {item.title}
-                                                </Link>
-                                            )}
-                                            {isCurrentUrl(item.href) && (
-                                                <div className="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-mallard-green dark:bg-white"></div>
-                                            )}
-                                        </NavigationMenuItem>
-                                    ))}
-                                </NavigationMenuList>
+                                <NavMenuList
+                                    items={adminNavItems}
+                                    isCurrentUrl={isCurrentUrl}
+                                    whenCurrentUrl={whenCurrentUrl}
+                                />
                             )}
                         </NavigationMenu>
                     </div>

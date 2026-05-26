@@ -64,7 +64,7 @@ export interface ShiftTypeOption {
     end_time: string | null;
 }
 
-export interface CancelledOption {
+export interface LeaveOption {
     value: string;
 }
 
@@ -96,4 +96,14 @@ export interface CalendarNote {
     date: string;
     note: string;
     source: string;
+}
+
+export interface LeaveRequest {
+    id: number;
+    date: string;
+    start_time: string;
+    end_time: string;
+    duration: string;
+    leave_reason: string | null;
+    notes: string | null;
 }

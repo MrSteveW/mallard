@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum CancelledDutyOptions: string
+enum LeaveOptions: string
 {
     case AnnualLeave = 'Annual Leave';
     case Sickness = 'Sickness';
