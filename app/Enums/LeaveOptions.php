@@ -9,10 +9,12 @@ enum LeaveOptions: string
     case Medical = 'Medical';
     case Training = 'Training';
     case Bereavement = 'Bereavement';
+    case MaternityLeave = 'Maternity Leave';
+    case PaternityLeave = 'Paternity Leave';
     case ParentalLeave = 'Parental Leave';
-    case PaternityLeave = 'PaternityLeave';
-    case IndustrialAction = 'Industrial Action';
     case CompassionateLeave = 'Compassionate Leave';
+    case IndustrialAction = 'Industrial Action';
+    
     case Other = 'Other';
 
     public static function options(): array

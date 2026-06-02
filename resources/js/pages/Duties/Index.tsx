@@ -77,7 +77,7 @@ export default function Index({
     return (
         <AppLayout>
             <Head title="Duties" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
                 <div>
                     <Button onClick={handleCreateClick}>+ Duty</Button>
                     {!generatedMonths.includes(selectedMonth) && (

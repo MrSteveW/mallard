@@ -2,58 +2,50 @@ import { Head, Link } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import type { LeaveRequest } from '@/types.ts';
 
+const formatDate = (iso: string) =>
+    new Date(iso + 'T00:00:00').toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+    });
+
 interface IndexProps {
-    approvedLeaveRequests: LeaveRequest[];
-    pendingLeaveRequests: LeaveRequest[];
+    leaveRequests: LeaveRequest[];
 }
 
-export default function Create({
-    approvedLeaveRequests,
-    pendingLeaveRequests,
-}: IndexProps) {
+export default function Create({ leaveRequests }: IndexProps) {
     return (
         <AppLayout>
             <Head title="Shift patterns" />
-            <div className="relative my-3 h-[calc(100vh-100px)] w-full overflow-auto rounded-lg border bg-slate-50">
-                <div>
-                    <Link
-                        href={`/leaverequests/create`}
-                        className="mr-2 bg-mallard-green p-2 text-white hover:text-mallard-orange"
-                    >
-                        Make Leave Request
-                    </Link>
-                </div>
-                <div className="grid">
-                    {/* --- STICKY HEADER --- */}
-                    <div className="sticky top-0 z-20 flex items-center justify-center border-r border-b bg-white"></div>
-                    <div className="sticky top-0 z-20 flex items-center justify-center border-r border-b bg-white"></div>
-                    <div>Approved</div>
-                    <div>
-                        {approvedLeaveRequests.map((request) => (
-                            <div className="flex gap-2" key={request.id}>
-                                <div>{request.date}</div>
-                                <div>{request.start_time}</div>
-                                <div>{request.end_time}</div>
-                                <div>{request.duration}</div>
-                                <div>{request.leave_reason}</div>
-                                <div>{request.notes}</div>
-                            </div>
-                        ))}
-                    </div>
+            <div>
+                <Link
+                    href={`/leaverequests/create`}
+                    className="mr-2 bg-mallard-green p-2 text-white hover:text-mallard-orange"
+                >
+                    Make Leave Request
+                </Link>
+            </div>
+            <div className="grid">
+                {/* --- STICKY HEADER --- */}
+                <div className="sticky top-0 z-20 flex items-center justify-center border-r border-b bg-white"></div>
 
-                    <div>Pending</div>
-                    <div>
-                        {pendingLeaveRequests.map((request) => (
-                            <div className="flex gap-2">
-                                <div>{request.date}</div>
-                                <div>{request.start_time}</div>
-                                <div>{request.end_time}</div>
-                                <div>{request.duration}</div>
-                                <div>{request.leave_reason}</div>
-                                <div>{request.notes}</div>
+                <div className="mx-50">
+                    {leaveRequests.map((LR) => (
+                        <div className="my-2 grid grid-cols-5 justify-items-center gap-2 rounded-lg border border-mallard-green p-2">
+                            <div>
+                                {LR.dates.length > 1
+                                    ? `${formatDate(LR.dates[0])} - ${formatDate(LR.dates[LR.dates.length - 1])}`
+                                    : formatDate(LR.dates[0])}
                             </div>
-                        ))}
-                    </div>
+                            <div>
+                                {LR.start_time
+                                    ? `${LR.start_time} - ${LR.end_time}`
+                                    : ''}
+                            </div>
+                            <div>{LR.leave_reason}</div>
+                            <div>{LR.approved}</div>
+                            <div>CANCEL</div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </AppLayout>

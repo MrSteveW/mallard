@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
-   * @mixin \App\Models\LeaveRequest
-   */
+ * @mixin \App\Models\LeaveRequest
+ */
 class LeaveRequestResource extends JsonResource
 {
     /**
@@ -19,12 +19,11 @@ class LeaveRequestResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'date' => $this->date,
+            'dates' => $this->dates,
             'start_time' => $this->start_time ? substr($this->start_time, 0, 5) : null,
             'end_time' => $this->end_time ? substr($this->end_time, 0, 5) : null,
-            'duration' => $this->duration,
             'leave_reason' => $this->leave_reason,
-            'notes' => $this->notes,
+            'approved' => $this->approved_by ? 'Approved' : 'Pending',
         ];
     }
 }

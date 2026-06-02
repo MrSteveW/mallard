@@ -100,10 +100,11 @@ export interface CalendarNote {
 
 export interface LeaveRequest {
     id: number;
-    date: string;
+    dates: string[];
     start_time: string;
     end_time: string;
     duration: string;
     leave_reason: string | null;
     notes: string | null;
+    approved: string;
 }

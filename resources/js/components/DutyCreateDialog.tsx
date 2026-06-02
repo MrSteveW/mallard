@@ -22,7 +22,7 @@ import type {
     DutyEvent,
     TimeOptions,
     ShiftTypeOption,
-    CancelledOption,
+    LeaveOption,
     AssignableUser,
 } from '@/types.ts';
 
@@ -52,7 +52,7 @@ export default function DutyCreateDialog({
         shiftTypeOptions: ShiftTypeOption[];
     };
     const { leaveOptions } = usePage().props as unknown as {
-        leaveOptions: CancelledOption[];
+        leaveOptions: LeaveOption[];
     };
 
     const [submitted, setSubmitted] = useState(false);
@@ -148,7 +148,7 @@ export default function DutyCreateDialog({
                                     onChange={(
                                         e: React.ChangeEvent<HTMLSelectElement>,
                                     ) => setData('user_id', e.target.value)}
-                                    className="rounded-md border border-input bg-background p-0.5 text-sm ring-offset-background focus:ring-0"
+                                    className="appearance-none outline-none rounded-md border border-input bg-background p-0.5 text-sm focus-visible:ring-2 focus-visible:ring-ring"
                                 >
                                     <option value="" disabled>
                                         Select user
@@ -206,7 +206,7 @@ export default function DutyCreateDialog({
                                 onChange={(
                                     e: React.ChangeEvent<HTMLSelectElement>,
                                 ) => handleShiftTypeChange(e.target.value)}
-                                className={`${bgColor} rounded-md border border-input bg-background p-0.5 text-sm ring-offset-background focus:ring-0`}
+                                className={`${bgColor} appearance-none outline-none rounded-md border border-input bg-background p-0.5 text-sm focus-visible:ring-2 focus-visible:ring-ring`}
                             >
                                 {shiftTypeOptions.map((opt) => (
                                     <option key={opt.value} value={opt.value}>

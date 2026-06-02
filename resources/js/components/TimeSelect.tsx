@@ -36,7 +36,7 @@ export default function TimeSelect({
     return (
         <div className="flex items-center rounded-md border border-input bg-background ring-offset-background">
             <select
-                className="border-none bg-transparent p-0 text-sm focus:ring-0"
+                className="cursor-pointer border-none bg-transparent p-0 text-sm focus:ring-0"
                 value={hour}
                 onChange={handleHourChange}
             >
@@ -50,7 +50,7 @@ export default function TimeSelect({
             <span className="text-muted-foreground">:</span>
 
             <select
-                className="border-none bg-transparent p-0 text-sm focus:ring-0"
+                className="cursor-pointer border-none bg-transparent p-0 text-sm focus:ring-0"
                 value={minute}
                 onChange={handleMinuteChange}
             >

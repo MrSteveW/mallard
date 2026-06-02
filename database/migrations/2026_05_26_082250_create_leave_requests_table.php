@@ -11,14 +11,14 @@ return new class extends Migration
         Schema::create('leave_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->date('date');
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->integer('duration');
             $table->string('leave_reason');
+            $table->jsonb('dates');
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
             $table->string('notes')->nullable();
             $table->foreignId('approved_by')->nullable()->constrained('users');
             $table->foreignId('declined_by')->nullable()->constrained('users');
+            $table->timestamps();
         });
     }
 
