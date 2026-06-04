@@ -1,4 +1,6 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
+import ConfirmModal from '@/components/ConfirmModal';
+import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { LeaveRequest } from '@/types.ts';
 
@@ -43,7 +45,25 @@ export default function Create({ leaveRequests }: IndexProps) {
                             </div>
                             <div>{LR.leave_reason}</div>
                             <div>{LR.approved}</div>
-                            <div>CANCEL</div>
+                            <div>
+                                {LR.approved === 'Pending' && (
+                                    <ConfirmModal
+                                        title="Delete leave request"
+                                        description={`Delete leave request starting on ${LR.dates[0]}?`}
+                                        confirmLabel="Delete"
+                                        onConfirm={() =>
+                                            router.delete(
+                                                `/leaverequests/${LR.id}`,
+                                            )
+                                        }
+                                        trigger={
+                                            <Button variant="destructive">
+                                                Delete
+                                            </Button>
+                                        }
+                                    />
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>

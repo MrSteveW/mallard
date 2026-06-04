@@ -23,6 +23,7 @@ class LeaveRequestController extends Controller
 
     public function index()
     {
+        Gate::authorize('viewAny', LeaveRequest::class);
         $user = Auth::user();
         $leaveRequests = LeaveRequestResource::collection($user
             ->leaveRequests()
@@ -37,6 +38,7 @@ class LeaveRequestController extends Controller
 
     public function create()
     {
+        Gate::authorize('viewAny', LeaveRequest::class);
         $user = Auth::user();
         $dutyDates = $user->duties()->pluck('date')->toArray();
 
@@ -47,6 +49,7 @@ class LeaveRequestController extends Controller
 
     public function store(Request $request)
     {
+        Gate::authorize('create', LeaveRequest::class);
         $user = Auth::user();
 
         $validated = $request->validate([
@@ -71,13 +74,16 @@ class LeaveRequestController extends Controller
         return redirect('/leaverequests');
     }
 
-    public function update(Request $request, LeaveRequest $leaveRequest)
+    public function update(Request $request, LeaveRequest $leaverequest)
     {
         //
     }
 
-    public function destroy(LeaveRequest $leaveRequest)
+    public function destroy(LeaveRequest $leaverequest)
     {
-        //
+        Gate::authorize('delete', $leaverequest);
+        $leaverequest->delete();
+
+        return redirect('/leaverequests');
     }
 }
