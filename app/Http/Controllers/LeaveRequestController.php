@@ -7,6 +7,7 @@ use App\Http\Resources\LeaveRequestResource;
 use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -29,6 +30,11 @@ class LeaveRequestController extends Controller
             ->leaveRequests()
             ->whereNull('declined_by')
             ->whereTodayOrAfter()
+            ->when(
+                DB::connection()->getDriverName() === 'pgsql',
+                fn ($q) => $q->orderByRaw('(dates->>0)::date'),
+                fn ($q) => $q->orderByRaw("json_extract(dates, '$[0]')")
+            )
             ->get());
 
         return Inertia::render('LeaveRequest/Index', [

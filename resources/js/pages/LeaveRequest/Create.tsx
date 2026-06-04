@@ -9,7 +9,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { calculateDuration } from '@/lib/utils';
+import type { SharedData } from '@/types/index';
 import type { LeaveOption, TimeOptions } from '@/types.ts';
+import { PrimaryLink } from '@/components/ui/primary-link';
 
 type Mode = 'partial_day' | 'multiple_days' | 'range';
 
@@ -41,6 +43,8 @@ export default function Create({ dutyDates }: CreateProps) {
     const { timeOptions } = usePage().props as unknown as {
         timeOptions: TimeOptions;
     };
+
+    const { auth } = usePage<SharedData>().props;
 
     const { data, setData, post, processing } = useForm({
         leave_reason: '',
@@ -296,17 +300,15 @@ export default function Create({ dutyDates }: CreateProps) {
                     <div>
                         <button
                             type="submit"
-                            disabled={processing}
-                            className="cursor-pointer rounded bg-mallard-green px-4 py-2 text-white disabled:opacity-50"
+                            disabled={processing || auth.user.role === 'Guest'}
+                            className="mr-5 rounded bg-mallard-green px-4 py-2 text-white disabled:opacity-50"
                         >
                             Submit request
                         </button>
+                        <PrimaryLink href="/leaverequests" variant="outline">
+                            Cancel
+                        </PrimaryLink>
                     </div>
-
-                    {/* Debug — remove before go-live */}
-                    <pre className="bg-amber-200 p-2 text-xs">
-                        {JSON.stringify(data, null, 2)}
-                    </pre>
                 </form>
             </div>
         </AppLayout>
