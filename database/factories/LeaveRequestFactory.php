@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\LeaveOptions;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,9 @@ class LeaveRequestFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'mode' => 'multiple_days',
+            'leave_reason' => LeaveOptions::AnnualLeave->value,
+            'dates' => ['2030-01-01'],
         ];
     }
 }

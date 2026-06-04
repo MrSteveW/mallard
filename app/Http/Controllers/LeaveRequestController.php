@@ -63,9 +63,9 @@ class LeaveRequestController extends Controller
             'user_id' => $user->id,
             'leave_reason' => $validated['leave_reason'],
             'dates' => $validated['dates'],
-            'start_time' => $validated['start_time'],
-            'end_time' => $validated['end_time'],
-            'notes' => $validated['notes'],
+            'start_time' => $validated['start_time'] ?? null,
+            'end_time' => $validated['end_time'] ?? null,
+            'notes' => $validated['notes'] ?? null,
         ]);
 
         return redirect('/leaverequests');
