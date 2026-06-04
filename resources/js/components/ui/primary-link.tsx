@@ -1,14 +1,19 @@
 import { Link } from '@inertiajs/react'
 import type { InertiaLinkProps } from '@inertiajs/react'
+import type { VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
+import { buttonVariants } from '@/components/ui/button'
 
-export function PrimaryLink({ className, children, ...props }: InertiaLinkProps) {
+export function PrimaryLink({
+    className,
+    variant,
+    size,
+    children,
+    ...props
+}: InertiaLinkProps & VariantProps<typeof buttonVariants>) {
     return (
         <Link
-            className={cn(
-                'rounded-md bg-mallard-green px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary/80 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-black',
-                className
-            )}
+            className={cn(buttonVariants({ variant, size, className }))}
             {...props}
         >
             {children}

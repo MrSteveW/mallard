@@ -11,18 +11,18 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import type { CancelledOption } from '@/types';
+import type { LeaveOption } from '@/types';
 import type { SharedData } from '@/types/index';
 
 type DutyArchiveProps = {
     url: string;
-    cancelledOptions: CancelledOption[];
+    leaveOptions: LeaveOption[];
     onSuccess?: () => void;
 };
 
 export default function DutyArchive({
     url,
-    cancelledOptions,
+    leaveOptions,
     onSuccess,
 }: DutyArchiveProps) {
     const [cancelReason, setCancelReason] = useState<string>('');
@@ -61,7 +61,7 @@ export default function DutyArchive({
                                 <option value="" disabled>
                                     Please select
                                 </option>
-                                {cancelledOptions.map((opt) => (
+                                {leaveOptions.map((opt) => (
                                     <option key={opt.value} value={opt.value}>
                                         {opt.value}
                                     </option>

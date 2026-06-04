@@ -54,7 +54,7 @@ class HandleInertiaRequests extends Middleware
                 'minutes' => \App\Enums\MinutesEnum::options(),
             ],
             'shiftTypeOptions' => \App\Enums\ShiftType::options(),
-            'cancelledOptions' => \App\Enums\CancelledDutyOptions::options(),
+            'leaveOptions' => \App\Enums\LeaveOptions::options(),
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CalendarNoteController;
 use App\Http\Controllers\DutyController;
+use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\ShiftPatternController;
 use App\Http\Resources\CalendarNoteResource;
 use App\Models\CalendarNote;
@@ -34,6 +35,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('calendar-notes', CalendarNoteController::class)
         ->only(['store', 'update', 'destroy']);
+
+    Route::resource('leaverequests', LeaveRequestController::class)->only(['index','create','store','update', 'destroy']);
 });
 
 // Admin || Authoriser || Guest
@@ -44,6 +47,9 @@ Route::middleware(['auth', 'can:manage,'.Duty::class])->group(function () {
     Route::post('duties/generate', [DutyController::class, 'generate']);
     Route::patch('duties/{duty}/cancel', [DutyController::class, 'cancel']);
     Route::patch('/duties/{date}/tasks', [DutyController::class, 'updateTasks']);
+
+    Route::get('/manageleaverequests', [LeaveRequestController::class, 'manageLeaveRequests'])
+           ->name('leaverequests.manage');
 });
 
 
