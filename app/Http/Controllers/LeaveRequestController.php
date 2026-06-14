@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Enums\LeaveOptions;
-use App\Http\Resources\LeaveRequestUserResource;
 use App\Http\Resources\LeaveRequestManagerResource;
+use App\Http\Resources\LeaveRequestUserResource;
 use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,17 +18,15 @@ class LeaveRequestController extends Controller
     public function manage()
     {
         Gate::authorize('manage', LeaveRequest::class);
-
-         $approvedRequests = LeaveRequestManagerResource::collection(LeaveRequest::whereNotNull('approved_by')
-            ->when(
-                DB::connection()->getDriverName() === 'pgsql',
-                fn ($q) => $q->orderByRaw('(dates->>0)::date'),
-                fn ($q) => $q->orderByRaw("json_extract(dates, '$[0]')")
-            )
+        $leaveRequests = LeaveRequestManagerResource::collection(LeaveRequest::when(
+            DB::connection()->getDriverName() === 'pgsql',
+            fn ($q) => $q->orderByRaw('(dates->>0)::date'),
+            fn ($q) => $q->orderByRaw("json_extract(dates, '$[0]')")
+        )
             ->get());
 
         return Inertia::render('LeaveRequest/ManageIndex', [
-            'approvedRequests' => $approvedRequests
+            'leaveRequests' => $leaveRequests,
         ]);
     }
 

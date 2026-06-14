@@ -1,44 +1,66 @@
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
+import { useState } from 'react';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import LeaveRequestTable from '@/components/LeaveRequestTable';
 import type { ManagerLeaveRequest } from '@/types.ts';
 
-const formatDate = (iso: string) =>
-    new Date(iso + 'T00:00:00').toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long',
-    });
+
 
 interface ManageIndexProps {
-    approvedRequests: ManagerLeaveRequest[];
+    leaveRequests: ManagerLeaveRequest[];
 }
 
-export default function ManageIndex({ approvedRequests }: ManageIndexProps) {
+export default function ManageIndex({ leaveRequests }: ManageIndexProps) {
+    const [viewStatus, setViewStatus] = useState('pending');
     return (
         <AppLayout>
             <Head title="Manage Leave Requests" />
-            <div className="relative my-3 h-[calc(100vh-100px)] w-full overflow-auto rounded-lg border bg-slate-50">
-                <div>{JSON.stringify(approvedRequests)}</div>
-                <div className="mx-50">
-                    {approvedRequests.map((LR) => (
-                        <div className="my-2 grid grid-cols-6 justify-items-center gap-2 rounded-lg border border-mallard-green p-2">
-                            <div>{LR.user_name}</div>
-                            <div>
-                                {LR.dates.length > 1
-                                    ? `${formatDate(LR.dates[0])} - ${formatDate(LR.dates[LR.dates.length - 1])}`
-                                    : formatDate(LR.dates[0])}
-                            </div>
-                            <div>
-                                {LR.start_time
-                                    ? `${LR.start_time} - ${LR.end_time}`
-                                    : ''}
-                            </div>
-                            <div>{LR.leave_reason}</div>
-                            <div>{LR.status}</div>
-                            <div>REVIEW</div>
+        <section className="py-5">
+         <Tabs
+                        value={viewStatus}
+                        onValueChange={setViewStatus}
+                    ><div className="flex items-center justify-center">
+                        <TabsList className="group-data-[orientation=horizontal]/tabs:h-12">
+
+                            <TabsTrigger className="px-6 text-lg" value="pending">
+                                Pending
+                            </TabsTrigger>
+                            <TabsTrigger className="px-6 text-lg" value="approved">
+                                Approved
+                            </TabsTrigger>
+                            <TabsTrigger className="px-6 text-lg" value="declined">
+                                Declined
+                            </TabsTrigger>
+                        </TabsList>
                         </div>
-                    ))}
-                </div>
-            </div>
+
+                        <TabsContent value="pending">
+                            <section className="flex flex-col gap-3">
+                                <Label>Pending Leave Requests</Label>
+                                <LeaveRequestTable leaveRequests={leaveRequests.filter((LR) => LR.status === 'Pending')} />
+                                
+                                
+                            </section>
+                        </TabsContent>
+
+                        <TabsContent value="approved">
+                            <section className="flex flex-col gap-2">
+                                <Label>Aproved Leave Requests</Label>
+                                <LeaveRequestTable leaveRequests={leaveRequests.filter((LR) => LR.status === 'Approved')} />
+                            </section>
+                        </TabsContent>
+
+                        <TabsContent value="declined">
+                            <section className="flex flex-col gap-2">
+                                <Label>Declined Leave Requests</Label>
+                                <LeaveRequestTable leaveRequests={leaveRequests.filter((LR) => LR.status === 'Declined')} />
+
+                            </section>
+                        </TabsContent>
+                    </Tabs>
+                    </section>
         </AppLayout>
     );
 }

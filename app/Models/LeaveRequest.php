@@ -26,7 +26,19 @@ class LeaveRequest extends Model
     {
         return $this->belongsTo(User::class);
     }
-    
+
+    /** @return BelongsTo<User, $this> */
+    public function approvedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    /** @return BelongsTo<User, $this> */
+    public function declinedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'declined_by');
+    }
+
     /** @param Builder<LeaveRequest> $query */
     public function scopeWhereTodayOrAfter(Builder $query): Builder
     {

@@ -119,4 +119,5 @@ export interface ManagerLeaveRequest {
     leave_reason: string | null;
     notes: string | null;
     status: string;
+    manager_name: string;
 }
