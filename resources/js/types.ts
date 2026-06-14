@@ -98,7 +98,7 @@ export interface CalendarNote {
     source: string;
 }
 
-export interface LeaveRequest {
+export interface UserLeaveRequest {
     id: number;
     dates: string[];
     start_time: string;
@@ -106,5 +106,17 @@ export interface LeaveRequest {
     duration: string;
     leave_reason: string | null;
     notes: string | null;
-    approved: string;
+    status: string;
+}
+
+export interface ManagerLeaveRequest {
+    id: number;
+    user_name: string;
+    dates: string[];
+    start_time: string;
+    end_time: string;
+    duration: string;
+    leave_reason: string | null;
+    notes: string | null;
+    status: string;
 }

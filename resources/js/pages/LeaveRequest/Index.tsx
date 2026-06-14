@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { PrimaryLink } from '@/components/ui/primary-link';
 import AppLayout from '@/layouts/app-layout';
 import type { SharedData } from '@/types/index';
-import type { LeaveRequest } from '@/types.ts';
+import type { UserLeaveRequest } from '@/types.ts';
 
 const formatDate = (iso: string) =>
     new Date(iso + 'T00:00:00').toLocaleDateString('en-GB', {
@@ -13,7 +13,7 @@ const formatDate = (iso: string) =>
     });
 
 interface IndexProps {
-    leaveRequests: LeaveRequest[];
+    leaveRequests: UserLeaveRequest[];
 }
 
 export default function Create({ leaveRequests }: IndexProps) {
@@ -46,9 +46,9 @@ export default function Create({ leaveRequests }: IndexProps) {
                                         : ''}
                                 </div>
                                 <div>{LR.leave_reason}</div>
-                                <div>{LR.approved}</div>
+                                <div>{LR.status}</div>
                                 <div>
-                                    {LR.approved === 'Pending' && (
+                                    {LR.status === 'Pending' && (
                                         <ConfirmModal
                                             title="Delete leave request"
                                             description={`Delete leave request starting on ${LR.dates[0]}?`}

@@ -8,6 +8,15 @@ use App\Models\User;
 
 class LeaveRequestPolicy
 {
+    public function manage(User $user): bool
+    {
+         if (in_array($user->role, [UserRole::Admin, UserRole::Authoriser, UserRole::Guest])) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function viewAny(User $user): bool
     {
         return true;

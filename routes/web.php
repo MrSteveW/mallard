@@ -48,7 +48,7 @@ Route::middleware(['auth', 'can:manage,'.Duty::class])->group(function () {
     Route::patch('duties/{duty}/cancel', [DutyController::class, 'cancel']);
     Route::patch('/duties/{date}/tasks', [DutyController::class, 'updateTasks']);
 
-    Route::get('/manageleaverequests', [LeaveRequestController::class, 'manageLeaveRequests'])
+    Route::get('/manageleaverequests', [LeaveRequestController::class, 'manage'])
            ->name('leaverequests.manage');
 });
 
