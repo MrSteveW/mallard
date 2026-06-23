@@ -34,3 +34,16 @@ export function calculateDuration(
 
     return minutes === 0 ? `${hours}h` : `${hours}h ${minutes}m`;
 }
+
+export function formatDatesRange(dates: string[]) {
+    const formatDate = (iso: string) =>
+    new Date(iso + 'T00:00:00').toLocaleDateString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    });
+    return(
+    dates.length > 1 ? `${formatDate(dates[0])} - ${formatDate(dates[dates.length - 1])}`
+                            : formatDate(dates[0])
+                            )
+}

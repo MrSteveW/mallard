@@ -112,6 +112,7 @@ export interface UserLeaveRequest {
 export interface ManagerLeaveRequest {
     id: number;
     user_name: string;
+    user_grade: string;
     dates: string[];
     start_time: string;
     end_time: string;
@@ -120,4 +121,9 @@ export interface ManagerLeaveRequest {
     notes: string | null;
     status: string;
     manager_name: string;
+}
+
+export interface StaffingData {
+    date: string;
+    staffCount: {gradeName: string; gradeCount: number}[];
 }

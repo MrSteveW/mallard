@@ -103,7 +103,7 @@ export default function Create({ dutyDates }: CreateProps) {
 
     return (
         <AppLayout>
-            <Head title="Leave request" />
+            <Head title="Create Leave Request" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                     {/* Leave reason */}

@@ -3,24 +3,19 @@ import ConfirmModal from '@/components/ConfirmModal';
 import { Button } from '@/components/ui/button';
 import { PrimaryLink } from '@/components/ui/primary-link';
 import AppLayout from '@/layouts/app-layout';
+import { formatDatesRange } from '@/lib/utils';
 import type { SharedData } from '@/types/index';
 import type { UserLeaveRequest } from '@/types.ts';
-
-const formatDate = (iso: string) =>
-    new Date(iso + 'T00:00:00').toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long',
-    });
 
 interface IndexProps {
     leaveRequests: UserLeaveRequest[];
 }
 
-export default function Create({ leaveRequests }: IndexProps) {
+export default function Index({ leaveRequests }: IndexProps) {
     const { auth } = usePage<SharedData>().props;
     return (
         <AppLayout>
-            <Head title="Shift patterns" />
+            <Head title="My Leave Requests" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
                 <div>
                     <PrimaryLink href="/leaverequests/create">
@@ -36,9 +31,7 @@ export default function Create({ leaveRequests }: IndexProps) {
                         {leaveRequests.map((LR) => (
                             <div className="my-2 grid grid-cols-5 justify-items-center gap-2 rounded-lg border border-mallard-green p-2">
                                 <div>
-                                    {LR.dates.length > 1
-                                        ? `${formatDate(LR.dates[0])} - ${formatDate(LR.dates[LR.dates.length - 1])}`
-                                        : formatDate(LR.dates[0])}
+                                    {formatDatesRange(LR.dates)}
                                 </div>
                                 <div>
                                     {LR.start_time

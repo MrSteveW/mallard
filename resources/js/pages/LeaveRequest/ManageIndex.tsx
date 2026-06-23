@@ -1,7 +1,6 @@
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { useState } from 'react';
-import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import LeaveRequestTable from '@/components/LeaveRequestTable';
 import type { ManagerLeaveRequest } from '@/types.ts';
@@ -37,8 +36,8 @@ export default function ManageIndex({ leaveRequests }: ManageIndexProps) {
                         </div>
 
                         <TabsContent value="pending">
-                            <section className="flex flex-col gap-3">
-                                <Label>Pending Leave Requests</Label>
+                            <section className="flex flex-col gap-3 mt-2">
+                                <div className="text-xl flex justify-center">Pending Leave Requests</div>
                                 <LeaveRequestTable leaveRequests={leaveRequests.filter((LR) => LR.status === 'Pending')} />
                                 
                                 
@@ -46,15 +45,15 @@ export default function ManageIndex({ leaveRequests }: ManageIndexProps) {
                         </TabsContent>
 
                         <TabsContent value="approved">
-                            <section className="flex flex-col gap-2">
-                                <Label>Aproved Leave Requests</Label>
+                            <section className="flex flex-col gap-3 mt-2">
+                                <div className="text-xl flex justify-center">Approved Leave Requests</div>
                                 <LeaveRequestTable leaveRequests={leaveRequests.filter((LR) => LR.status === 'Approved')} />
                             </section>
                         </TabsContent>
 
                         <TabsContent value="declined">
-                            <section className="flex flex-col gap-2">
-                                <Label>Declined Leave Requests</Label>
+                            <section className="flex flex-col gap-3 mt-2">
+                                <div className="text-xl flex justify-center">Declined Leave Requests</div>
                                 <LeaveRequestTable leaveRequests={leaveRequests.filter((LR) => LR.status === 'Declined')} />
 
                             </section>

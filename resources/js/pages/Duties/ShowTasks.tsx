@@ -81,7 +81,7 @@ export default function ShowTasks({
 
     return (
         <AppLayout>
-            <Head title="Duties" />
+            <Head title="Assign Duties" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="relative flex items-center bg-mallard-orange px-4 py-2">
                     <div className="absolute left-1/2 -translate-x-1/2">

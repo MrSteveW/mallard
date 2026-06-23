@@ -12,7 +12,7 @@ Mallard is a staff management system. Admin are able to add more users. Admin ar
 - Admin being able to manually change the ShiftRepeat start_date and total_days is not currently in scope.
 - Duty is an actual shift instance on a specific calendar date.
 - A Task is an activity that a staff member is required to do on a date-specific Duty
-- A Grade is an Employee's seniority level. A Grade is currently for purely visual information.
+- A Grade is an Employee's seniority level.
 - UserRole enum values are
     - Admin
     - Authoriser

@@ -1,12 +1,8 @@
 import { useMemo, useState } from 'react';
 import { ChevronDown, ChevronUp, ChevronsUpDown } from 'lucide-react';
+import { PrimaryLink } from '@/components/ui/primary-link';
+import { formatDatesRange } from '@/lib/utils';
 import type { ManagerLeaveRequest } from '@/types.ts';
-
-const formatDate = (iso: string) =>
-    new Date(iso + 'T00:00:00').toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'long',
-    });
 
 type SortColumn = 'user_name' | 'dates' | 'leave_reason';
 type SortDirection = 'asc' | 'desc';
@@ -80,9 +76,7 @@ export default function LeaveRequestTable({ leaveRequests }: TableProps) {
                 <div key={LR.id} className="my-2 grid grid-cols-5 justify-items-center gap-2 rounded-lg border border-mallard-green p-2">
                     <div>{LR.user_name}</div>
                     <div>
-                        {LR.dates.length > 1
-                            ? `${formatDate(LR.dates[0])} - ${formatDate(LR.dates[LR.dates.length - 1])}`
-                            : formatDate(LR.dates[0])}
+                        {formatDatesRange(LR.dates)}
                     </div>
                     <div>
                         {LR.start_time
@@ -90,7 +84,11 @@ export default function LeaveRequestTable({ leaveRequests }: TableProps) {
                             : ''}
                     </div>
                     <div>{LR.leave_reason}</div>
-                    <div>REVIEW</div>
+                    <div>
+                        <PrimaryLink href={`/manageleaverequests/${LR.id}`}>
+                                                            Review
+                                                        </PrimaryLink>
+                    </div>
                 </div>
             ))}
         </div>

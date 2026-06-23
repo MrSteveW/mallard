@@ -20,6 +20,7 @@ class LeaveRequestManagerResource extends JsonResource
         return [
             'id' => $this->id,
             'user_name' => $this->user->name,
+            'user_grade' => $this->user->employee->grade->name,
             'dates' => $this->dates,
             'start_time' => $this->start_time ? substr($this->start_time, 0, 5) : null,
             'end_time' => $this->end_time ? substr($this->end_time, 0, 5) : null,

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\LeaveOptions;
 use App\Http\Resources\LeaveRequestManagerResource;
 use App\Http\Resources\LeaveRequestUserResource;
+use App\Models\Duty;
+use App\Models\Grade;
 use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,21 +17,6 @@ use Inertia\Inertia;
 
 class LeaveRequestController extends Controller
 {
-    public function manage()
-    {
-        Gate::authorize('manage', LeaveRequest::class);
-        $leaveRequests = LeaveRequestManagerResource::collection(LeaveRequest::when(
-            DB::connection()->getDriverName() === 'pgsql',
-            fn ($q) => $q->orderByRaw('(dates->>0)::date'),
-            fn ($q) => $q->orderByRaw("json_extract(dates, '$[0]')")
-        )
-            ->get());
-
-        return Inertia::render('LeaveRequest/ManageIndex', [
-            'leaveRequests' => $leaveRequests,
-        ]);
-    }
-
     public function index()
     {
         Gate::authorize('viewAny', LeaveRequest::class);
@@ -98,5 +85,53 @@ class LeaveRequestController extends Controller
         $leaverequest->delete();
 
         return redirect('/leaverequests');
+    }
+
+    public function manageIndex()
+    {
+        Gate::authorize('manage', LeaveRequest::class);
+        $leaveRequests = LeaveRequestManagerResource::collection(LeaveRequest::when(
+            DB::connection()->getDriverName() === 'pgsql',
+            fn ($q) => $q->orderByRaw('(dates->>0)::date'),
+            fn ($q) => $q->orderByRaw("json_extract(dates, '$[0]')")
+        )
+            ->get());
+
+        return Inertia::render('LeaveRequest/ManageIndex', [
+            'leaveRequests' => $leaveRequests,
+        ]);
+    }
+
+    public function manageShow(LeaveRequest $leaveRequest)
+    {
+        $staffingData = [];
+        $dutyData = Duty::with(['user.employee.grade'])->whereIn('date', $leaveRequest->dates)->get();
+
+        foreach ($leaveRequest->dates as $date) {
+            $filteredDateDuties = $dutyData->filter(function (Duty $duty) use ($date) {
+                return $duty->date == $date;
+            });
+            $currentArray = [];
+            $currentStaffingArray = [];
+            $currentGradeCount = [];
+            $staffCount = $filteredDateDuties
+                ->sortBy(fn (Duty $duty) => $duty->user->employee->grade->id)
+                ->countBy(fn (Duty $duty) => $duty->user->employee->grade->name);
+            $staffCount = $staffCount->toArray();
+            foreach ($staffCount as $key => $value) {
+                
+                $currentGrade['gradeName'] = $key;
+                $currentGrade['gradeCount'] = $value;
+                array_push($currentGradeCount, $currentGrade);
+            }
+            $currentArray['date'] = $date;
+            $currentArray['staffCount'] = $currentGradeCount;
+            array_push($staffingData, $currentArray);
+        }
+
+        return Inertia::render('LeaveRequest/ManageShow', [
+            'staffingData' => $staffingData,
+            'leaveRequest' => new LeaveRequestManagerResource($leaveRequest),
+        ]);
     }
 }
