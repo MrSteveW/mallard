@@ -1,4 +1,7 @@
 import { Head, router, usePage } from '@inertiajs/react';
+import {
+    CalendarCheck, CalendarX, CalendarClock
+} from 'lucide-react';
 import ConfirmModal from '@/components/ConfirmModal';
 import { Button } from '@/components/ui/button';
 import { PrimaryLink } from '@/components/ui/primary-link';
@@ -6,9 +9,6 @@ import AppLayout from '@/layouts/app-layout';
 import { formatDatesRange } from '@/lib/utils';
 import type { SharedData } from '@/types/index';
 import type { ManagerLeaveRequest, StaffingData } from '@/types.ts';
-import {
-    CalendarCheck, CalendarX, CalendarClock
-} from 'lucide-react';
 
 const formatLongDate = (iso: string) =>
     new Date(iso + 'T00:00:00').toLocaleDateString('en-GB', {

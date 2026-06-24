@@ -20,8 +20,8 @@ import { useAppearance } from '@/hooks/use-appearance';
 import { useClipboard } from '@/hooks/use-clipboard';
 import { OTP_MAX_LENGTH } from '@/hooks/use-two-factor-auth';
 import { confirm } from '@/routes/two-factor';
-import AlertError from './alert-error';
 import { Spinner } from '../ui/spinner';
+import AlertError from './alert-error';
 
 function GridScanIcon() {
     return (

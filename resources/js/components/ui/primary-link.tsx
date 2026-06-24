@@ -1,8 +1,8 @@
 import { Link } from '@inertiajs/react'
 import type { InertiaLinkProps } from '@inertiajs/react'
 import type { VariantProps } from 'class-variance-authority'
-import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 export function PrimaryLink({
     className,

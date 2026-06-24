@@ -1,5 +1,5 @@
-import { useMemo, useState } from 'react';
 import { ChevronDown, ChevronUp, ChevronsUpDown } from 'lucide-react';
+import { useMemo, useState } from 'react';
 import { PrimaryLink } from '@/components/ui/primary-link';
 import { formatDatesRange } from '@/lib/utils';
 import type { ManagerLeaveRequest } from '@/types.ts';
@@ -16,6 +16,31 @@ function SortIcon({ column, activeColumn, direction }: { column: SortColumn; act
     return direction === 'asc'
         ? <ChevronUp className="size-3.5" />
         : <ChevronDown className="size-3.5" />;
+}
+
+function SortableHeader({
+    column,
+    label,
+    activeColumn,
+    direction,
+    onSort,
+}: {
+    column: SortColumn;
+    label: string;
+    activeColumn: SortColumn | null;
+    direction: SortDirection;
+    onSort: (column: SortColumn) => void;
+}) {
+    return (
+        <button
+            type="button"
+            onClick={() => onSort(column)}
+            className="flex cursor-pointer items-center gap-1 font-bold"
+        >
+            {label}
+            <SortIcon column={column} activeColumn={activeColumn} direction={direction} />
+        </button>
+    );
 }
 
 export default function LeaveRequestTable({ leaveRequests }: TableProps) {
@@ -49,27 +74,14 @@ export default function LeaveRequestTable({ leaveRequests }: TableProps) {
         });
     }, [leaveRequests, sortColumn, sortDirection]);
 
-    function SortableHeader({ column, label }: { column: SortColumn; label: string }) {
-        return (
-            <button
-                type="button"
-                onClick={() => handleSort(column)}
-                className="flex cursor-pointer items-center gap-1 font-bold"
-            >
-                {label}
-                <SortIcon column={column} activeColumn={sortColumn} direction={sortDirection} />
-            </button>
-        );
-    }
-
     return (
         <div className="relative px-2 h-[calc(100vh-300px)] w-full overflow-auto border border-mallard-green rounded-lg bg-slate-100">
             {/* --- STICKY HEADER --- */}
             <div className="sticky top-0 mt-2 grid grid-cols-5 justify-items-center font-bold bg-slate-100">
-                <SortableHeader column="user_name" label="Name" />
-                <SortableHeader column="dates" label="Date" />
+                <SortableHeader column="user_name" label="Name" activeColumn={sortColumn} direction={sortDirection} onSort={handleSort} />
+                <SortableHeader column="dates" label="Date" activeColumn={sortColumn} direction={sortDirection} onSort={handleSort} />
                 <div className="font-bold">Partial day</div>
-                <SortableHeader column="leave_reason" label="Leave reason" />
+                <SortableHeader column="leave_reason" label="Leave reason" activeColumn={sortColumn} direction={sortDirection} onSort={handleSort} />
                 <div></div>
             </div>
             {sorted.map((LR) => (
