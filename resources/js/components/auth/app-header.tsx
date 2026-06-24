@@ -54,7 +54,7 @@ const mainNavItems: NavItem[] = [
 const authoriserNavItems: NavItem[] = [
     {
         title: 'Manage Leave',
-        href: '/manageleaverequests',
+        href: '/leaverequests/manage',
         icon: ClockCheck,
     },
     {

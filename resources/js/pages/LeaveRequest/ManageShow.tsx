@@ -37,7 +37,7 @@ export default function ManageShow({ leaveRequest, staffingData }: ShowProps) {
     return (
         <AppLayout>
             <Head title="Manage a Leave Request" />
-            <div className="p-3"><PrimaryLink href="/manageleaverequests">
+            <div className="p-3"><PrimaryLink href="/leaverequests/manage">
                                     &lt; Back
                                 </PrimaryLink></div>
             <div className="flex h-full flex flex-col gap-4 items-center">
@@ -104,7 +104,7 @@ export default function ManageShow({ leaveRequest, staffingData }: ShowProps) {
                                 confirmLabel="Approve"
                                 onConfirm={() =>
                                     router.patch(
-                                    `/manageleaverequests/${leaveRequest.id}/approve`,)
+                                    `/leaverequests/manage/${leaveRequest.id}/approve`,)
                                 }
                                 trigger={
                                     <Button
@@ -126,7 +126,7 @@ export default function ManageShow({ leaveRequest, staffingData }: ShowProps) {
                                 confirmLabel="Decline"
                                 onConfirm={() =>
                                     router.patch(
-                                    `/manageleaverequests/${leaveRequest.id}/decline`,)
+                                    `/leaverequests/manage/${leaveRequest.id}/decline`,)
                                 }
                                 trigger={
                                     <Button

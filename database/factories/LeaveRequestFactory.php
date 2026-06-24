@@ -19,7 +19,6 @@ class LeaveRequestFactory extends Factory
     public function definition(): array
     {
         return [
-            'mode' => 'multiple_days',
             'leave_reason' => LeaveOptions::AnnualLeave->value,
             'dates' => ['2030-01-01'],
         ];

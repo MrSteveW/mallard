@@ -50,11 +50,12 @@ Route::middleware(['auth', 'can:manage,'.Duty::class])->group(function () {
     Route::patch('duties/{duty}/cancel', [DutyController::class, 'cancel']);
     Route::patch('/duties/{date}/tasks', [DutyController::class, 'updateTasks']);
 
-    Route::get('/manageleaverequests', [LeaveRequestController::class, 'manageIndex'])
-        ->name('leaverequests.manage');
-    Route::get('manageleaverequests/{leaveRequest}', [LeaveRequestController::class, 'manageShow']);
-    Route::patch('manageleaverequests/{leaveRequest}/approve', [LeaveRequestController::class, 'approve']);
-    Route::patch('manageleaverequests/{leaveRequest}/decline', [LeaveRequestController::class, 'decline']);
+    Route::prefix('leaverequests/manage')->name('leaverequests.manage.')->group(function () {
+        Route::get('/', [LeaveRequestController::class, 'manageIndex'])->name('index');
+        Route::get('{leaveRequest}', [LeaveRequestController::class, 'manageShow'])->name('show');
+        Route::patch('{leaveRequest}/approve', [LeaveRequestController::class, 'manageApprove'])->name('approve');
+        Route::patch('{leaveRequest}/decline', [LeaveRequestController::class, 'manageDecline'])->name('decline');
+    });
 });
 
 require __DIR__.'/settings.php';

@@ -97,7 +97,7 @@ export default function LeaveRequestTable({ leaveRequests }: TableProps) {
                     </div>
                     <div>{LR.leave_reason}</div>
                     <div>
-                        <PrimaryLink href={`/manageleaverequests/${LR.id}`}>
+                        <PrimaryLink href={`/leaverequests/manage/${LR.id}`}>
                                                             Review
                                                         </PrimaryLink>
                     </div>

@@ -133,21 +133,21 @@ class LeaveRequestController extends Controller
         ]);
     }
 
-    public function approve(LeaveRequest $leaveRequest)
+    public function manageApprove(LeaveRequest $leaveRequest)
     {
-        Gate::authorize('manage', $leaveRequest);
+        Gate::authorize('approve', $leaveRequest);
         $user = Auth::user();
         $leaveRequest->updateOrFail(['approved_by' => $user->id]);
 
-        return redirect('/manageleaverequests');
+        return redirect()->route('leaverequests.manage.index');
     }
 
-    public function decline(LeaveRequest $leaveRequest)
+    public function manageDecline(LeaveRequest $leaveRequest)
     {
-        Gate::authorize('manage', $leaveRequest);
+        Gate::authorize('approve', $leaveRequest);
         $user = Auth::user();
         $leaveRequest->updateOrFail(['declined_by' => $user->id]);
 
-        return redirect('/manageleaverequests');
+        return redirect()->route('leaverequests.manage.index');
     }
 }

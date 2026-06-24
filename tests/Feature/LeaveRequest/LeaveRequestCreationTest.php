@@ -11,7 +11,7 @@ it('allows admin to create a LeaveRequest', function () {
     $leaveRequest = LeaveRequest::factory()->make(['user_id' => $admin->id]);
 
     $this->actingAs($admin)
-        ->post(route('leaverequests.store'), $leaveRequest->toArray())
+        ->post(route('leaverequests.store'), array_merge($leaveRequest->toArray(), ['mode' => 'multiple_days']))
         ->assertRedirect('/leaverequests');
 
     $this->assertDatabaseHas('leave_requests', [
@@ -26,7 +26,7 @@ it('allows authoriser to create a LeaveRequest', function () {
     $leaveRequest = LeaveRequest::factory()->make(['user_id' => $authoriser->id]);
 
     $this->actingAs($authoriser)
-        ->post(route('leaverequests.store'), $leaveRequest->toArray())
+        ->post(route('leaverequests.store'), array_merge($leaveRequest->toArray(), ['mode' => 'multiple_days']))
         ->assertRedirect('/leaverequests');
 
     $this->assertDatabaseHas('leave_requests', [
@@ -41,7 +41,7 @@ it('allows user to create a LeaveRequest', function () {
     $leaveRequest = LeaveRequest::factory()->make(['user_id' => $user->id]);
 
     $this->actingAs($user)
-        ->post(route('leaverequests.store'), $leaveRequest->toArray())
+        ->post(route('leaverequests.store'), array_merge($leaveRequest->toArray(), ['mode' => 'multiple_days']))
         ->assertRedirect('/leaverequests');
 
     $this->assertDatabaseHas('leave_requests', [
@@ -56,6 +56,6 @@ it('guest is forbidden from creating a LeaveRequest', function () {
     $leaveRequest = LeaveRequest::factory()->make(['user_id' => $user->id]);
 
     $this->actingAs($user)
-        ->post(route('leaverequests.store'), $leaveRequest->toArray())
+        ->post(route('leaverequests.store'), array_merge($leaveRequest->toArray(), ['mode' => 'multiple_days']))
         ->assertForbidden();
 });

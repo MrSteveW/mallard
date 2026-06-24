@@ -17,6 +17,15 @@ class LeaveRequestPolicy
         return false;
     }
 
+    public function approve(User $user): bool
+    {
+        if (in_array($user->role, [UserRole::Admin, UserRole::Authoriser])) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function viewAny(User $user): bool
     {
         return true;
@@ -42,15 +51,5 @@ class LeaveRequestPolicy
         && $user->id == $leaveRequest->user_id
         && is_null($leaveRequest->approved_by)
         && is_null($leaveRequest->declined_by);
-    }
-
-    public function restore(User $user, LeaveRequest $leaveRequest): bool
-    {
-        return false;
-    }
-
-    public function forceDelete(User $user, LeaveRequest $leaveRequest): bool
-    {
-        return false;
     }
 }
