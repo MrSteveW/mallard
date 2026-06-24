@@ -103,6 +103,7 @@ class LeaveRequestController extends Controller
 
     public function manageShow(LeaveRequest $leaveRequest)
     {
+        Gate::authorize('manage', LeaveRequest::class);
         $staffingData = [];
         $dutyData = Duty::with(['user.employee.grade'])->whereIn('date', $leaveRequest->dates)->get();
 
