@@ -6,6 +6,7 @@ import {
     CalendarSync,
     UserRoundCog,
     ClockFading,
+    ClockCheck,
 } from 'lucide-react';
 import { UserMenuContent } from '@/components/auth/user-menu-content';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -44,13 +45,18 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Leave Requests',
+        title: 'My Leave Requests',
         href: '/leaverequests',
         icon: ClockFading,
     },
 ];
 
 const authoriserNavItems: NavItem[] = [
+    {
+        title: 'Manage Leave',
+        href: '/manageleaverequests',
+        icon: ClockCheck,
+    },
     {
         title: 'Duties',
         href: '/duties',
@@ -113,7 +119,7 @@ function NavMenuList({
     whenCurrentUrl: (href: string, className: string) => string;
 }) {
     return (
-        <NavigationMenuList className="flex h-full items-stretch space-x-2">
+        <NavigationMenuList className="flex h-full items-stretch">
             {items.map((item, index) => (
                 <NavigationMenuItem
                     key={index}

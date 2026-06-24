@@ -31,26 +31,30 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('shiftpatterns', ShiftPatternController::class)
         ->parameters(['shiftpatterns' => 'user'])
-        ->only(['index', 'store', 'edit', 'update']);;
+        ->only(['index', 'store', 'edit', 'update']);
 
     Route::resource('calendar-notes', CalendarNoteController::class)
         ->only(['store', 'update', 'destroy']);
 
-    Route::resource('leaverequests', LeaveRequestController::class)->only(['index','create','store','update', 'destroy']);
+    Route::resource('leaverequests', LeaveRequestController::class)
+        ->parameters(['leaverequests' => 'leaveRequest'])
+        ->only(['index', 'create', 'store', 'update', 'destroy']);
 });
 
 // Admin || Authoriser || Guest
 Route::middleware(['auth', 'can:manage,'.Duty::class])->group(function () {
     Route::get('/duties/{date}/tasks', [DutyController::class, 'showTasks'])
-           ->name('duties.showTasks');
-    Route::resource('duties', DutyController::class)->only(['index','store', 'update', 'destroy']);
+        ->name('duties.showTasks');
+    Route::resource('duties', DutyController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::post('duties/generate', [DutyController::class, 'generate']);
     Route::patch('duties/{duty}/cancel', [DutyController::class, 'cancel']);
     Route::patch('/duties/{date}/tasks', [DutyController::class, 'updateTasks']);
 
-    Route::get('/manageleaverequests', [LeaveRequestController::class, 'manageLeaveRequests'])
-           ->name('leaverequests.manage');
+    Route::get('/manageleaverequests', [LeaveRequestController::class, 'manageIndex'])
+        ->name('leaverequests.manage');
+    Route::get('manageleaverequests/{leaveRequest}', [LeaveRequestController::class, 'manageShow']);
+    Route::patch('manageleaverequests/{leaveRequest}/approve', [LeaveRequestController::class, 'approve']);
+    Route::patch('manageleaverequests/{leaveRequest}/decline', [LeaveRequestController::class, 'decline']);
 });
-
 
 require __DIR__.'/settings.php';

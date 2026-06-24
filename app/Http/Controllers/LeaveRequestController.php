@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\LeaveOptions;
-use App\Http\Resources\LeaveRequestResource;
+use App\Http\Resources\LeaveRequestManagerResource;
+use App\Http\Resources\LeaveRequestUserResource;
+use App\Models\Duty;
 use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,21 +16,12 @@ use Inertia\Inertia;
 
 class LeaveRequestController extends Controller
 {
-    public function manage()
-    {
-        Gate::authorize('manage', LeaveRequest::class);
-
-        return Inertia::render('LeaveRequest/Manage', [
-        ]);
-    }
-
     public function index()
     {
         Gate::authorize('viewAny', LeaveRequest::class);
         $user = Auth::user();
-        $leaveRequests = LeaveRequestResource::collection($user
+        $leaveRequests = LeaveRequestUserResource::collection($user
             ->leaveRequests()
-            ->whereNull('declined_by')
             ->whereTodayOrAfter()
             ->when(
                 DB::connection()->getDriverName() === 'pgsql',
@@ -80,16 +73,81 @@ class LeaveRequestController extends Controller
         return redirect('/leaverequests');
     }
 
-    public function update(Request $request, LeaveRequest $leaverequest)
+    public function update(Request $request, LeaveRequest $leaveRequest)
     {
         //
     }
 
-    public function destroy(LeaveRequest $leaverequest)
+    public function destroy(LeaveRequest $leaveRequest)
     {
-        Gate::authorize('delete', $leaverequest);
-        $leaverequest->delete();
+        Gate::authorize('delete', $leaveRequest);
+        $leaveRequest->delete();
 
         return redirect('/leaverequests');
+    }
+
+    public function manageIndex()
+    {
+        Gate::authorize('manage', LeaveRequest::class);
+        $leaveRequests = LeaveRequestManagerResource::collection(LeaveRequest::when(
+            DB::connection()->getDriverName() === 'pgsql',
+            fn ($q) => $q->orderByRaw('(dates->>0)::date'),
+            fn ($q) => $q->orderByRaw("json_extract(dates, '$[0]')")
+        )
+            ->get());
+
+        return Inertia::render('LeaveRequest/ManageIndex', [
+            'leaveRequests' => $leaveRequests,
+        ]);
+    }
+
+    public function manageShow(LeaveRequest $leaveRequest)
+    {
+        $staffingData = [];
+        $dutyData = Duty::with(['user.employee.grade'])->whereIn('date', $leaveRequest->dates)->get();
+
+        foreach ($leaveRequest->dates as $date) {
+            $filteredDateDuties = $dutyData->filter(function (Duty $duty) use ($date) {
+                return $duty->date == $date;
+            });
+            $currentArray = [];
+            $currentGradeCount = [];
+            $staffCount = $filteredDateDuties
+                ->sortBy(fn (Duty $duty) => $duty->user->employee->grade->id)
+                ->countBy(fn (Duty $duty) => $duty->user->employee->grade->name);
+            $staffCount = $staffCount->toArray();
+            foreach ($staffCount as $key => $value) {
+
+                $currentGrade['gradeName'] = $key;
+                $currentGrade['gradeCount'] = $value;
+                array_push($currentGradeCount, $currentGrade);
+            }
+            $currentArray['date'] = $date;
+            $currentArray['staffCount'] = $currentGradeCount;
+            array_push($staffingData, $currentArray);
+        }
+
+        return Inertia::render('LeaveRequest/ManageShow', [
+            'staffingData' => $staffingData,
+            'leaveRequest' => new LeaveRequestManagerResource($leaveRequest),
+        ]);
+    }
+
+    public function approve(LeaveRequest $leaveRequest)
+    {
+        Gate::authorize('manage', $leaveRequest);
+        $user = Auth::user();
+        $leaveRequest->updateOrFail(['approved_by' => $user->id]);
+
+        return redirect('/manageleaverequests');
+    }
+
+    public function decline(LeaveRequest $leaveRequest)
+    {
+        Gate::authorize('manage', $leaveRequest);
+        $user = Auth::user();
+        $leaveRequest->updateOrFail(['declined_by' => $user->id]);
+
+        return redirect('/manageleaverequests');
     }
 }

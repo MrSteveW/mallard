@@ -1,0 +1,108 @@
+import { ChevronDown, ChevronUp, ChevronsUpDown } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { PrimaryLink } from '@/components/ui/primary-link';
+import { formatDatesRange } from '@/lib/utils';
+import type { ManagerLeaveRequest } from '@/types.ts';
+
+type SortColumn = 'user_name' | 'dates' | 'leave_reason';
+type SortDirection = 'asc' | 'desc';
+
+interface TableProps {
+    leaveRequests: ManagerLeaveRequest[];
+}
+
+function SortIcon({ column, activeColumn, direction }: { column: SortColumn; activeColumn: SortColumn | null; direction: SortDirection }) {
+    if (column !== activeColumn) return <ChevronsUpDown className="size-3.5 text-muted-foreground" />;
+    return direction === 'asc'
+        ? <ChevronUp className="size-3.5" />
+        : <ChevronDown className="size-3.5" />;
+}
+
+function SortableHeader({
+    column,
+    label,
+    activeColumn,
+    direction,
+    onSort,
+}: {
+    column: SortColumn;
+    label: string;
+    activeColumn: SortColumn | null;
+    direction: SortDirection;
+    onSort: (column: SortColumn) => void;
+}) {
+    return (
+        <button
+            type="button"
+            onClick={() => onSort(column)}
+            className="flex cursor-pointer items-center gap-1 font-bold"
+        >
+            {label}
+            <SortIcon column={column} activeColumn={activeColumn} direction={direction} />
+        </button>
+    );
+}
+
+export default function LeaveRequestTable({ leaveRequests }: TableProps) {
+    const [sortColumn, setSortColumn] = useState<SortColumn | null>(null);
+    const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
+
+    function handleSort(column: SortColumn) {
+        if (sortColumn === column) {
+            setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+        } else {
+            setSortColumn(column);
+            setSortDirection('asc');
+        }
+    }
+
+    const sorted = useMemo(() => {
+        if (!sortColumn) return leaveRequests;
+
+        return [...leaveRequests].sort((a, b) => {
+            let comparison = 0;
+
+            if (sortColumn === 'user_name') {
+                comparison = a.user_name.localeCompare(b.user_name);
+            } else if (sortColumn === 'dates') {
+                comparison = a.dates[0].localeCompare(b.dates[0]);
+            } else if (sortColumn === 'leave_reason') {
+                comparison = (a.leave_reason ?? '').localeCompare(b.leave_reason ?? '');
+            }
+
+            return sortDirection === 'asc' ? comparison : -comparison;
+        });
+    }, [leaveRequests, sortColumn, sortDirection]);
+
+    return (
+        <div className="relative px-2 h-[calc(100vh-300px)] w-full overflow-auto border border-mallard-green rounded-lg bg-slate-100">
+            {/* --- STICKY HEADER --- */}
+            <div className="sticky top-0 mt-2 grid grid-cols-5 justify-items-center font-bold bg-slate-100">
+                <SortableHeader column="user_name" label="Name" activeColumn={sortColumn} direction={sortDirection} onSort={handleSort} />
+                <SortableHeader column="dates" label="Date" activeColumn={sortColumn} direction={sortDirection} onSort={handleSort} />
+                <div className="font-bold">Partial day</div>
+                <SortableHeader column="leave_reason" label="Leave reason" activeColumn={sortColumn} direction={sortDirection} onSort={handleSort} />
+                <div></div>
+            </div>
+            {sorted.map((LR) => (
+                <div key={LR.id} className="my-2 grid grid-cols-5 justify-items-center gap-2 rounded-lg border border-mallard-green p-2">
+                    <div>{LR.user_name}</div>
+                    <div>
+                        {formatDatesRange(LR.dates)}
+                    </div>
+                    <div>
+                        {LR.start_time
+                            ? `${LR.start_time} - ${LR.end_time}`
+                            : ''}
+                    </div>
+                    <div>{LR.leave_reason}</div>
+                    <div>
+                        <PrimaryLink href={`/manageleaverequests/${LR.id}`}>
+                                                            Review
+                                                        </PrimaryLink>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+}

@@ -32,12 +32,26 @@ Artisan::command('app:cleanse', function () {
     $this->info('Running Pint...');
     passthru('vendor/bin/pint --dirty --format agent');
 
+    $this->info('Running ESLint...');
+    passthru('npm run lint', $eslintExit);
+    if ($eslintExit !== 0) {
+        $this->error('ESLint found errors that could not be auto-fixed.');
+
+        return 1;
+    }
+
     $this->info('Running tests...');
-    $this->call('test', ['--compact' => true]);
+    $testExit = $this->call('test', ['--compact' => true]);
+    if ($testExit !== 0) {
+        return 1;
+    }
 
     $this->info('Running PHPStan...');
-    passthru('vendor/bin/phpstan analyse');
-})->purpose('Run Pint, tests, and PHPStan before pushing');
+    passthru('vendor/bin/phpstan analyse', $phpstanExit);
+    if ($phpstanExit !== 0) {
+        return 1;
+    }
+})->purpose('Run Pint, ESLint, tests, and PHPStan before pushing');
 
 Artisan::command('app:migrate:fresh', function () {
     $this->call('migrate:fresh', ['--seed' => true]);

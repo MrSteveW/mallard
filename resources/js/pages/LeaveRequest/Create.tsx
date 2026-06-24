@@ -5,13 +5,13 @@ import type { DateObject } from 'react-multi-date-picker';
 import { store } from '@/actions/App/Http/Controllers/LeaveRequestController';
 import TimeSelect from '@/components/TimeSelect';
 import { Label } from '@/components/ui/label';
+import { PrimaryLink } from '@/components/ui/primary-link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { calculateDuration } from '@/lib/utils';
 import type { SharedData } from '@/types/index';
 import type { LeaveOption, TimeOptions } from '@/types.ts';
-import { PrimaryLink } from '@/components/ui/primary-link';
 
 type Mode = 'partial_day' | 'multiple_days' | 'range';
 
@@ -103,7 +103,7 @@ export default function Create({ dutyDates }: CreateProps) {
 
     return (
         <AppLayout>
-            <Head title="Leave request" />
+            <Head title="Create Leave Request" />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto p-4">
                 <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                     {/* Leave reason */}
