@@ -23,8 +23,10 @@ export default function ManageIndex({ leaveRequests }: ManageIndexProps) {
                     ><div className="flex items-center justify-center">
                         <TabsList className="group-data-[orientation=horizontal]/tabs:h-12">
 
-                            <TabsTrigger className="px-6 text-lg" value="pending">
-                                Pending
+                            <TabsTrigger className="px-5 text-lg" value="pending">
+                                <div className="flex items-center gap-1">
+                                <div>Pending</div> <div className="text-sm text-mallard-orange">({leaveRequests.filter((LR) => LR.status === 'Pending').length})</div>
+                                </div>
                             </TabsTrigger>
                             <TabsTrigger className="px-6 text-lg" value="approved">
                                 Approved

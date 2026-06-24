@@ -25,6 +25,8 @@ class LeaveRequestManagerResource extends JsonResource
             'start_time' => $this->start_time ? substr($this->start_time, 0, 5) : null,
             'end_time' => $this->end_time ? substr($this->end_time, 0, 5) : null,
             'leave_reason' => $this->leave_reason,
+            'notes' => $this->notes,
+            'updated_at' => $this->updated_at,
             'status' => match (true) {
                 (bool) $this->approved_by => 'Approved',
                 (bool) $this->declined_by => 'Declined',

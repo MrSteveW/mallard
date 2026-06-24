@@ -6,7 +6,6 @@ use App\Enums\LeaveOptions;
 use App\Http\Resources\LeaveRequestManagerResource;
 use App\Http\Resources\LeaveRequestUserResource;
 use App\Models\Duty;
-use App\Models\Grade;
 use App\Models\LeaveRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -74,15 +73,15 @@ class LeaveRequestController extends Controller
         return redirect('/leaverequests');
     }
 
-    public function update(Request $request, LeaveRequest $leaverequest)
+    public function update(Request $request, LeaveRequest $leaveRequest)
     {
         //
     }
 
-    public function destroy(LeaveRequest $leaverequest)
+    public function destroy(LeaveRequest $leaveRequest)
     {
-        Gate::authorize('delete', $leaverequest);
-        $leaverequest->delete();
+        Gate::authorize('delete', $leaveRequest);
+        $leaveRequest->delete();
 
         return redirect('/leaverequests');
     }
@@ -112,14 +111,13 @@ class LeaveRequestController extends Controller
                 return $duty->date == $date;
             });
             $currentArray = [];
-            $currentStaffingArray = [];
             $currentGradeCount = [];
             $staffCount = $filteredDateDuties
                 ->sortBy(fn (Duty $duty) => $duty->user->employee->grade->id)
                 ->countBy(fn (Duty $duty) => $duty->user->employee->grade->name);
             $staffCount = $staffCount->toArray();
             foreach ($staffCount as $key => $value) {
-                
+
                 $currentGrade['gradeName'] = $key;
                 $currentGrade['gradeCount'] = $value;
                 array_push($currentGradeCount, $currentGrade);
@@ -133,5 +131,23 @@ class LeaveRequestController extends Controller
             'staffingData' => $staffingData,
             'leaveRequest' => new LeaveRequestManagerResource($leaveRequest),
         ]);
+    }
+
+    public function approve(LeaveRequest $leaveRequest)
+    {
+        Gate::authorize('manage', $leaveRequest);
+        $user = Auth::user();
+        $leaveRequest->updateOrFail(['approved_by' => $user->id]);
+
+        return redirect('/manageleaverequests');
+    }
+
+    public function decline(LeaveRequest $leaveRequest)
+    {
+        Gate::authorize('manage', $leaveRequest);
+        $user = Auth::user();
+        $leaveRequest->updateOrFail(['declined_by' => $user->id]);
+
+        return redirect('/manageleaverequests');
     }
 }

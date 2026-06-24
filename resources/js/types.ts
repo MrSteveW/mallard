@@ -121,6 +121,7 @@ export interface ManagerLeaveRequest {
     notes: string | null;
     status: string;
     manager_name: string;
+    updated_at: Date;
 }
 
 export interface StaffingData {

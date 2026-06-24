@@ -63,9 +63,9 @@ export default function LeaveRequestTable({ leaveRequests }: TableProps) {
     }
 
     return (
-        <div className="relative my-3 h-100 w-full overflow-auto rounded-lg border bg-slate-50">
+        <div className="relative px-2 h-[calc(100vh-300px)] w-full overflow-auto border border-mallard-green rounded-lg bg-slate-100">
             {/* --- STICKY HEADER --- */}
-            <div className="sticky top-0 grid grid-cols-5 justify-items-center bg-white font-bold">
+            <div className="sticky top-0 mt-2 grid grid-cols-5 justify-items-center font-bold bg-slate-100">
                 <SortableHeader column="user_name" label="Name" />
                 <SortableHeader column="dates" label="Date" />
                 <div className="font-bold">Partial day</div>

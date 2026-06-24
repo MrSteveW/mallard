@@ -3,7 +3,6 @@
 use App\Enums\LeaveOptions;
 use App\Models\LeaveRequest;
 use App\Models\User;
-use Inertia\Testing\AssertableInertia as Assert;
 use Tests\Traits\MocksUserObserver;
 
 uses(MocksUserObserver::class);
@@ -24,8 +23,7 @@ test('user can only delete their own leave requests', function () {
     ]);
 
     $response = $this->actingAs($user)
-        ->delete(route('leaverequests.destroy',
-            ['leaverequest' => $leaveRequest->id]));
+        ->delete(route('leaverequests.destroy', $leaveRequest));
 
     $response->assertRedirect();
     $this->assertDatabaseMissing('leave_requests', [
@@ -33,8 +31,7 @@ test('user can only delete their own leave requests', function () {
     ]);
 
     $response = $this->actingAs($user)
-        ->delete(route('leaverequests.destroy',
-            ['leaverequest' => $otherLeaveRequest->id]));
+        ->delete(route('leaverequests.destroy', $otherLeaveRequest));
 
     $response->assertForbidden();
 });
@@ -51,7 +48,7 @@ test('user cannot delete an approved leave request', function () {
 
     $response = $this->actingAs($user)
         ->delete(route('leaverequests.destroy',
-            ['leaverequest' => $leaveRequest->id]));
+            $leaveRequest));
     $response->assertForbidden();
 });
 
@@ -67,6 +64,6 @@ test('user cannot delete a declined leave request', function () {
 
     $response = $this->actingAs($user)
         ->delete(route('leaverequests.destroy',
-            ['leaverequest' => $leaveRequest->id]));
+            $leaveRequest));
     $response->assertForbidden();
 });

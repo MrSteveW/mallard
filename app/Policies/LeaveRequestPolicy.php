@@ -10,7 +10,7 @@ class LeaveRequestPolicy
 {
     public function manage(User $user): bool
     {
-         if (in_array($user->role, [UserRole::Admin, UserRole::Authoriser, UserRole::Guest])) {
+        if (in_array($user->role, [UserRole::Admin, UserRole::Authoriser, UserRole::Guest])) {
             return true;
         }
 
@@ -39,7 +39,7 @@ class LeaveRequestPolicy
     public function delete(User $user, LeaveRequest $leaveRequest): bool
     {
         return in_array($user->role, [UserRole::Admin, UserRole::Authoriser, UserRole::User])
-        && $user->id === $leaveRequest->user_id
+        && $user->id == $leaveRequest->user_id
         && is_null($leaveRequest->approved_by)
         && is_null($leaveRequest->declined_by);
     }
