@@ -14,13 +14,6 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Adam',
-            'email' => config('services.bootstrapUser.email'),
-            'password' => config('services.bootstrapUser.password'),
-            'role' => UserRole::Admin,
-        ]);
-
-        User::create([
             'name' => 'Betty',
             'email' => 'betty@example.com',
             'password' => 'password',
