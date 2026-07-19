@@ -90,13 +90,6 @@ class UserSeeder extends Seeder
             'role' => UserRole::User,
         ]);
 
-        User::create([
-            'name' => 'Guest',
-            'email' => config('services.guest.email'),
-            'password' => config('services.guest.password'),
-            'role' => UserRole::Guest,
-        ]);
-
         // User::create([
         // 'name' => 'Mika',
         // 'email' => 'mika@example.com',
